@@ -1,0 +1,245 @@
+@font-face {
+  font-family: 'Pacifico';
+  font-style: normal;
+  src: url(../js/324944d6dae53ea48a648b1d44ec78c3.ttf); }
+
+@font-face {
+  font-family: 'Varela Round';
+  font-style: normal;
+  src: url(../js/eefe48639a01ef1f065d0373e895e859.ttf); }
+
+h1 {
+  font-family: 'Pacifico', sans-serif;
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.45), 0 0 10px rgba(0, 0, 0, 0.45);
+  font-size: 30px;
+  color: #ffffff;
+  transition: 0.5s; }
+
+h1:hover {
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.75), 0 0 10px rgba(0, 0, 0, 0.75); }
+
+h2 {
+  font-family: 'Pacifico', sans-serif;
+  font-size: 20px;
+  color: #ffffff; }
+
+.menu-button {
+  font-family: 'Varela Round', sans-serif;
+  width: auto;
+  height: auto;
+  background-color: rgba(0, 0, 0, 0.2);
+  border: rgba(255, 255, 255, 0.43);
+  cursor: pointer;
+  display: flex;
+  flex-flow: row nowrap;
+  flex: 0 0 100px;
+  align-content: center;
+  justify-content: center;
+  align-self: center;
+  padding: 10px 10px;
+  font-size: 13px;
+  text-align: center;
+  border-radius: 3px;
+  color: #ffffff;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: 0.5s; }
+  .menu-button:hover {
+    color: #494949;
+    background-color: rgba(255, 255, 255, 0.82); }
+
+.bar {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.29);
+  background-color: rgba(0, 0, 0, 0.39);
+  border: 1px solid rgba(57, 57, 57, 0.84);
+  padding: 10px;
+  margin: 10px; }
+
+.row-heading {
+  display: flex;
+  flex-flow: row wrap;
+  flex: 0 0 100%;
+  align-content: center;
+  justify-content: center;
+  align-self: center;
+  font-family: 'Varela Round', sans-serif;
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.6), 0 0 10px rgba(0, 0, 0, 0.6);
+  font-size: 24px;
+  color: #ffffff;
+  padding: 10px; }
+
+.flex-button {
+  font-family: 'Varela Round', sans-serif;
+  width: auto;
+  height: auto;
+  background-color: rgba(0, 0, 0, 0.2);
+  border: rgba(255, 255, 255, 0.43);
+  cursor: pointer;
+  display: flex;
+  flex-flow: row nowrap;
+  flex: 1;
+  align-content: center;
+  justify-content: center;
+  align-self: center;
+  padding: 10px;
+  margin: 15px;
+  font-size: 20px;
+  text-align: center;
+  border-radius: 3px;
+  color: #ffffff;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: 0.5s; }
+  .flex-button:hover {
+    color: #494949;
+    background-color: rgba(255, 255, 255, 0.82); }
+
+.flex-button-small {
+  font-family: 'Varela Round', sans-serif;
+  width: auto;
+  height: auto;
+  background-color: rgba(0, 0, 0, 0.2);
+  border: rgba(255, 255, 255, 0.43);
+  cursor: pointer;
+  display: flex;
+  flex-flow: row nowrap;
+  flex: 1;
+  align-content: center;
+  justify-content: center;
+  align-self: center;
+  padding: 6px;
+  margin: 6px;
+  line-height: 16px;
+  font-size: 13px;
+  text-align: center;
+  border-radius: 3px;
+  color: #ffffff;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: 0.5s; }
+  .flex-button-small:hover {
+    color: #494949;
+    background-color: rgba(255, 255, 255, 0.82); }
+
+.flex-button-medium {
+  font-family: 'Varela Round', sans-serif;
+  width: auto;
+  height: auto;
+  background-color: rgba(0, 0, 0, 0.2);
+  border: rgba(255, 255, 255, 0.43);
+  cursor: pointer;
+  display: flex;
+  flex-flow: row nowrap;
+  flex: 1;
+  align-content: center;
+  justify-content: center;
+  align-self: center;
+  padding: 10px;
+  margin: 10px;
+  line-height: 24px;
+  font-size: 20px;
+  text-align: center;
+  border-radius: 3px;
+  color: #ffffff;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: 0.5s; }
+  .flex-button-medium:hover {
+    color: #494949;
+    background-color: rgba(255, 255, 255, 0.82); }
+
+.flex-button-huge {
+  font-family: 'Varela Round', sans-serif;
+  width: auto;
+  height: auto;
+  background-color: rgba(0, 0, 0, 0.2);
+  border: rgba(255, 255, 255, 0.43);
+  cursor: pointer;
+  display: flex;
+  flex-flow: row nowrap;
+  flex: 1;
+  align-content: center;
+  justify-content: center;
+  align-self: center;
+  padding: 15px;
+  margin: 15px;
+  line-height: 32px;
+  font-size: 30px;
+  text-align: center;
+  border-radius: 3px;
+  color: #ffffff;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: 0.5s; }
+  .flex-button-huge:hover {
+    color: #494949;
+    background-color: rgba(255, 255, 255, 0.82); }
+
+.row {
+  display: flex;
+  flex-flow: row wrap;
+  flex: 0 0 100%; }
+
+body {
+  font-family: 'Varela Round', sans-serif;
+  padding: 0;
+  margin: 0;
+  background-color: #afd3ff;
+  cursor: default;
+  height: 100vh; }
+  body .main-menu {
+    position: absolute;
+    display: flex;
+    flex-flow: row nowrap;
+    flex: 1;
+    align-content: flex-start;
+    justify-content: flex-start;
+    align-self: auto;
+    width: 100vw;
+    height: 50px;
+    background-color: rgba(0, 0, 0, 0.22);
+    transition: 0.5s;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.34); }
+    body .main-menu .menu-section {
+      display: flex;
+      flex-flow: row nowrap;
+      flex: 1;
+      align-content: flex-start;
+      justify-content: flex-start;
+      align-self: auto;
+      height: 100%;
+      padding: 0 20px; }
+      body .main-menu .menu-section.side-section {
+        display: flex;
+        flex-flow: row nowrap;
+        flex: 0 0 25%;
+        align-content: flex-start;
+        justify-content: flex-start;
+        align-self: auto; }
+      body .main-menu .menu-section .heading {
+        display: flex;
+        flex-flow: row nowrap;
+        flex: 1;
+        align-content: center;
+        justify-content: center;
+        align-self: center; }
+    body .main-menu:hover {
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.45);
+      background-color: rgba(0, 0, 0, 0.61);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.44);
+      height: 80px; }
+  body .content {
+    display: flex;
+    flex-flow: row nowrap;
+    flex: 1;
+    align-content: center;
+    justify-content: center;
+    align-self: auto;
+    height: 100vh; }
+    body .content .message-bar {
+      display: flex;
+      flex-flow: row wrap;
+      flex: 0 0 35%;
+      align-content: center;
+      justify-content: center;
+      align-self: center; }

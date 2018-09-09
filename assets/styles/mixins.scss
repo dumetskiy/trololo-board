@@ -1,0 +1,72 @@
+@mixin background($imgPath, $position: center, $repeat: no-repeat, $height: auto, $width: auto) {
+  background: {
+    image: url('../images/' + $imgPath);
+    position: $position;
+    repeat: $repeat;
+  }
+  height: $height;
+  width: $width;
+}
+
+@mixin font-pacifico {
+  font-family: 'Pacifico', sans-serif;
+}
+
+@mixin font-varela {
+  font-family: 'Varela Round', sans-serif;
+}
+
+@mixin small-text-shadow($color: $color-defaultShadow) {
+  text-shadow: 0 0 2px $color, 0 0 10px $color;
+}
+
+@mixin big-text-shadow($color: $color-defaultShadow) {
+  text-shadow: 0 0 20px $color;
+}
+
+@mixin small-box-shadow($color: $color-defaultShadow) {
+  box-shadow: 0 0 10px $color;
+}
+
+@mixin big-box-shadow($color: $color-defaultShadow) {
+  box-shadow: 0 0 20px $color;
+}
+
+@mixin flex($size: 1, $h-alignment: flex-start, $v-alignment: flex-start, $self-align: auto, $flow: row nowrap) {
+  display: flex;
+  flex-flow: $flow;
+  flex: $size;
+  align-content: $h-alignment;
+  justify-content: $v-alignment;
+  align-self: $self-align;
+}
+
+@mixin button($width: auto, $height: auto, $background-color: transparent, $border: none) {
+  @include font-varela();
+  width: auto;
+  height: auto;
+  background-color: $background-color;
+  border: $border;
+  cursor: pointer;
+}
+
+@mixin flexButton($lineHeight: 25px, $padding: 10px, $margin: 10px, $fontSize: $fontSize-large) {
+  @include button(auto, auto, $color-mainMenuButton, $color-mainMenuButtonBorder);
+  @include flex(1, center, center, center);
+  padding: $padding;
+  margin: $margin;
+  line-height: $lineHeight;
+
+  font-size: $fontSize;
+  text-align: center;
+  border-radius: 3px;
+  color: $color-primaryWhite;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: $time-defaultTransition;
+
+  &:hover {
+    color: $color-primaryBlack;
+    background-color: $color-mainMenuButtonHover;
+  }
+}

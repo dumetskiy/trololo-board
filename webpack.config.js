@@ -4,12 +4,11 @@ module.exports = {
     entry: ['./assets/js/index.js'],
     output: {
         path: __dirname + '/assets/js',
-        publicPath: '/assets/js',
+        publicPath: '../js/',
         filename: 'trololo-bundle.js'
     },
     module:{
         rules:[
-
             {
                 test: /\.(png|jpeg|ttf|...)$/,
                 use: [
@@ -23,7 +22,7 @@ module.exports = {
                         loader: 'file-loader',
                         options: {
                             name: '[name].css',
-                            outputPath: '../styles/'
+                            outputPath: '../styles'
                         }
                     },
                     {

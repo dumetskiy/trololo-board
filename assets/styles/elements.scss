@@ -1,0 +1,88 @@
+h1 {
+  @include font-pacifico();
+  @include small-text-shadow();
+  font-size: $fontSize-huge;
+  color: $color-primaryWhite;
+  transition: $time-defaultTransition;
+}
+h1:hover {
+  @include small-text-shadow($color-defaultShadowHover);
+}
+
+h2 {
+  @include font-pacifico();
+  font-size: $fontSize-large;
+  color: $color-primaryWhite;
+}
+
+.menu-button {
+  @include button(auto, auto, $color-mainMenuButton, $color-mainMenuButtonBorder);
+  @include flex(0 0 100px, center, center, center);
+  padding: 10px 10px;
+  font-size: $fontSize-small;
+  text-align: center;
+  border-radius: 3px;
+  color: $color-primaryWhite;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: $time-defaultTransition;
+
+  &:hover {
+    color: $color-primaryBlack;
+    background-color: $color-mainMenuButtonHover;
+  }
+}
+
+.bar {
+  @include small-box-shadow($color-barShadow);
+  background-color: $color-barBackground;
+  border: 1px solid $color-barBorder;
+  padding: $size-barDefaultPadding;
+  margin: $size-barDefaultMargin;
+}
+
+.row-heading {
+  @include flex(0 0 100%, center, center, center, row wrap);
+  @include font-varela();
+  @include small-text-shadow(rgba(0, 0, 0, 0.6));
+  font-size: $fontSize-extraLarge;
+  color: $color-primaryWhite;
+  padding: 10px;
+}
+
+.flex-button {
+  @include button(auto, auto, $color-mainMenuButton, $color-mainMenuButtonBorder);
+  @include flex(1, center, center, center);
+  padding: 10px;
+  margin: 15px;
+  font-size: $fontSize-large;
+  text-align: center;
+  border-radius: 3px;
+  color: $color-primaryWhite;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: $time-defaultTransition;
+
+  &:hover {
+    color: $color-primaryBlack;
+    background-color: $color-mainMenuButtonHover;
+  }
+}
+
+.flex-button-small {
+  @include flexButton(16px, 6px, 6px, $fontSize-small);
+}
+
+.flex-button-medium {
+  @include flexButton(24px, 10px, 10px, $fontSize-large);
+}
+
+.flex-button-huge {
+  @include flexButton(32px, 15px, 15px, $fontSize-huge);
+}
+
+.row {
+  display: flex;
+  flex-flow: row wrap;
+  flex: 0 0 100%;
+}

@@ -1,0 +1,48 @@
+body {
+  @include font-varela();
+  padding: 0;
+  margin: 0;
+  background-color: $color-defaultBackground;
+  cursor: default;
+  height: 100vh;
+
+  .main-menu {
+    position: absolute;
+    @include flex();
+    width: 100vw;
+    height: $size-mainMenuHeight;
+    background-color: $color-mainMenuBackground;
+    transition: $time-defaultTransition;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.34);
+
+    .menu-section {
+      @include flex();
+      height: 100%;
+      padding: 0 20px;
+
+      &.side-section {
+        @include flex(0 0 $size-mainMenuSideElementWidth);
+      }
+
+      .heading {
+        @include flex(1, center, center, center);
+      }
+    }
+
+    &:hover {
+      @include big-box-shadow();
+      background-color: $color-mainMenuBackgroundHover;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.44);
+      height: $size-mainMenuHeightHover;
+    }
+  }
+
+  .content {
+    @include flex(1, center, center, auto, row nowrap);
+    height: 100vh;
+
+    .message-bar {
+      @include flex(0 0 $size-messageBarWidth, center, center, center, row wrap);
+    }
+  }
+}
