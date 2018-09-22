@@ -1,5 +1,12 @@
 var webpack = require('webpack');
 
+const HtmlWebPackPlugin = require("html-webpack-plugin");
+
+const htmlPlugin = new HtmlWebPackPlugin({
+    template: "./assets/index.html",
+    filename: "./index.html"
+});
+
 module.exports = {
     entry: ['./assets/js/index.js'],
     output: {
@@ -7,17 +14,17 @@ module.exports = {
         publicPath: '../js/',
         filename: 'trololo-bundle.js'
     },
-    module:{
-        rules:[
+    module: {
+        rules: [
             {
                 test: /\.(png|jpeg|ttf|...)$/,
                 use: [
-                    { loader: 'url-loader', options: { limit: 8192 } }
+                    {loader: 'url-loader', options: {limit: 8192}}
                 ]
             },
             {
-                test:/\.(scss|sass)$/,
-                use:[
+                test: /\.(scss|sass)$/,
+                use: [
                     {
                         loader: 'file-loader',
                         options: {
@@ -34,17 +41,24 @@ module.exports = {
                     {
                         loader: 'postcss-loader',
                         options: {
-                            plugins: () => [require('autoprefixer')]
-                    }
+                            plugins: [require('autoprefixer')]
+                        }
+                    },
+                    {
+                        loader: 'sass-loader'
+                    },
+
+                ],
+                exclude: /node_modules/
             },
             {
-                loader: 'sass-loader'
-            }
-
+                test: /\.js$/,
+                    exclude: /node_modules/,
+                use: {
+                    loader: "babel-loader"
+                }
+            },
         ],
-        exclude: /node_modules/
-    }
-],
-}
-
+    },
+    plugins: [htmlPlugin],
 };

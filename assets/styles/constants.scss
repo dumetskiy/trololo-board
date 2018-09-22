@@ -5,12 +5,16 @@ $color-defaultShadowHover: rgba(0,0,0,0.75);
 $color-defaultBackground: #afd3ff;
 $color-mainMenuBackground: rgba(0, 0, 0, 0.22);
 $color-mainMenuBackgroundHover: rgba(0, 0, 0, 0.61);
+$color-boardBackground: rgba(0, 0, 0, 0.16);
+$color-boardBackgroundHover: rgba(0, 0, 0, 0.4);
 $color-barBackground: rgba(0, 0, 0, 0.39);
 $color-barShadow: rgba(0, 0, 0, 0.29);
 $color-barBorder: rgba(57, 57, 57, 0.84);
 $color-mainMenuButton: rgba(0, 0, 0, 0.2);
 $color-mainMenuButtonBorder: rgba(255, 255, 255, 0.43);
 $color-mainMenuButtonHover: rgba(255, 255, 255, 0.82);
+$color-veryLightTransparentBalck: rgba(0,0,0,0.1);
+$color-lightTransparentBalck: rgba(0,0,0,0.2);
 
 $fontSize-huge: 30px;
 $fontSize-extraLarge: 24px;
@@ -26,5 +30,8 @@ $size-mainMenuButtonHeight: 35px;
 $size-barDefaultMargin: 10px;
 $size-barDefaultPadding: 10px;
 $size-messageBarWidth: 35%;
+$size-boardColumnHeaderHeight: 40px;
+$size-boardColumnMaxWidth: 25%;
+$size-boardColumnMinWidth: 15%;
 
 $time-defaultTransition: .5s;

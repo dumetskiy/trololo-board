@@ -6,10 +6,14 @@
     "watch": "webpack --watch"
   },
   "devDependencies": {
-    "babel-loader": "^7.1.4",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
     "babel-minify-webpack-plugin": "^0.3.1",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
     "css-loader": "^0.28.11",
     "fast-sass-loader": "^1.4.1",
+    "html-webpack-plugin": "^3.2.0",
     "imports-loader": "^0.8.0",
     "sass-loader": "^6.0.7",
     "style-loader": "^0.20.3",
@@ -27,6 +31,8 @@
     "path": "^0.12.7",
     "postcss-load-config": "1.2.0",
     "postcss-loader": "2.1.1",
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2",
     "url-loader": "^1.0.1"
   }
 }

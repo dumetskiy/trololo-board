@@ -44,5 +44,97 @@ body {
     .message-bar {
       @include flex(0 0 $size-messageBarWidth, center, center, center, row wrap);
     }
+
+    .board {
+      margin-top: $size-mainMenuHeight;
+      @include flex(100%, flex-start, flex-start, auto, row nowrap);
+      padding: 10px;
+      overflow-x: auto;
+
+      .board-col {
+        @include flex(1, flex-start, flex-start, auto, row nowrap);
+        margin: 0 10px;
+        padding: 5px;
+        background-color: $color-boardBackground;
+        min-width: $size-boardColumnMinWidth;
+        max-width: $size-boardColumnMaxWidth;
+        transition: .5s;
+
+        &:hover {
+            background-color: $color-boardBackgroundHover;
+        }
+
+        .board-col-content {
+          @include flex(0 0 100%, flex-start, flex-start, auto, column nowrap);
+        }
+
+        .col-header {
+          @include flex(0 0 $size-boardColumnHeaderHeight, center, center, auto, row nowrap);
+          width: calc(100% + 10px);
+          margin: -5px;
+          background-color: $color-lightTransparentBalck;
+          color: $color-primaryWhite;
+          line-height: $size-boardColumnHeaderHeight;
+          @include font-pacifico();
+          font-size: 26px;
+
+        }
+
+        .col-items-holder {
+          @include flex(1, center, center, auto, row nowrap);
+          width: 100%;
+          padding: 10px 0 5px;
+
+          .col-items-wrap {
+            @include flex(1, flex-start, flex-start, auto, column nowrap);
+            padding: 0 5px;
+
+            .col-item {
+              @include font-varela();
+              @include flex(0 0 1, flex-start, flex-start, auto, row wrap);
+              width: 100%;
+              min-height: 100px;
+              background-color: $color-veryLightTransparentBalck;
+              margin: 0 0 5px;
+              padding: 5px;
+
+              &:hover {
+                background-color: $color-lightTransparentBalck;
+              }
+
+              .item-header {
+                @include flex(0 0 100%, flex-start, flex-start, auto, row nowrap);
+                height: 24px;
+                border-bottom: 1px solid $color-lightTransparentBalck;
+
+                .item-title {
+                  @include flex(1, flex-start, flex-start, auto, row nowrap);
+                  text-transform: uppercase;
+                  line-height: 26px;
+                  color: white;
+                  font-size: 17px;
+                  margin-left: 10px;
+                  height: 24px;
+                  @include text-truncate();
+                }
+
+                .item-tools {
+                  @include flex(0 0 80px, center, flex-end, auto, row nowrap);
+                  height: 24px;
+
+                  .tool-item {
+                    display: inline-block;
+                    @include flex(0 0 20px, flex-end, center, auto, row nowrap);
+                    height: 20px;
+                    background-color: $color-veryLightTransparentBalck;
+                    margin: 0 3px;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }
