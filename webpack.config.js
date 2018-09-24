@@ -4,14 +4,14 @@ const HtmlWebPackPlugin = require("html-webpack-plugin");
 
 const htmlPlugin = new HtmlWebPackPlugin({
     template: "./assets/index.html",
-    filename: "./index.html"
+    filename: "../../index.html"
 });
 
 module.exports = {
     entry: ['./assets/js/index.js'],
     output: {
         path: __dirname + '/assets/js',
-        publicPath: '../js/',
+        publicPath: 'assets/js/',
         filename: 'trololo-bundle.js'
     },
     module: {

@@ -16,7 +16,7 @@ h2 {
 }
 
 .menu-button {
-  @include button(auto, auto, $color-mainMenuButton, $color-mainMenuButtonBorder);
+  @include form-element(auto, auto, $color-mainMenuButton, $color-mainMenuButtonBorder);
   @include flex(0 0 100px, center, center, center);
   padding: 10px 10px;
   font-size: $fontSize-small;
@@ -51,7 +51,25 @@ h2 {
 }
 
 .flex-button {
-  @include button(auto, auto, $color-mainMenuButton, $color-mainMenuButtonBorder);
+  @include form-element(auto, auto, $color-mainMenuButton, $color-mainMenuButtonBorder);
+  @include flex(1, center, center, center);
+  padding: 10px;
+  margin: 15px;
+  font-size: $fontSize-large;
+  text-align: center;
+  border-radius: 3px;
+  color: $color-primaryWhite;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: $time-defaultTransition;
+
+  &:hover {
+    color: $color-primaryBlack;
+    background-color: $color-mainMenuButtonHover;
+  }
+}
+
+.flex-input {
   @include flex(1, center, center, center);
   padding: 10px;
   margin: 15px;
@@ -81,8 +99,36 @@ h2 {
   @include flexButton(32px, 15px, 15px, $fontSize-huge);
 }
 
+.flex-input-small {
+  @include flexInput(16px, 6px, 6px, $fontSize-small);
+}
+
+.flex-input-medium {
+  @include flexInput(24px, 10px, 10px, $fontSize-large);
+}
+
+.flex-input-huge {
+  @include flexInput(32px, 15px, 15px, $fontSize-huge);
+}
+
+.input-style {
+  @include form-element(auto, auto, $color-input, $color-inputBorder);
+}
+
+.flex-width-70 {
+  @include flex(0 0 70%, flex-start, flex-start, center);
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
 .row {
   display: flex;
   flex-flow: row wrap;
   flex: 0 0 100%;
+}
+
+.hidden {
+  display: none;
 }

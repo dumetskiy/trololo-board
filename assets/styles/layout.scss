@@ -43,6 +43,66 @@ body {
 
     .message-bar {
       @include flex(0 0 $size-messageBarWidth, center, center, center, row wrap);
+
+      .boards-list {
+        @include flex(1, flex-start, flex-start, flex-start, row wrap);
+        margin: 5px 15px;
+        max-height: 185px;
+        min-height: 123px;
+        overflow-y: auto;
+        border: 1px solid $color-lightTransparentBalck;
+        color: $color-primaryWhite;
+
+        .list-item {
+          @include font-varela();
+          width: 100%;
+          height: 30px;
+          line-height: 30px;
+          font-size: $fontSize-small;
+          padding-left: 15px;
+          border-bottom: 1px solid $color-lightTransparentBalck;
+
+          &:hover {
+            background-color: $color-lightTransparentBalck;
+          }
+
+          .tool-button {
+            position: relative;
+            float: right;
+            border: none;
+            height: 30px;
+            width: 30px;
+            line-height: 30px;
+            text-align: center;
+            font-weight: 600;
+            background-color: $color-veryLightTransparentBalck;
+            top: 0;
+            right: 0;
+            transition: $time-defaultFastTransition;
+            cursor: pointer;
+
+            &:hover {
+              background-color: $color-lightTransparentBalck;
+            }
+
+            &.remove {
+              @include background('remove-white.svg');
+            }
+
+            &.edit {
+              @include background('edit-white.svg');
+            }
+
+            &.save {
+              @include background('save-white.svg');
+            }
+
+            &:last-child {
+              border-right: 1px solid $color-lightTransparentBalck;
+            }
+          }
+        }
+      }
     }
 
     .board {
@@ -61,7 +121,7 @@ body {
         transition: .5s;
 
         &:hover {
-            background-color: $color-boardBackgroundHover;
+          background-color: $color-boardBackgroundHover;
         }
 
         .board-col-content {
@@ -92,7 +152,6 @@ body {
             .col-item {
               @include font-varela();
               @include flex(0 0 1, flex-start, flex-start, auto, row wrap);
-              width: 100%;
               min-height: 100px;
               background-color: $color-veryLightTransparentBalck;
               margin: 0 0 5px;

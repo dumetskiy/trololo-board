@@ -1,9 +1,4 @@
 import '../styles/main.scss';
-import React from "react";
-import ReactDOM from "react-dom";
+import {drawTrololo} from './trololo';
 
-const Index = () => {
-    return <div>Hello React!</div>;
-};
-
-ReactDOM.render(<Index />, document.getElementById("index"));
+drawTrololo();

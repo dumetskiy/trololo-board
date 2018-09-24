@@ -1,11 +1,10 @@
-@mixin background($imgPath, $position: center, $repeat: no-repeat, $height: auto, $width: auto) {
+@mixin background($imgPath, $position: center, $repeat: no-repeat, $size: inherit) {
   background: {
     image: url('../images/' + $imgPath);
     position: $position;
     repeat: $repeat;
+    size: $size;
   }
-  height: $height;
-  width: $width;
 }
 
 @mixin font-pacifico {
@@ -41,28 +40,28 @@
   align-self: $self-align;
 }
 
-@mixin button($width: auto, $height: auto, $background-color: transparent, $border: none) {
+@mixin form-element($width: auto, $height: auto, $background-color: transparent, $border: none) {
   @include font-varela();
   width: auto;
   height: auto;
+  color: $color-primaryWhite;
+  padding: 4px 2px;
   background-color: $background-color;
   border: $border;
   cursor: pointer;
 }
 
 @mixin flexButton($lineHeight: 25px, $padding: 10px, $margin: 10px, $fontSize: $fontSize-large) {
-  @include button(auto, auto, $color-mainMenuButton, $color-mainMenuButtonBorder);
+  @include form-element(auto, auto, $color-mainMenuButton, $color-mainMenuButtonBorder);
   @include flex(1, center, center, center);
   padding: $padding;
   margin: $margin;
   line-height: $lineHeight;
-
   font-size: $fontSize;
   text-align: center;
   border-radius: 3px;
   color: $color-primaryWhite;
   font-weight: bold;
-  text-transform: uppercase;
   transition: $time-defaultTransition;
 
   &:hover {
@@ -71,8 +70,27 @@
   }
 }
 
+@mixin flexInput($lineHeight: 25px, $padding: 10px, $margin: 10px, $fontSize: $fontSize-large) {
+  @include form-element(auto, auto, $color-input, $color-inputBorder);
+  @include flex(1, center, center, center);
+  padding: $padding;
+  margin: $margin;
+  line-height: $lineHeight;
+  font-size: $fontSize;
+  text-align: center;
+  border-radius: 3px;
+  font-weight: bold;
+  transition: $time-defaultTransition;
+
+  &:hover {
+    color: $color-primaryWhite;
+    background-color: $color-inputHover;
+  }
+}
+
 @mixin text-truncate() {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
