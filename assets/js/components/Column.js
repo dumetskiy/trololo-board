@@ -28,6 +28,7 @@ export default class Column extends Component {
         this.cancelAddTicket = this.cancelAddTicket.bind(this);
         this.createNewTicket = this.createNewTicket.bind(this);
         this.update = this.update.bind(this);
+        this.isSelectedColumn = this.isSelectedColumn.bind(this);
     }
 
     render() {
@@ -37,6 +38,7 @@ export default class Column extends Component {
 
         var columnId = this.props.columnid,
             boardId = this.props.boardid,
+            selectedTicket = this.props.selectedTicket,
             columnData = getColumnForBoard(boardId, columnId),
             ticketsTemplate = '',
             extraColumnElement = '',
@@ -45,7 +47,12 @@ export default class Column extends Component {
 
         if (columnData.tickets.length) {
             ticketsTemplate = columnData.tickets.map(function(ticket, index) {
-                return (<Ticket key={index} boardid={boardId} columnid={columnId} ticketid={index} updateAction={updateAction} />);
+                return (<Ticket key={index}
+                                boardid={boardId}
+                                columnid={columnId}
+                                ticketid={index}
+                                updateAction={updateAction}
+                                selectedTicket={selectedTicket}/>);
             });
         }
 
@@ -103,7 +110,7 @@ export default class Column extends Component {
         }
 
         return (
-            <div className="board-col">
+            <div className={this.isSelectedColumn() ? 'board-col current' : 'board-col'}>
                 <div className="board-col-content">
                     {colHeader}
                     <div className="col-items-holder">
@@ -115,6 +122,12 @@ export default class Column extends Component {
                 </div>
             </div>
         );
+    }
+
+    isSelectedColumn() {
+        var selectedTicket = this.props.selectedTicket;
+
+        return selectedTicket && selectedTicket.column === this.props.columnid;
     }
 
     update() {

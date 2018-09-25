@@ -154,6 +154,16 @@ export function removeBoardColumnTicket(boardId, columnId, ticketId) {
     set(boardsData);
 }
 
+export function updateBoardColumnTicketData(boardId, columnId, ticketId, newTitle, newDescription) {
+    var boardsData = get();
+
+    boardsData.boards[boardId].cols[columnId].tickets[ticketId] = {
+        title: newTitle,
+        description: newDescription,
+    };
+    set(boardsData);
+}
+
 function initBoardsData() {
     set({
         boards: [],

@@ -22,6 +22,7 @@ export default class Board extends Component {
 
     render() {
         var boardId = this.props.boardid,
+            selectedTicket = this.props.selectedTicket,
             boardData = getBoardById(boardId),
             boardCols = boardData.cols,
             colsTemplate = '',
@@ -31,7 +32,11 @@ export default class Board extends Component {
 
         if (boardCols.length) {
             colsTemplate = boardCols.map(function(column, index) {
-                return (<Column key={index} boardid={boardId} columnid={index} updateAction={updateAction} />);
+                return (<Column key={index}
+                                boardid={boardId}
+                                columnid={index}
+                                updateAction={updateAction}
+                                selectedTicket={selectedTicket} />);
             });
         }
 
