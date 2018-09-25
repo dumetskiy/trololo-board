@@ -29,11 +29,3 @@ export function stepBackward() {
         setBoardData(historyData.boardId, historyData.history[historyData.historyStep]);
     }
 }
-
-export function hasStepForward() {
-    return !(historyData.history.length - 1 === historyData.historyStep);
-}
-
-export function hasStepBackward() {
-    return historyData.historyStep > 0;
-}

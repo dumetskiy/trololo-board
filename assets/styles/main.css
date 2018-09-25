@@ -574,6 +574,30 @@ body {
                 box-shadow: 0 0 10px rgba(0, 0, 0, 0.75); }
                 body .content .board .board-col .col-items-holder .col-items-wrap .col-item.special-item:hover {
                   background-color: rgba(0, 0, 0, 0.6); }
+              body .content .board .board-col .col-items-holder .col-items-wrap .col-item.red {
+                background-color: rgba(255, 0, 0, 0.4); }
+                body .content .board .board-col .col-items-holder .col-items-wrap .col-item.red:hover, body .content .board .board-col .col-items-holder .col-items-wrap .col-item.red.current {
+                  background-color: rgba(255, 0, 0, 0.6); }
+              body .content .board .board-col .col-items-holder .col-items-wrap .col-item.green {
+                background-color: rgba(0, 255, 0, 0.4); }
+                body .content .board .board-col .col-items-holder .col-items-wrap .col-item.green:hover, body .content .board .board-col .col-items-holder .col-items-wrap .col-item.green.current {
+                  background-color: rgba(0, 255, 0, 0.6); }
+              body .content .board .board-col .col-items-holder .col-items-wrap .col-item.blue {
+                background-color: rgba(0, 0, 255, 0.4); }
+                body .content .board .board-col .col-items-holder .col-items-wrap .col-item.blue:hover, body .content .board .board-col .col-items-holder .col-items-wrap .col-item.blue.current {
+                  background-color: rgba(0, 0, 255, 0.6); }
+              body .content .board .board-col .col-items-holder .col-items-wrap .col-item.purple {
+                background-color: rgba(169, 0, 255, 0.4); }
+                body .content .board .board-col .col-items-holder .col-items-wrap .col-item.purple:hover, body .content .board .board-col .col-items-holder .col-items-wrap .col-item.purple.current {
+                  background-color: rgba(190, 0, 255, 0.6); }
+              body .content .board .board-col .col-items-holder .col-items-wrap .col-item.yellow {
+                background-color: rgba(255, 246, 0, 0.4); }
+                body .content .board .board-col .col-items-holder .col-items-wrap .col-item.yellow:hover, body .content .board .board-col .col-items-holder .col-items-wrap .col-item.yellow.current {
+                  background-color: rgba(255, 246, 0, 0.6); }
+              body .content .board .board-col .col-items-holder .col-items-wrap .col-item.orange {
+                background-color: rgba(255, 142, 0, 0.4); }
+                body .content .board .board-col .col-items-holder .col-items-wrap .col-item.orange:hover, body .content .board .board-col .col-items-holder .col-items-wrap .col-item.orange.current {
+                  background-color: rgba(255, 117, 0, 0.6); }
               body .content .board .board-col .col-items-holder .col-items-wrap .col-item:hover, body .content .board .board-col .col-items-holder .col-items-wrap .col-item.current {
                 background-color: rgba(0, 0, 0, 0.2); }
                 body .content .board .board-col .col-items-holder .col-items-wrap .col-item:hover .item-header > .item-tools, body .content .board .board-col .col-items-holder .col-items-wrap .col-item.current .item-header > .item-tools {

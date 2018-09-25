@@ -5,6 +5,40 @@ import Board from '../components/Board';
 
 const LS_VAR_NAME = 'trololo-data';
 const AUTO_COLUMN_NAME = 'New Tasks'
+const COLORS_DATA = [
+    {
+        handle: 'none',
+        title: 'No color',
+    },
+    {
+        handle: 'red',
+        title: 'Red',
+    },
+    {
+        handle: 'green',
+        title: 'Green',
+    },
+    {
+        handle: 'blue',
+        title: 'Blue',
+    },
+    {
+        handle: 'purple',
+        title: 'Purple',
+    },
+    {
+        handle: 'yellow',
+        title: 'Yellow',
+    },
+    {
+        handle: 'orange',
+        title: 'Orange',
+    },
+];
+
+export function getColorsData() {
+    return COLORS_DATA;
+}
 
 export function get()
 {
@@ -137,12 +171,13 @@ export function getTicketForBoardColumn(boardId, columnId, ticketId) {
     return get().boards[boardId].cols[columnId].tickets[ticketId];
 }
 
-export function addTicketToBoardColumn(boardId, columnId, ticketTitle, ticketDescription) {
+export function addTicketToBoardColumn(boardId, columnId, ticketTitle, ticketDescription, ticketColor) {
     var boardsData = get();
 
     boardsData.boards[boardId].cols[columnId].tickets[Object.keys(boardsData.boards[boardId].cols[columnId].tickets).length] = {
         title: ticketTitle,
         description: ticketDescription,
+        color: ticketColor,
     };
     set(boardsData);
     addHistoryStep(boardsData.boards[boardId]);
@@ -177,15 +212,88 @@ export function removeBoardColumnTicket(boardId, columnId, ticketId) {
     addHistoryStep(boardsData.boards[boardId]);
 }
 
-export function updateBoardColumnTicketData(boardId, columnId, ticketId, newTitle, newDescription) {
+export function updateBoardColumnTicketData(boardId, columnId, ticketId, newTitle, newDescription, newColor) {
     var boardsData = get();
 
     boardsData.boards[boardId].cols[columnId].tickets[ticketId] = {
         title: newTitle,
         description: newDescription,
+        color: newColor,
     };
     set(boardsData);
     addHistoryStep(boardsData.boards[boardId]);
+}
+
+export function moveLeft(boardId, columnId, ticketId) {
+    if (columnId > 0) {
+        var boardsData = get(),
+            ticketData = boardsData.boards[boardId].cols[columnId].tickets[ticketId],
+            newColumn = boardsData.boards[boardId].cols[columnId - 1],
+            newTicketId = newColumn.tickets.length - 1 > ticketId ? ticketId : newColumn.tickets.length - 1;
+
+        delete boardsData.boards[boardId].cols[columnId].tickets[ticketId];
+        boardsData.boards[boardId].cols[columnId].tickets = boardsData.boards[boardId].cols[columnId].tickets.filter(function(e){return e});
+        boardsData.boards[boardId].cols[columnId - 1].tickets.splice(newTicketId, 0, ticketData);
+        set(boardsData);
+        addHistoryStep(boardsData.boards[boardId]);
+        updateCurrentState(boardId, columnId - 1, newTicketId);
+    }
+}
+
+export function moveRight(boardId, columnId, ticketId) {
+    var boardsData = get();
+
+    if (columnId + 1 < boardsData.boards[boardId].cols.length) {
+        var ticketData = boardsData.boards[boardId].cols[columnId].tickets[ticketId],
+            newColumn = boardsData.boards[boardId].cols[columnId + 1],
+            newTicketId = newColumn.tickets.length > ticketId ? ticketId : newColumn.tickets.length;
+
+        delete boardsData.boards[boardId].cols[columnId].tickets[ticketId];
+        boardsData.boards[boardId].cols[columnId].tickets = boardsData.boards[boardId].cols[columnId].tickets.filter(function(e){return e});
+        boardsData.boards[boardId].cols[columnId + 1].tickets.splice(newTicketId, 0, ticketData);
+        set(boardsData);
+        addHistoryStep(boardsData.boards[boardId]);
+        updateCurrentState(boardId, columnId + 1, newTicketId);
+    }
+}
+
+export function moveUp(boardId, columnId, ticketId) {
+    var boardsData = get();
+    
+    if (ticketId > 0) {
+        var ticketData = boardsData.boards[boardId].cols[columnId].tickets[ticketId],
+            secondTicketData = boardsData.boards[boardId].cols[columnId].tickets[ticketId - 1];
+
+        boardsData.boards[boardId].cols[columnId].tickets[ticketId] = secondTicketData,
+        boardsData.boards[boardId].cols[columnId].tickets[ticketId - 1] = ticketData;
+        set(boardsData);
+        addHistoryStep(boardsData.boards[boardId]);
+        updateCurrentState(boardId, columnId, ticketId - 1);
+    }
+}
+
+export function moveDown(boardId, columnId, ticketId) {
+    var boardsData = get();
+    
+    if (ticketId + 1 < boardsData.boards[boardId].cols[columnId].tickets.length) {
+        var ticketData = boardsData.boards[boardId].cols[columnId].tickets[ticketId],
+            secondTicketData = boardsData.boards[boardId].cols[columnId].tickets[ticketId + 1];
+
+        boardsData.boards[boardId].cols[columnId].tickets[ticketId] = secondTicketData,
+        boardsData.boards[boardId].cols[columnId].tickets[ticketId + 1] = ticketData;
+        set(boardsData);
+        addHistoryStep(boardsData.boards[boardId]);
+        updateCurrentState(boardId, columnId, ticketId + 1);
+    }
+}
+
+function updateCurrentState(boardId, columnid, ticketid) {
+    var selectedTicket = {
+        column: columnid,
+        ticket: ticketid,
+    };
+
+    ReactDOM.render(<Board boardid={boardId} selectedTicket={selectedTicket}/>, document.getElementById("content"));
 }
 
 function initBoardsData() {

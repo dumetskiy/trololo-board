@@ -1,7 +1,17 @@
 import React, {Component} from 'react'
 import ReactDOM from 'react-dom';
 import Board from './Board';
-import {getTicketForBoardColumn, removeBoardColumnTicket, updateBoardColumnTicketData, isValidTicketTitle, isValidTicketDescription} from '../helpers/LocalStorageHelper';
+import {getTicketForBoardColumn,
+        removeBoardColumnTicket,
+        pdateBoardColumnTicketData,
+        isValidTicketTitle,
+        isValidTicketDescription,
+        updateBoardColumnTicketData,
+        getColorsData,
+        moveLeft,
+        moveRight,
+        moveUp,
+        moveDown} from '../helpers/LocalStorageHelper';
 
 export default class Ticket extends Component {
     constructor() {
@@ -16,28 +26,46 @@ export default class Ticket extends Component {
         this.handleKeyPress = this.handleKeyPress.bind(this);
         this.isSelectedTicket = this.isSelectedTicket.bind(this);
         this.makeSelectedTicket = this.makeSelectedTicket.bind(this);
+        this.getTicketColorSelect = this.getTicketColorSelect.bind(this);
     }
 
-    componentWillMount() {
-        document.addEventListener("keyDown", this.handleKeyPress, false);
-    };
+    getTicketColorSelect(ticket) {
+        var ticketColor = ticket ? ticket.color : 'none',
+            selectOptions = [];
+
+        getColorsData().forEach(function(color, index, arr) {
+            selectOptions.push(<option key={index} value={color.handle}>{color.title}</option>);
+        });
+
+        return (
+            <select ref={this.newTicketColorSelect} defaultValue={ticketColor} className="flex-input-small">
+                {selectOptions}
+            </select>
+        );
+    }
 
     render() {
         var ticketData = getTicketForBoardColumn(this.props.boardid, this.props.columnid, this.props.ticketid),
-            itemContent = '';
+            itemContent = '',
+            isSelectedTicket = this.isSelectedTicket();
 
         this.ticketTitleInput = React.createRef();
         this.ticketDescriptionInput = React.createRef();
-        document.onkeydown = this.handleKeyPress;
+        this.newTicketColorSelect = React.createRef();
+
+        if (isSelectedTicket) {
+            document.onkeydown = this.handleKeyPress;
+        }
 
         if (this.state.ticketEditing) {
             return (
-                <div className={this.isSelectedTicket() ? 'col-item current' : 'col-item'} onClick={this.makeSelectedTicket}>
+                <div className={isSelectedTicket ? 'col-item current ' + ticketData.color : 'col-item ' + ticketData.color} onClick={this.makeSelectedTicket}>
                     <input type="text"
                            ref={this.ticketTitleInput}
                            defaultValue={ticketData.title}
                            className="flex-input-small flex-full-row"
                            placeholder="Ticket title..."/>
+                   {this.getTicketColorSelect(ticketData)}
                     <textarea
                         ref={this.ticketDescriptionInput}
                         placeholder="Ticket description..."
@@ -51,7 +79,7 @@ export default class Ticket extends Component {
         }
 
         return (
-            <div className={this.isSelectedTicket() ? 'col-item current' : 'col-item'} onClick={this.makeSelectedTicket}>
+            <div className={isSelectedTicket ? 'col-item current ' + ticketData.color : 'col-item ' + ticketData.color} onClick={this.makeSelectedTicket}>
                 <div className="col-item-wrap">
                     <div className="item-header">
                         <div className="item-title">{ticketData.title}</div>
@@ -92,7 +120,8 @@ export default class Ticket extends Component {
         var newTicketTitle = this.ticketTitleInput.current.value,
             oldTicketTitle = this.ticketTitleInput.current.defaultValue,
             newTicketDescription = this.ticketDescriptionInput.current.value,
-            oldTicketDescription = this.ticketDescriptionInput.current.defaultValue;
+            oldTicketDescription = this.ticketDescriptionInput.current.defaultValue,
+            newTicketColor = this.newTicketColorSelect.current.value;
 
         if (
             (newTicketTitle === oldTicketTitle || isValidTicketTitle(newTicketTitle)) &&
@@ -103,7 +132,8 @@ export default class Ticket extends Component {
                 this.props.columnid,
                 this.props.ticketid,
                 newTicketTitle,
-                newTicketDescription
+                newTicketDescription,
+                newTicketColor
             );
             this.setState({ticketEditing: false});
         }
@@ -120,16 +150,18 @@ export default class Ticket extends Component {
 
     handleKeyPress(e) {
         if (e.keyCode === 38) {
-            alert('u');
+            moveUp(this.props.boardid, this.props.columnid, this.props.ticketid);
         }
         else if (e.keyCode === 40) {
-            alert('d');
+            moveDown(this.props.boardid, this.props.columnid, this.props.ticketid);
         }
         else if (e.keyCode === 37) {
-            alert('l');
+            moveLeft(this.props.boardid, this.props.columnid, this.props.ticketid);
         }
         else if (e.keyCode === 39) {
-            alert('r');
+            moveRight(this.props.boardid, this.props.columnid, this.props.ticketid);
         }
+
+        //this.makeSelectedTicket();
     }
 }

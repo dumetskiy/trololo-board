@@ -196,6 +196,65 @@ body {
                                 }
                             }
 
+                            &.red {
+                                background-color: $color-ticketColorRed;
+
+                                &:hover,
+                                &.current
+                                {
+                                    background-color: $color-ticketColorRedActive;
+                                }
+                            }
+
+                            &.green {
+                                background-color: $color-ticketColorGreen;
+                                &:hover,
+                                &.current
+                                {
+                                    background-color: $color-ticketColorGreenActive;
+                                }
+                            }
+
+                            &.blue {
+                                background-color: $color-ticketColorBlue;
+
+                                &:hover,
+                                &.current
+                                {
+                                    background-color: $color-ticketColorBlueActive;
+                                }
+                            }
+
+                            &.purple {
+                                background-color: $color-ticketColorPurple;
+
+                                &:hover,
+                                &.current
+                                {
+                                    background-color: $color-ticketColorPurpleActive;
+                                }
+                            }
+
+                            &.yellow {
+                                background-color: $color-ticketColorYellow;
+
+                                &:hover,
+                                &.current
+                                {
+                                    background-color: $color-ticketColorYellowActive;
+                                }
+                            }
+
+                            &.orange {
+                                background-color: $color-ticketColorOrange;
+
+                                &:hover,
+                                &.current
+                                {
+                                    background-color: $color-ticketColorOrangeActive;
+                                }
+                            }
+
                             &:hover,
                             &.current
                             {

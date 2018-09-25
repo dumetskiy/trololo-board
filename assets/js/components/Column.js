@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import Board from "./Board";
-import Ticket from "./Ticket";
-import {getColumnForBoard} from '../helpers/LocalStorageHelper';
+import Ticket, {getTicketColorSelect} from "./Ticket";
+import {getColumnForBoard, getColorsData} from '../helpers/LocalStorageHelper';
 
 import {
     removeBoardColumn,
@@ -29,12 +29,29 @@ export default class Column extends Component {
         this.createNewTicket = this.createNewTicket.bind(this);
         this.update = this.update.bind(this);
         this.isSelectedColumn = this.isSelectedColumn.bind(this);
+        this.getTicketColorSelect = this.getTicketColorSelect.bind(this);
+    }
+
+    getTicketColorSelect(ticket) {
+        var ticketColor = ticket ? ticket.color : 'none',
+            selectOptions = [];
+
+        getColorsData().forEach(function(color, index, arr) {
+            selectOptions.push(<option key={index} value={color.handle} >{color.title}</option>);
+        });
+
+        return (
+            <select ref={this.newTicketColorSelect} defaultValue={ticketColor} className="flex-input-small">
+            {selectOptions}
+            </select>
+        );
     }
 
     render() {
         this.columnNameInput = React.createRef();
         this.newTicketTitleInput = React.createRef();
         this.newTicketDescriptionInput = React.createRef();
+        this.newTicketColorSelect = React.createRef();
 
         var columnId = this.props.columnid,
             boardId = this.props.boardid,
@@ -85,6 +102,7 @@ export default class Column extends Component {
                            ref={this.newTicketTitleInput}
                            className="flex-input-small flex-full-row"
                            placeholder="Ticket title..."/>
+                   {this.getTicketColorSelect(null)}
                     <textarea
                         ref={this.newTicketDescriptionInput}
                         placeholder="Ticket description..."
@@ -171,7 +189,8 @@ export default class Column extends Component {
                 this.props.boardid,
                 this.props.columnid,
                 this.newTicketTitleInput.current.value,
-                this.newTicketDescriptionInput.current.value
+                this.newTicketDescriptionInput.current.value,
+                this.newTicketColorSelect.current.value
             );
             this.setState({colEditing: false, colAddTicket: false});
             this.props.updateAction();
