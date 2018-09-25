@@ -21,6 +21,7 @@ export default class Board extends Component {
     }
 
     render() {
+
         var boardId = this.props.boardid,
             selectedTicket = this.props.selectedTicket,
             boardData = getBoardById(boardId),

@@ -124,6 +124,10 @@ body {
                 &.current
                 {
                     background-color: $color-boardBackgroundHover;
+
+                    .col-header > .column-tools {
+                        opacity: 1;
+                    }
                 }
 
                 .board-col-content {
@@ -146,6 +150,8 @@ body {
                         @include flex(1, center, flex-end, center, row nowrap);
                         height: 24px;
                         padding-right: 10px;
+                        transition: $time-defaultTransition;
+                        opacity: 0;
                     }
                 }
 
@@ -194,6 +200,10 @@ body {
                             &.current
                             {
                                 background-color: $color-lightTransparentBalck;
+
+                                .item-header > .item-tools {
+                                    opacity: 1;
+                                }
                             }
 
                             .item-header {
@@ -214,6 +224,8 @@ body {
 
                                 .item-tools {
                                     @include flex(0 0 80px, center, flex-end, auto, row nowrap);
+                                    opacity: 0;
+                                    transition: $time-defaultTransition;
                                     height: 24px;
                                 }
                             }

@@ -16,6 +16,10 @@ h2 {
     color: $color-primaryWhite;
 }
 
+.menu-buttons-wrap {
+    @include flex();
+}
+
 .menu-button {
     @include form-element(auto, auto, $color-mainMenuButton, $color-mainMenuButtonBorder);
     @include flex(0 0 100px, center, center, center);
@@ -27,6 +31,18 @@ h2 {
     font-weight: bold;
     text-transform: uppercase;
     transition: $time-defaultTransition;
+
+    &:first-child {
+        margin-right: 20px;
+    }
+
+    &.forward {
+        @include background('forward.svg');
+    }
+
+    &.backward {
+        @include background('backward.svg');
+    }
 
     &:hover {
         color: $color-primaryBlack;

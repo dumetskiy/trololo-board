@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import {getBoardById, removeBoardById, isValidBoardName, setNameForBoardById} from '../helpers/LocalStorageHelper';
+import {startBoardHistory} from '../helpers/HistoryHelper';
 import Board from './Board';
+import HistorySwitcher from './HistorySwitcher';
 
 export default class BoardListItem extends Component {
     constructor() {
@@ -64,6 +66,8 @@ export default class BoardListItem extends Component {
     }
 
     openBoard() {
+        startBoardHistory(this.props.boardid, getBoardById(this.props.boardid));
         ReactDOM.render(<Board boardid={this.props.boardid}/>, document.getElementById("content"));
+        ReactDOM.render(<HistorySwitcher />, document.getElementById("history-block"));
     }
 }

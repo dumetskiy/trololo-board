@@ -1,4 +1,10 @@
+import {addHistoryStep} from './HistoryHelper'
+import ReactDOM from "react-dom";
+import React from "react";
+import Board from '../components/Board';
+
 const LS_VAR_NAME = 'trololo-data';
+const AUTO_COLUMN_NAME = 'New Tasks'
 
 export function get()
 {
@@ -32,11 +38,24 @@ export function createBoard(title)
     var boardsData = get(),
         board = {
         title: title,
-        cols: [],
+        cols: [
+            {
+                title: AUTO_COLUMN_NAME,
+                tickets: [],
+            }
+        ],
     };
 
     boardsData.boards[Object.keys(boardsData.boards).length] = board;
     set(boardsData);
+}
+
+export function setBoardData(boardId, boardData) {
+    var boardsData = get();
+
+    boardsData.boards[boardId] = boardData;
+    set(boardsData);
+    ReactDOM.render(<Board boardid={boardId}/>, document.getElementById("content"));
 }
 
 export function setNameForBoardById(boardId, name) {
@@ -69,7 +88,6 @@ export function isValidColumnName(boardId, columnName) {
 
     if (columnName.length) {
         get().boards[boardId].cols.forEach(function(column, index, arr) {
-            console.log(column);
             if (column.title.toLowerCase() === columnName.toLowerCase()) {
                 isValidBoardName = false;
                 alert('Column with the same name already exists!');
@@ -91,6 +109,7 @@ export function addColumnToBoard(boardId, columnName) {
         tickets: [],
     };
     set(boardsData);
+    addHistoryStep(boardsData.boards[boardId]);
 }
 
 export function getColumnForBoard(boardId, columnId) {
@@ -102,6 +121,7 @@ export function updateBoardColumnName(boardId, columnId, newTitle) {
 
     boardsData.boards[boardId].cols[columnId].title = newTitle;
     set(boardsData);
+    addHistoryStep(boardsData.boards[boardId]);
 }
 
 export function removeBoardColumn(boardId, columnId) {
@@ -110,6 +130,7 @@ export function removeBoardColumn(boardId, columnId) {
     delete boardsData.boards[boardId].cols[columnId];
     boardsData.boards[boardId].cols = boardsData.boards[boardId].cols.filter(function(e){return e});
     set(boardsData);
+    addHistoryStep(boardsData.boards[boardId]);
 }
 
 export function getTicketForBoardColumn(boardId, columnId, ticketId) {
@@ -124,6 +145,7 @@ export function addTicketToBoardColumn(boardId, columnId, ticketTitle, ticketDes
         description: ticketDescription,
     };
     set(boardsData);
+    addHistoryStep(boardsData.boards[boardId]);
 }
 
 export function isValidTicketTitle(ticketTitle) {
@@ -152,6 +174,7 @@ export function removeBoardColumnTicket(boardId, columnId, ticketId) {
     delete boardsData.boards[boardId].cols[columnId].tickets[ticketId];
     boardsData.boards[boardId].cols[columnId].tickets = boardsData.boards[boardId].cols[columnId].tickets.filter(function(e){return e});
     set(boardsData);
+    addHistoryStep(boardsData.boards[boardId]);
 }
 
 export function updateBoardColumnTicketData(boardId, columnId, ticketId, newTitle, newDescription) {
@@ -162,6 +185,7 @@ export function updateBoardColumnTicketData(boardId, columnId, ticketId, newTitl
         description: newDescription,
     };
     set(boardsData);
+    addHistoryStep(boardsData.boards[boardId]);
 }
 
 function initBoardsData() {
