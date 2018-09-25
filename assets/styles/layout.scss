@@ -1,199 +1,294 @@
 body {
-  @include font-varela();
-  padding: 0;
-  margin: 0;
-  background-color: $color-defaultBackground;
-  cursor: default;
-  height: 100vh;
-
-  .main-menu {
-    position: absolute;
-    @include flex();
-    width: 100vw;
-    height: $size-mainMenuHeight;
-    background-color: $color-mainMenuBackground;
-    transition: $time-defaultTransition;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.34);
-
-    .menu-section {
-      @include flex();
-      height: 100%;
-      padding: 0 20px;
-
-      &.side-section {
-        @include flex(0 0 $size-mainMenuSideElementWidth);
-      }
-
-      .heading {
-        @include flex(1, center, center, center);
-      }
-    }
-
-    &:hover {
-      @include big-box-shadow();
-      background-color: $color-mainMenuBackgroundHover;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.44);
-      height: $size-mainMenuHeightHover;
-    }
-  }
-
-  .content {
-    @include flex(1, center, center, auto, row nowrap);
+    @include font-varela();
+    padding: 0;
+    margin: 0;
+    background-color: $color-defaultBackground;
+    cursor: default;
     height: 100vh;
 
-    .message-bar {
-      @include flex(0 0 $size-messageBarWidth, center, center, center, row wrap);
+    .main-menu {
+        position: absolute;
+        @include flex();
+        width: 100vw;
+        height: $size-mainMenuHeight;
+        background-color: $color-mainMenuBackground;
+        transition: $time-defaultTransition;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.34);
 
-      .boards-list {
-        @include flex(1, flex-start, flex-start, flex-start, row wrap);
-        margin: 5px 15px;
-        max-height: 185px;
-        min-height: 123px;
-        overflow-y: auto;
-        border: 1px solid $color-lightTransparentBalck;
-        color: $color-primaryWhite;
+        .menu-section {
+            @include flex();
+            height: 100%;
+            padding: 0 20px;
 
-        .list-item {
-          @include font-varela();
-          width: 100%;
-          height: 30px;
-          line-height: 30px;
-          font-size: $fontSize-small;
-          padding-left: 15px;
-          border-bottom: 1px solid $color-lightTransparentBalck;
-
-          &:hover {
-            background-color: $color-lightTransparentBalck;
-          }
-
-          .tool-button {
-            position: relative;
-            float: right;
-            border: none;
-            height: 30px;
-            width: 30px;
-            line-height: 30px;
-            text-align: center;
-            font-weight: 600;
-            background-color: $color-veryLightTransparentBalck;
-            top: 0;
-            right: 0;
-            transition: $time-defaultFastTransition;
-            cursor: pointer;
-
-            &:hover {
-              background-color: $color-lightTransparentBalck;
+            &.side-section {
+                @include flex(0 0 $size-mainMenuSideElementWidth);
             }
 
-            &.remove {
-              @include background('remove-white.svg');
+            .heading {
+                @include flex(1, center, center, center);
             }
-
-            &.edit {
-              @include background('edit-white.svg');
-            }
-
-            &.save {
-              @include background('save-white.svg');
-            }
-
-            &:last-child {
-              border-right: 1px solid $color-lightTransparentBalck;
-            }
-          }
         }
-      }
-    }
-
-    .board {
-      margin-top: $size-mainMenuHeight;
-      @include flex(100%, flex-start, flex-start, auto, row nowrap);
-      padding: 10px;
-      overflow-x: auto;
-
-      .board-col {
-        @include flex(1, flex-start, flex-start, auto, row nowrap);
-        margin: 0 10px;
-        padding: 5px;
-        background-color: $color-boardBackground;
-        min-width: $size-boardColumnMinWidth;
-        max-width: $size-boardColumnMaxWidth;
-        transition: .5s;
 
         &:hover {
-          background-color: $color-boardBackgroundHover;
+            @include big-box-shadow();
+            background-color: $color-mainMenuBackgroundHover;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.44);
+            height: $size-mainMenuHeightHover;
         }
-
-        .board-col-content {
-          @include flex(0 0 100%, flex-start, flex-start, auto, column nowrap);
-        }
-
-        .col-header {
-          @include flex(0 0 $size-boardColumnHeaderHeight, center, center, auto, row nowrap);
-          width: calc(100% + 10px);
-          margin: -5px;
-          background-color: $color-lightTransparentBalck;
-          color: $color-primaryWhite;
-          line-height: $size-boardColumnHeaderHeight;
-          @include font-pacifico();
-          font-size: 26px;
-
-        }
-
-        .col-items-holder {
-          @include flex(1, center, center, auto, row nowrap);
-          width: 100%;
-          padding: 10px 0 5px;
-
-          .col-items-wrap {
-            @include flex(1, flex-start, flex-start, auto, column nowrap);
-            padding: 0 5px;
-
-            .col-item {
-              @include font-varela();
-              @include flex(0 0 1, flex-start, flex-start, auto, row wrap);
-              min-height: 100px;
-              background-color: $color-veryLightTransparentBalck;
-              margin: 0 0 5px;
-              padding: 5px;
-
-              &:hover {
-                background-color: $color-lightTransparentBalck;
-              }
-
-              .item-header {
-                @include flex(0 0 100%, flex-start, flex-start, auto, row nowrap);
-                height: 24px;
-                border-bottom: 1px solid $color-lightTransparentBalck;
-
-                .item-title {
-                  @include flex(1, flex-start, flex-start, auto, row nowrap);
-                  text-transform: uppercase;
-                  line-height: 26px;
-                  color: white;
-                  font-size: 17px;
-                  margin-left: 10px;
-                  height: 24px;
-                  @include text-truncate();
-                }
-
-                .item-tools {
-                  @include flex(0 0 80px, center, flex-end, auto, row nowrap);
-                  height: 24px;
-
-                  .tool-item {
-                    display: inline-block;
-                    @include flex(0 0 20px, flex-end, center, auto, row nowrap);
-                    height: 20px;
-                    background-color: $color-veryLightTransparentBalck;
-                    margin: 0 3px;
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
     }
-  }
+
+    .content {
+        @include flex(1, center, center, auto, row nowrap);
+        height: 100vh;
+
+        .message-bar {
+            @include flex(0 0 $size-messageBarWidth, center, center, center, row wrap);
+
+            .boards-list {
+                @include flex(1, flex-start, flex-start, flex-start, row wrap);
+                margin: 5px 6px;
+                max-height: 185px;
+                min-height: 123px;
+                overflow-y: auto;
+                border: 1px solid $color-lightTransparentBalck;
+                color: $color-primaryWhite;
+
+                .list-item {
+                    @include font-varela();
+                    width: 100%;
+                    height: 30px;
+                    line-height: 30px;
+                    font-size: $fontSize-small;
+                    padding-left: 15px;
+                    border-bottom: 1px solid $color-lightTransparentBalck;
+
+                    &:hover {
+                        background-color: $color-lightTransparentBalck;
+                    }
+
+                    .tool-button {
+                        position: relative;
+                        float: right;
+                        border: none;
+                        height: 30px;
+                        width: 30px;
+                        line-height: 30px;
+                        text-align: center;
+                        font-weight: 600;
+                        background-color: $color-veryLightTransparentBalck;
+                        top: 0;
+                        right: 0;
+                        transition: $time-defaultFastTransition;
+                        cursor: pointer;
+
+                        &:hover {
+                            background-color: $color-lightTransparentBalck;
+                        }
+
+                        &.remove {
+                            @include background('remove-white.svg');
+                        }
+
+                        &.edit {
+                            @include background('edit-white.svg');
+                        }
+
+                        &.save {
+                            @include background('save-white.svg');
+                        }
+
+                        &:last-child {
+                            border-right: 1px solid $color-lightTransparentBalck;
+                        }
+                    }
+                }
+            }
+        }
+
+        .board {
+            margin-top: $size-mainMenuHeight;
+            @include flex(100%, flex-start, flex-start, auto, row nowrap);
+            padding: 10px;
+            overflow-x: auto;
+
+            .board-col {
+                @include flex(1, flex-start, flex-start, auto, row nowrap);
+                margin: 0 10px;
+                padding: 5px;
+                background-color: $color-boardBackground;
+                min-width: $size-boardColumnMinWidth;
+                max-width: $size-boardColumnMaxWidth;
+                transition: .5s;
+
+                &:hover {
+                    background-color: $color-boardBackgroundHover;
+                }
+
+                .board-col-content {
+                    @include flex(0 0 100%, flex-start, flex-start, auto, column nowrap);
+                }
+
+                .col-header {
+                    @include flex(0 0 $size-boardColumnHeaderHeight, center, center, auto, row nowrap);
+                    width: calc(100% - 5px);
+                    margin: -5px;
+                    padding-left: 15px;
+                    background-color: $color-lightTransparentBalck;
+                    color: $color-primaryWhite;
+                    line-height: $size-boardColumnHeaderHeight;
+                    @include font-pacifico();
+                    @include text-truncate();
+                    font-size: 26px;
+
+                    .column-tools {
+                        @include flex(1, center, flex-end, center, row nowrap);
+                        height: 24px;
+                        padding-right: 10px;
+                    }
+                }
+
+                .col-items-holder {
+                    @include flex(1, center, center, auto, row nowrap);
+                    width: 100%;
+                    padding: 10px 0 5px;
+
+                    .col-items-wrap {
+                        @include flex(1, flex-start, flex-start, auto, column nowrap);
+                        padding: 0 5px;
+                        overflow-y: scroll;
+
+                        &::-webkit-scrollbar {
+                            display: none;
+                        }
+
+                        .col-item {
+                            @include font-varela();
+                            @include flex(0 0 1, flex-start, flex-start, auto, row wrap);
+                            min-height: 100px;
+                            background-color: $color-veryLightTransparentBalck;
+                            margin: 0 0 5px;
+                            padding: 5px;
+
+                            &.special-item {
+                                background-color: $color-boardSpecialElementBackground;
+                                min-height: 140px;
+                                @include small-box-shadow($color-defaultShadowHover);
+
+                                &:hover {
+                                    background-color: $color-boardSpecialElementBackgroundHover;
+                                }
+                            }
+
+                            &:hover {
+                                background-color: $color-lightTransparentBalck;
+                            }
+
+                            .item-header {
+                                @include flex(0 0 100%, flex-start, flex-start, auto, row nowrap);
+                                height: 24px;
+                                border-bottom: 1px solid $color-lightTransparentBalck;
+
+                                .item-title {
+                                    @include flex(1, flex-start, flex-start, auto, row nowrap);
+                                    text-transform: uppercase;
+                                    line-height: 26px;
+                                    color: white;
+                                    font-size: 17px;
+                                    margin-left: 10px;
+                                    height: 24px;
+                                    @include text-truncate();
+                                }
+
+                                .item-tools {
+                                    @include flex(0 0 80px, center, flex-end, auto, row nowrap);
+                                    height: 24px;
+                                }
+                            }
+
+                            .item-description {
+                                margin-top: 5px;
+                                max-height: 65px;
+                                height: 65px;
+                                line-height: 16px;
+                                color: white;
+                                font-size: $fontSize-small;
+                                margin-left: 10px;
+                                max-width: 90%;
+                                overflow-y: hidden;
+                            }
+                        }
+                    }
+                }
+            }
+
+            .tool-item {
+                @include flex(0 0 20px, flex-end, center, auto, row nowrap);
+                border: none;
+                height: 20px;
+                background-color: $color-veryLightTransparentBalck;
+                margin: 0 3px;
+                transition: $time-defaultFastTransition;
+                cursor: pointer;
+
+                &.remove {
+                    @include background('remove-xs-white.svg');
+                }
+
+                &.edit {
+                    @include background('edit-xs-white.svg');
+                }
+
+                &.add {
+                    @include background('add-xs-white.svg');
+                }
+
+                &.delete {
+                    @include background('delete-xs-white.svg');
+                }
+
+                &:hover {
+                    background-color: $color-lightTransparentBalck;
+                }
+            }
+
+            .add-board-button {
+                border-radius: 3px;
+                width: 30px;
+                opacity: .5;
+                height: 30px;
+                background-color: $color-boardSpecialElementBackground;
+                border: 1px solid $color-boardAddButtonBorder;
+                transition: $time-defaultFastTransition;
+                @include flex(0 0 30px, flex-start, flex-start, auto, row nowrap);
+                @include background('add-white.svg');
+
+                &:hover {
+                    border: 1px solid $color-primaryBlack;
+                    opacity: 1;
+                    @include small-box-shadow($color-primaryBlack);
+                }
+            }
+
+            .add-column-from {
+                background-color: $color-boardAddColumnFormBackground;
+                height: 60px;
+                padding: 0 10px;
+                @include flex(0 0 300px, flex-start, flex-start, auto, row nowrap);
+
+                .flex-button-small {
+                    height: 28px;
+                }
+
+                .add-button {
+                    padding: 0 18px;
+                    @include background('add-white.svg');
+                }
+
+                .cancel-button {
+                    padding: 0 10px;
+                    @include background('cancel-white.svg');
+                }
+            }
+        }
+    }
 }
