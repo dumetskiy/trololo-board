@@ -1,10 +1,16 @@
-import React, {Component} from 'react';
+import * as React from 'react';
 import BoardListItem from './BoardListItem';
 import {createBoard, get, isValidBoardName} from '../helpers/LocalStorageHelper';
+import {TicketType, ColumnType, BoardType, SelectedTicketDataType} from '../helpers/TypesHelper';
+import {RefObject} from "react";
 
-export default class BoardsList extends Component {
-    constructor() {
-        super();
+export default class BoardsList extends React.PureComponent {
+    private boardNameInput: RefObject<HTMLInputElement>;
+    private addBoardButton: RefObject<HTMLButtonElement>;
+    state: any;
+
+    constructor(props: any, state: any) {
+        super(props, state);
 
         this.state = {
             boards: get(),
@@ -14,17 +20,14 @@ export default class BoardsList extends Component {
         this.update = this.update.bind(this);
     }
 
-    update() {
-        this.setState({boards: get()});
-    }
-
     render() {
-        var boards = this.state.boards.boards;
+        let boards: BoardType[] = this.state.boards.boards;
 
         if (this.state.visible) {
-            var updateAction = this.update;
+            let updateAction: Function = this.update;
+
             if (boards.length) {
-                var boardsTemplate = boards.map(function(item, index) {
+                let boardsTemplate: JSX.Element[] = boards.map(function(item: BoardType, index: number) {
                     if (item) {
                         return (<BoardListItem boardId={index} key={index} updateAction={updateAction}/>);
                     }
@@ -61,8 +64,12 @@ export default class BoardsList extends Component {
         return ('');
     }
 
+    update() {
+        this.setState({boards: get()});
+    }
+
     addBoard() {
-        var boardNameInput = this.boardNameInput.current,
+        let boardNameInput = this.boardNameInput.current,
             boardName = boardNameInput.value;
 
         if (isValidBoardName(boardName)) {

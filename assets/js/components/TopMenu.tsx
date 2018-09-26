@@ -1,11 +1,14 @@
-import React, {Component} from 'react'
-import ReactDOM from 'react-dom';
-//import BoardsList from './BoardsList'
+import * as React from 'react'
+import * as ReactDOM from 'react-dom';
+import BoardsList from './BoardsList'
 import {stepForward, stepBackward} from '../helpers/HistoryHelper';
 
-export default class TopMenu extends Component {
-    constructor() {
-        super();
+export default class TopMenu extends React.PureComponent {
+    state: any;
+
+    constructor(props: any, state: any) {
+        super(props, state);
+
         this.state = {
             settingsOpened: false,
         };
@@ -47,7 +50,7 @@ export default class TopMenu extends Component {
     }
 
     goHome() {
-        //ReactDOM.render(<BoardsList/>, document.getElementById("content"));
+        ReactDOM.render(<BoardsList/>, document.getElementById("content"));
     }
 
     toggleSettings() {

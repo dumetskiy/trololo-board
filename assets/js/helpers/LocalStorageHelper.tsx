@@ -1,8 +1,8 @@
-import {addHistoryStep} from './HistoryHelper'
-import ReactDOM from "react-dom";
-import React from "react";
+import * as React from 'react'
+import * as ReactDOM from 'react-dom';
 import Board from '../components/Board';
-import {TicketType, ColumnType, BoardType, BoardsDataType} from './TypesHelper';
+import {addHistoryStep} from './HistoryHelper'
+import {TicketType, ColumnType, BoardType, BoardsDataType, SelectedTicketDataType} from './TypesHelper';
 
 const LS_VAR_NAME = 'trololo-data';
 const AUTO_COLUMN_NAME = 'New Tasks';
@@ -50,7 +50,7 @@ export function get(): BoardsDataType
         boardsData = JSON.parse(localStorage.getItem(LS_VAR_NAME));
     }
 
-    boardsData.boards = boardsData.boards.filter(function(e){return e});
+    boardsData.boards = boardsData.boards.filter(function(e: BoardType){return e});
 
     return boardsData;
 }
@@ -68,17 +68,17 @@ export function removeBoardById(id: number)
     set(boardsData);
 }
 
-export function createBoard(title)
+export function createBoard(title: string)
 {
     let boardsData: BoardsDataType = get(),
-        board = {
-        title: title,
-        cols: [
-            {
-                title: AUTO_COLUMN_NAME,
-                tickets: [],
-            }
-        ],
+        board: BoardType = {
+            title: title,
+            cols: [
+                {
+                    title: AUTO_COLUMN_NAME,
+                    tickets: [],
+                }
+            ],
     };
 
     boardsData.boards[Object.keys(boardsData.boards).length] = board;
@@ -86,11 +86,15 @@ export function createBoard(title)
 }
 
 export function setBoardData(boardId: number, boardData: BoardType) {
-    let boardsData: BoardsDataType = get();
+    let boardsData: BoardsDataType = get(),
+        selectedTicket: SelectedTicketDataType = {
+            column: -1,
+            ticket: -1,
+        };
 
     boardsData.boards[boardId] = boardData;
     set(boardsData);
-    ReactDOM.render(<Board boardId={boardId}/>, document.getElementById("content"));
+    ReactDOM.render(<Board boardId={boardId} selectedTicket={selectedTicket}/>, document.getElementById("content"));
 }
 
 export function setNameForBoardById(boardId: number, name: string) {
@@ -100,7 +104,7 @@ export function setNameForBoardById(boardId: number, name: string) {
     set(boardsData);
 }
 
-export function isValidBoardName(boardName): boolean {
+export function isValidBoardName(boardName: string): boolean {
     let isValidBoardName: boolean = true;
 
     if (boardName.length) {
@@ -118,7 +122,7 @@ export function isValidBoardName(boardName): boolean {
     return isValidBoardName;
 }
 
-export function isValidColumnName(boardId, columnName): boolean {
+export function isValidColumnName(boardId: number, columnName: string): boolean {
     let isValidBoardName: boolean = true;
 
     if (columnName.length) {
@@ -151,7 +155,7 @@ export function getColumnForBoard(boardId: number, columnId: number): ColumnType
     return get().boards[boardId].cols[columnId];
 }
 
-export function updateBoardColumnName(boardId: number, columnId: number, newTitle: number) {
+export function updateBoardColumnName(boardId: number, columnId: number, newTitle: string) {
     let boardsData: BoardsDataType = get();
 
     boardsData.boards[boardId].cols[columnId].title = newTitle;

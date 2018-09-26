@@ -3,7 +3,8 @@ import * as ReactDOM from 'react-dom';
 import {getBoardById, removeBoardById, isValidBoardName, setNameForBoardById} from '../helpers/LocalStorageHelper';
 import {startBoardHistory} from '../helpers/HistoryHelper';
 import Board from './Board';
-import {BoardType} from '../helpers/TypesHelper';
+import {TicketType, ColumnType, BoardType, SelectedTicketDataType} from '../helpers/TypesHelper';
+import {RefObject} from "react";
 
 export interface BoardListItemProps {
     boardId: number;
@@ -11,8 +12,11 @@ export interface BoardListItemProps {
 }
 
 export default class BoardListItem extends React.PureComponent<BoardListItemProps> {
-    constructor() {
-        super();
+    private boardNameInput: RefObject<HTMLInputElement>;
+    state: any;
+
+    constructor(props: any, state: any) {
+        super(props, state);
 
         this.state = {
             isEditing: false,
@@ -44,20 +48,20 @@ export default class BoardListItem extends React.PureComponent<BoardListItemProp
         }
     }
 
-    removeBoard(e: event) {
+    removeBoard(e: React.MouseEvent) {
         e.stopPropagation();
         removeBoardById(this.props.boardId);
         this.props.updateAction();
     }
 
-    startBoardEdit(e: event) {
+    startBoardEdit(e: React.MouseEvent) {
         e.stopPropagation();
         this.setState({
             isEditing: true
         });
     }
 
-    saveBoardEdit(e: event) {
+    saveBoardEdit(e: React.MouseEvent) {
         e.stopPropagation();
 
         let newBoardName: string = this.boardNameInput.current.value;
@@ -71,7 +75,12 @@ export default class BoardListItem extends React.PureComponent<BoardListItemProp
     }
 
     openBoard() {
+        let selectedTicket: SelectedTicketDataType = {
+            column: -1,
+            ticket: -1,
+        }
+
         startBoardHistory(this.props.boardId, getBoardById(this.props.boardId));
-        ReactDOM.render(<Board boardId={this.props.boardId}/>, document.getElementById("content"));
+        ReactDOM.render(<Board boardId={this.props.boardId} selectedTicket={selectedTicket}/>, document.getElementById("content"));
     }
 }

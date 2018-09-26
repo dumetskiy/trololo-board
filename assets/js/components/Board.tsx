@@ -1,8 +1,9 @@
 import * as React from 'react'
-import * as Column from './Column';
+import Column from './Column';
 import {getBoardById, isValidColumnName, addColumnToBoard} from '../helpers/LocalStorageHelper';
 import {stepForward, stepBackward} from '../helpers/HistoryHelper';
 import {TicketType, ColumnType, BoardType, SelectedTicketDataType} from '../helpers/TypesHelper';
+import {RefObject} from "react";
 
 export interface BoardProps {
     boardId: number;
@@ -10,8 +11,11 @@ export interface BoardProps {
 }
 
 export default class Board extends React.PureComponent<BoardProps> {
-    constructor() {
-        super();
+    private columnNameInput: RefObject<HTMLInputElement>;
+    state: any;
+
+    constructor(props: any, state: any) {
+        super(props, state);
 
         this.state = {
             colAdding: false,
@@ -30,10 +34,10 @@ export default class Board extends React.PureComponent<BoardProps> {
 
     render(): React.ReactNode {
         let boardId: number = this.props.boardId,
-            selectedTicket: TicketType = this.props.selectedTicket,
+            selectedTicket: SelectedTicketDataType = this.props.selectedTicket,
             boardData: BoardType = getBoardById(boardId),
             boardCols: ColumnType[]  = boardData.cols,
-            colsTemplate = '',
+            colsTemplate: JSX.Element[] = null,
             updateAction: Function = this.update;
 
         document.onkeyup = this.handleCombinations;
@@ -42,8 +46,8 @@ export default class Board extends React.PureComponent<BoardProps> {
         if (boardCols.length) {
             colsTemplate = boardCols.map(function(column: ColumnType, index: number) {
                 return (<Column key={index}
-                                boardid={boardId}
-                                columnid={index}
+                                boardId={boardId}
+                                columnId={index}
                                 updateAction={updateAction}
                                 selectedTicket={selectedTicket} />);
             });
@@ -89,7 +93,7 @@ export default class Board extends React.PureComponent<BoardProps> {
         }
     }
 
-    handleCombinations(e: event) {
+    handleCombinations(e: KeyboardEvent) {
         if (e.keyCode === 90 && e.ctrlKey) {
             stepBackward()
         }

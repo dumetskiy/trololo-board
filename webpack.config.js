@@ -1,18 +1,23 @@
-var webpack = require('webpack');
+const path = require('path'),
+    webpack = require('webpack'),
+    HtmlWebPackPlugin = require('html-webpack-plugin');
 
-const HtmlWebPackPlugin = require("html-webpack-plugin");
-
-const htmlPlugin = new HtmlWebPackPlugin({
-    template: "./assets/index.html",
-    filename: "../../index.html"
+let HTMLWebpackPluginConfig = new HtmlWebPackPlugin({
+    template: __dirname + '/assets/index.html',
+    filename: 'index.html',
 });
 
 module.exports = {
-    entry: ['./assets/js/index.tsx'],
+    entry: {
+        app: ['./assets/js/index.tsx','react', 'react-dom'],
+    },
     output: {
-        path: __dirname + '/assets/js',
-        publicPath: 'assets/js/',
-        filename: 'trololo-bundle.js'
+        path: path.resolve(__dirname, 'dist'),
+        filename: 'js/[name].trololo.bundle.js',
+    },
+    devtool: 'source-map',
+    resolve: {
+        extensions: ['.js', '.json', '.ts', '.tsx'],
     },
     module: {
         rules: [
@@ -52,26 +57,21 @@ module.exports = {
                 exclude: /node_modules/
             },
             {
-                test: /\.tsx?$/,
-                loader: "awesome-typescript-loader"
+                test: /\.(ts|tsx)$/,
+                loader: 'awesome-typescript-loader'
             },
             {
                 enforce: "pre",
                 test: /\.js$/,
                 loader: "source-map-loader"
             },
-            {
-                test: /\.js$/,
-                    exclude: /node_modules/,
-                use: {
-                    loader: "babel-loader"
-                }
-            },
         ],
     },
-    plugins: [htmlPlugin],
-    externals: {
-        "react": "React",
-        "react-dom": "ReactDOM"
-    }
+    plugins: [
+        HTMLWebpackPluginConfig,
+        new webpack.ProvidePlugin({
+            "React": "react",
+            "ReactDOM": "react-dom",
+        }),
+    ]
 };

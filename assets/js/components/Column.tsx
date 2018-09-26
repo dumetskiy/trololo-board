@@ -1,6 +1,8 @@
-import React, {Component} from 'react'
-import Board from "./Board";
-import Ticket, {getTicketColorSelect} from "./Ticket";
+import * as React from 'react'
+import {RefObject} from 'react';
+import Board from './Board';
+import Ticket from './Ticket';
+import {TicketType, ColumnType, BoardType, SelectedTicketDataType, ColorDataType} from '../helpers/TypesHelper';
 import {getColumnForBoard, getColorsData} from '../helpers/LocalStorageHelper';
 
 import {
@@ -12,9 +14,22 @@ import {
     isValidTicketDescription
 } from '../helpers/LocalStorageHelper';
 
-export default class Column extends Component {
-    constructor() {
-        super();
+export interface ColumnProps {
+    boardId: number;
+    columnId: number;
+    updateAction: Function;
+    selectedTicket: SelectedTicketDataType;
+}
+
+export default class Column extends React.PureComponent<ColumnProps>  {
+    private columnNameInput: RefObject<HTMLInputElement>;
+    private newTicketTitleInput: RefObject<HTMLInputElement>;
+    private newTicketDescriptionInput: RefObject<HTMLTextAreaElement>;
+    private newTicketColorSelect: RefObject<HTMLSelectElement>;
+    state: any;
+    
+    constructor(props: any, state: any) {
+        super(props, state);
 
         this.state = {
             colEditing: false,
@@ -32,35 +47,20 @@ export default class Column extends Component {
         this.getTicketColorSelect = this.getTicketColorSelect.bind(this);
     }
 
-    getTicketColorSelect(ticket) {
-        var ticketColor = ticket ? ticket.color : 'none',
-            selectOptions = [];
-
-        getColorsData().forEach(function(color, index, arr) {
-            selectOptions.push(<option key={index} value={color.handle} >{color.title}</option>);
-        });
-
-        return (
-            <select ref={this.newTicketColorSelect} defaultValue={ticketColor} className="flex-input-small">
-            {selectOptions}
-            </select>
-        );
-    }
-
-    render() {
+    render(): React.ReactNode {
         this.columnNameInput = React.createRef();
         this.newTicketTitleInput = React.createRef();
         this.newTicketDescriptionInput = React.createRef();
         this.newTicketColorSelect = React.createRef();
 
-        var columnId = this.props.columnid,
-            boardId = this.props.boardid,
-            selectedTicket = this.props.selectedTicket,
-            columnData = getColumnForBoard(boardId, columnId),
-            ticketsTemplate = '',
-            extraColumnElement = '',
-            colHeader = '',
-            updateAction = this.update;
+        let columnId: number = this.props.columnId,
+            boardId: number = this.props.boardId,
+            selectedTicket: SelectedTicketDataType = this.props.selectedTicket,
+            columnData: ColumnType = getColumnForBoard(boardId, columnId),
+            ticketsTemplate: JSX.Element[] = [],
+            extraColumnElement: JSX.Element = null,
+            colHeader: JSX.Element = null,
+            updateAction: Function = this.update;
 
         if (columnData.tickets.length) {
             ticketsTemplate = columnData.tickets.map(function(ticket, index) {
@@ -142,10 +142,25 @@ export default class Column extends Component {
         );
     }
 
-    isSelectedColumn() {
-        var selectedTicket = this.props.selectedTicket;
+    getTicketColorSelect(ticket: TicketType) {
+        let ticketColor: string = ticket ? ticket.color : 'none',
+            selectOptions: JSX.Element[] = [];
 
-        return selectedTicket && selectedTicket.column === this.props.columnid;
+        getColorsData().forEach(function(color: ColorDataType, index: number) {
+            selectOptions.push(<option key={index} value={color.handle} >{color.title}</option>);
+        });
+
+        return (
+            <select ref={this.newTicketColorSelect} defaultValue={ticketColor} className="flex-input-small">
+                {selectOptions}
+            </select>
+        );
+    }
+
+    isSelectedColumn(): boolean {
+        let selectedTicket: SelectedTicketDataType = this.props.selectedTicket;
+
+        return selectedTicket && selectedTicket.column === this.props.columnId;
     }
 
     update() {
@@ -153,7 +168,7 @@ export default class Column extends Component {
     }
 
     removeColumn() {
-        removeBoardColumn(this.props.boardid, this.props.columnid);
+        removeBoardColumn(this.props.boardId, this.props.columnId);
         this.props.updateAction();
     }
 
@@ -170,11 +185,11 @@ export default class Column extends Component {
     }
 
     saveColumnTitle() {
-        var newColumnName = this.columnNameInput.current.value,
-            originalColumnName = this.columnNameInput.current.defaultValue;
+        let newColumnName: string = this.columnNameInput.current.value,
+            originalColumnName: string = this.columnNameInput.current.defaultValue;
 
-        if (newColumnName === originalColumnName || isValidColumnName(this.props.boardid, newColumnName)) {
-            updateBoardColumnName(this.props.boardid, this.props.columnid, newColumnName);
+        if (newColumnName === originalColumnName || isValidColumnName(this.props.boardId, newColumnName)) {
+            updateBoardColumnName(this.props.boardId, this.props.columnId, newColumnName);
             this.setState({colEditing: false, colAddTicket: false});
             this.props.updateAction();
         }
@@ -186,8 +201,8 @@ export default class Column extends Component {
             isValidTicketDescription(this.newTicketDescriptionInput.current.value)
         ) {
             addTicketToBoardColumn(
-                this.props.boardid,
-                this.props.columnid,
+                this.props.boardId,
+                this.props.columnId,
                 this.newTicketTitleInput.current.value,
                 this.newTicketDescriptionInput.current.value,
                 this.newTicketColorSelect.current.value

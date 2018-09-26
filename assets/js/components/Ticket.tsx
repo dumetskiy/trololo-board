@@ -24,7 +24,6 @@ export interface TicketProps {
 }
 
 export default class Ticket extends React.PureComponent<TicketProps> {
-
     private ticketTitleInput: RefObject<HTMLInputElement>;
     private ticketDescriptionInput: RefObject<HTMLTextAreaElement>;
     private newTicketColorSelect: RefObject<HTMLSelectElement>;
@@ -120,18 +119,18 @@ export default class Ticket extends React.PureComponent<TicketProps> {
             selectedTicket.ticket === this.props.ticketId;
     }
 
-    deleteTicket(e: MouseEvent<HTMLButtonElement>) {
+    deleteTicket(e: React.MouseEvent) {
         e.stopPropagation();
         removeBoardColumnTicket(this.props.boardId, this.props.columnId, this.props.ticketId);
         this.props.updateAction();
     }
 
-    toggleUpdateTicket(e: MouseEvent<HTMLButtonElement>) {
+    toggleUpdateTicket(e: React.MouseEvent) {
         e.stopPropagation();
         this.setState({ticketEditing: true});
     }
 
-    updateTicket(e: MouseEvent<HTMLButtonElement>) {
+    updateTicket(e: React.MouseEvent) {
         e.stopPropagation();
 
         let newTicketTitle: string = this.ticketTitleInput.current.value,
@@ -175,7 +174,7 @@ export default class Ticket extends React.PureComponent<TicketProps> {
         } else if (e.keyCode === 39) {
             moveRight(this.props.boardId, this.props.columnId, this.props.ticketId);
         } else if (e.keyCode === 13) {
-            this.toggleUpdateTicket(e);
+            this.setState({ticketEditing: true});
         }
     }
 }
