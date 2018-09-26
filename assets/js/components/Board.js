@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {getBoardById, isValidColumnName, addColumnToBoard} from '../helpers/LocalStorageHelper';
+import {stepForward, stepBackward} from '../helpers/HistoryHelper';
 import Column from './Column';
 
 export default class Board extends Component {
@@ -14,6 +15,7 @@ export default class Board extends Component {
         this.addColumn = this.addColumn.bind(this);
         this.cancelAddColumn = this.cancelAddColumn.bind(this);
         this.update = this.update.bind(this);
+        this.handleCombinations = this.handleCombinations.bind(this);
     }
 
     update() {
@@ -28,6 +30,8 @@ export default class Board extends Component {
             boardCols = boardData.cols,
             colsTemplate = '',
             updateAction = this.update;
+
+        document.onkeyup = this.handleCombinations;
 
         this.columnNameInput = React.createRef();
 
@@ -79,6 +83,15 @@ export default class Board extends Component {
         if (isValidColumnName(this.props.boardid, this.columnNameInput.current.value)) {
             addColumnToBoard(this.props.boardid, this.columnNameInput.current.value);
             this.setState({colAdding: false});
+        }
+    }
+
+    handleCombinations(e) {
+        if (e.keyCode === 90 && e.ctrlKey) {
+            stepBackward()
+        }
+        if (e.keyCode === 89 && e.ctrlKey) {
+            stepForward()
         }
     }
 }

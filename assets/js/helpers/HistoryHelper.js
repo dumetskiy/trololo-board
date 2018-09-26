@@ -1,6 +1,6 @@
 import {setBoardData} from './LocalStorageHelper'
 
-var historyData = {};
+var historyData = null;
 
 export function startBoardHistory(boardId, boardState) {
     historyData = {
@@ -17,14 +17,14 @@ export function addHistoryStep(boardState) {
 }
 
 export function stepForward() {
-    if (historyData.historyStep < historyData.history.length - 1) {
+    if (historyData && historyData.historyStep < historyData.history.length - 1) {
         ++historyData.historyStep;
         setBoardData(historyData.boardId, historyData.history[historyData.historyStep]);
     }
 }
 
 export function stepBackward() {
-    if (historyData.historyStep > 0) {
+    if (historyData && historyData.historyStep > 0) {
         --historyData.historyStep;
         setBoardData(historyData.boardId, historyData.history[historyData.historyStep]);
     }

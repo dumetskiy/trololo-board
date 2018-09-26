@@ -10,13 +10,10 @@ export default class HistorySwitcher extends Component {
     }
 
     render() {
-        var stepBackwardTemplate = (<button className="menu-button backward" onClick={this.doStepBackward}>&nbsp;</button>),
-            stepForwardTemplate = (<button className="menu-button forward" onClick={this.doStepForward}>&nbsp;</button>);
-
         return (
             <div className="menu-buttons-wrap">
-                {stepBackwardTemplate}
-                {stepForwardTemplate}
+                <button className="menu-button backward" onClick={this.doStepBackward}>&nbsp;</button>
+                <button className="menu-button forward" onClick={this.doStepForward}>&nbsp;</button>
             </div>
         );
     }

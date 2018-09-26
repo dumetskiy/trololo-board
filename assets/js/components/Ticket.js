@@ -151,17 +151,14 @@ export default class Ticket extends Component {
     handleKeyPress(e) {
         if (e.keyCode === 38) {
             moveUp(this.props.boardid, this.props.columnid, this.props.ticketid);
-        }
-        else if (e.keyCode === 40) {
+        } else if (e.keyCode === 40) {
             moveDown(this.props.boardid, this.props.columnid, this.props.ticketid);
-        }
-        else if (e.keyCode === 37) {
+        } else if (e.keyCode === 37) {
             moveLeft(this.props.boardid, this.props.columnid, this.props.ticketid);
-        }
-        else if (e.keyCode === 39) {
+        } else if (e.keyCode === 39) {
             moveRight(this.props.boardid, this.props.columnid, this.props.ticketid);
+        } else if (e.keyCode === 13) {
+            this.toggleUpdateTicket(e);
         }
-
-        //this.makeSelectedTicket();
     }
 }

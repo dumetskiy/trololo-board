@@ -18,6 +18,10 @@ h2 {
 
 .menu-buttons-wrap {
     @include flex();
+
+    &.right {
+        justify-content: flex-end;
+    }
 }
 
 .menu-button {
@@ -44,6 +48,14 @@ h2 {
         @include background('backward.svg');
     }
 
+    &.home {
+        @include background('home-white.svg');
+    }
+
+    &.settings {
+        @include background('settings-white.svg');
+    }
+
     &:hover {
         color: $color-primaryBlack;
         background-color: $color-mainMenuButtonHover;
@@ -65,6 +77,37 @@ h2 {
     font-size: $fontSize-extraLarge;
     color: $color-primaryWhite;
     padding: 10px;
+}
+
+.modal-background {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    background-color: $color-boardSpecialElementBackgroundHover;
+    z-index: 40;
+
+    .modal-close {
+        border: none;
+        background-color: transparent;
+        width: 25px;
+        height: 25px;
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        @include background('cancel-md-white.svg');
+    }
+
+    .modal {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        height: 300px;
+        width: 500px;
+        background-color: white;
+        border: 1px solid $color-inputBorder;
+        @include big-box-shadow();
+    }
 }
 
 .flex-button {
