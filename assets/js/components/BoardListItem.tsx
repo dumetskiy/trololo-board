@@ -1,10 +1,16 @@
-import React, {Component} from 'react';
-import ReactDOM from 'react-dom';
+import * as React from 'react'
+import * as ReactDOM from 'react-dom';
 import {getBoardById, removeBoardById, isValidBoardName, setNameForBoardById} from '../helpers/LocalStorageHelper';
 import {startBoardHistory} from '../helpers/HistoryHelper';
 import Board from './Board';
+import {BoardType} from '../helpers/TypesHelper';
 
-export default class BoardListItem extends Component {
+export interface BoardListItemProps {
+    boardId: number;
+    updateAction: Function;
+}
+
+export default class BoardListItem extends React.PureComponent<BoardListItemProps> {
     constructor() {
         super();
 
@@ -17,8 +23,8 @@ export default class BoardListItem extends Component {
         this.openBoard = this.openBoard.bind(this);
     }
 
-    render() {
-        var boardData = getBoardById(this.props.boardid);
+    render(): React.ReactNode {
+        let boardData: BoardType = getBoardById(this.props.boardId);
 
         this.boardNameInput = React.createRef();
 
@@ -38,26 +44,26 @@ export default class BoardListItem extends Component {
         }
     }
 
-    removeBoard(e) {
+    removeBoard(e: event) {
         e.stopPropagation();
-        removeBoardById(this.props.boardid);
+        removeBoardById(this.props.boardId);
         this.props.updateAction();
     }
 
-    startBoardEdit(e) {
+    startBoardEdit(e: event) {
         e.stopPropagation();
         this.setState({
             isEditing: true
         });
     }
 
-    saveBoardEdit(e) {
+    saveBoardEdit(e: event) {
         e.stopPropagation();
 
-        var newBoardName = this.boardNameInput.current.value;
+        let newBoardName: string = this.boardNameInput.current.value;
 
         if (newBoardName === this.boardNameInput.current.defaultValue || isValidBoardName(newBoardName)) {
-            setNameForBoardById(this.props.boardid, newBoardName);
+            setNameForBoardById(this.props.boardId, newBoardName);
             this.setState({
                 isEditing: false
             });
@@ -65,7 +71,7 @@ export default class BoardListItem extends Component {
     }
 
     openBoard() {
-        startBoardHistory(this.props.boardid, getBoardById(this.props.boardid));
-        ReactDOM.render(<Board boardid={this.props.boardid}/>, document.getElementById("content"));
+        startBoardHistory(this.props.boardId, getBoardById(this.props.boardId));
+        ReactDOM.render(<Board boardId={this.props.boardId}/>, document.getElementById("content"));
     }
 }

@@ -26,7 +26,7 @@ export default class BoardsList extends Component {
             if (boards.length) {
                 var boardsTemplate = boards.map(function(item, index) {
                     if (item) {
-                        return (<BoardListItem boardid={index} key={index} updateAction={updateAction}/>);
+                        return (<BoardListItem boardId={index} key={index} updateAction={updateAction}/>);
                     }
                 });
             } else {

@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import ReactDOM from 'react-dom';
-import BoardsList from './BoardsList'
+//import BoardsList from './BoardsList'
 import {stepForward, stepBackward} from '../helpers/HistoryHelper';
 
 export default class TopMenu extends Component {
@@ -47,7 +47,7 @@ export default class TopMenu extends Component {
     }
 
     goHome() {
-        ReactDOM.render(<BoardsList/>, document.getElementById("content"));
+        //ReactDOM.render(<BoardsList/>, document.getElementById("content"));
     }
 
     toggleSettings() {

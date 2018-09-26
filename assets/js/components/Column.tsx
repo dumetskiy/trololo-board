@@ -65,9 +65,9 @@ export default class Column extends Component {
         if (columnData.tickets.length) {
             ticketsTemplate = columnData.tickets.map(function(ticket, index) {
                 return (<Ticket key={index}
-                                boardid={boardId}
-                                columnid={columnId}
-                                ticketid={index}
+                                boardId={boardId}
+                                columnId={columnId}
+                                ticketId={index}
                                 updateAction={updateAction}
                                 selectedTicket={selectedTicket}/>);
             });

@@ -2,9 +2,10 @@ import {addHistoryStep} from './HistoryHelper'
 import ReactDOM from "react-dom";
 import React from "react";
 import Board from '../components/Board';
+import {TicketType, ColumnType, BoardType, BoardsDataType} from './TypesHelper';
 
 const LS_VAR_NAME = 'trololo-data';
-const AUTO_COLUMN_NAME = 'New Tasks'
+const AUTO_COLUMN_NAME = 'New Tasks';
 const COLORS_DATA = [
     {
         handle: 'none',
@@ -40,9 +41,9 @@ export function getColorsData() {
     return COLORS_DATA;
 }
 
-export function get()
+export function get(): BoardsDataType
 {
-    var boardsData = JSON.parse(localStorage.getItem(LS_VAR_NAME));
+    let boardsData: any = JSON.parse(localStorage.getItem(LS_VAR_NAME));
 
     if (!boardsData) {
         initBoardsData();
@@ -54,14 +55,14 @@ export function get()
     return boardsData;
 }
 
-export function getBoardById(id)
+export function getBoardById(id: number): BoardType
 {
     return get().boards[id];
 }
 
-export function removeBoardById(id)
+export function removeBoardById(id: number)
 {
-    var boardsData = get();
+    let boardsData: BoardsDataType = get();
 
     delete boardsData.boards[id];
     set(boardsData);
@@ -69,7 +70,7 @@ export function removeBoardById(id)
 
 export function createBoard(title)
 {
-    var boardsData = get(),
+    let boardsData: BoardsDataType = get(),
         board = {
         title: title,
         cols: [
@@ -84,26 +85,26 @@ export function createBoard(title)
     set(boardsData);
 }
 
-export function setBoardData(boardId, boardData) {
-    var boardsData = get();
+export function setBoardData(boardId: number, boardData: BoardType) {
+    let boardsData: BoardsDataType = get();
 
     boardsData.boards[boardId] = boardData;
     set(boardsData);
-    ReactDOM.render(<Board boardid={boardId}/>, document.getElementById("content"));
+    ReactDOM.render(<Board boardId={boardId}/>, document.getElementById("content"));
 }
 
-export function setNameForBoardById(boardId, name) {
-    var boardsData = get();
+export function setNameForBoardById(boardId: number, name: string) {
+    let boardsData: BoardsDataType = get();
 
     boardsData.boards[boardId].title = name;
     set(boardsData);
 }
 
-export function isValidBoardName(boardName)
-{
-    var isValidBoardName = true;
+export function isValidBoardName(boardName): boolean {
+    let isValidBoardName: boolean = true;
+
     if (boardName.length) {
-        get().boards.forEach(function(board, index, arr) {
+        get().boards.forEach(function(board: BoardType, index: number) {
             if (board.title.toLowerCase() === boardName.toLowerCase()) {
                 isValidBoardName = false;
                 alert('Board with the same name already exists!');
@@ -117,11 +118,11 @@ export function isValidBoardName(boardName)
     return isValidBoardName;
 }
 
-export function isValidColumnName(boardId, columnName) {
-    var isValidBoardName = true;
+export function isValidColumnName(boardId, columnName): boolean {
+    let isValidBoardName: boolean = true;
 
     if (columnName.length) {
-        get().boards[boardId].cols.forEach(function(column, index, arr) {
+        get().boards[boardId].cols.forEach(function(column: ColumnType, index: number) {
             if (column.title.toLowerCase() === columnName.toLowerCase()) {
                 isValidBoardName = false;
                 alert('Column with the same name already exists!');
@@ -135,8 +136,8 @@ export function isValidColumnName(boardId, columnName) {
     return isValidBoardName;
 }
 
-export function addColumnToBoard(boardId, columnName) {
-    var boardsData = get();
+export function addColumnToBoard(boardId: number, columnName: string) {
+    let boardsData: BoardsDataType = get();
 
     boardsData.boards[boardId].cols[Object.keys(boardsData.boards[boardId].cols).length] = {
         title: columnName,
@@ -146,20 +147,20 @@ export function addColumnToBoard(boardId, columnName) {
     addHistoryStep(boardsData.boards[boardId]);
 }
 
-export function getColumnForBoard(boardId, columnId) {
+export function getColumnForBoard(boardId: number, columnId: number): ColumnType {
     return get().boards[boardId].cols[columnId];
 }
 
-export function updateBoardColumnName(boardId, columnId, newTitle) {
-    var boardsData = get();
+export function updateBoardColumnName(boardId: number, columnId: number, newTitle: number) {
+    let boardsData: BoardsDataType = get();
 
     boardsData.boards[boardId].cols[columnId].title = newTitle;
     set(boardsData);
     addHistoryStep(boardsData.boards[boardId]);
 }
 
-export function removeBoardColumn(boardId, columnId) {
-    var boardsData = get();
+export function removeBoardColumn(boardId: number, columnId: number) {
+    let boardsData: BoardsDataType = get();
 
     delete boardsData.boards[boardId].cols[columnId];
     boardsData.boards[boardId].cols = boardsData.boards[boardId].cols.filter(function(e){return e});
@@ -167,12 +168,16 @@ export function removeBoardColumn(boardId, columnId) {
     addHistoryStep(boardsData.boards[boardId]);
 }
 
-export function getTicketForBoardColumn(boardId, columnId, ticketId) {
+export function getTicketForBoardColumn(boardId: number, columnId: number, ticketId: number): TicketType {
     return get().boards[boardId].cols[columnId].tickets[ticketId];
 }
 
-export function addTicketToBoardColumn(boardId, columnId, ticketTitle, ticketDescription, ticketColor) {
-    var boardsData = get();
+export function addTicketToBoardColumn(boardId: number,
+                                       columnId: number,
+                                       ticketTitle: string,
+                                       ticketDescription: string,
+                                       ticketColor: string) {
+    let boardsData: BoardsDataType = get();
 
     boardsData.boards[boardId].cols[columnId].tickets[Object.keys(boardsData.boards[boardId].cols[columnId].tickets).length] = {
         title: ticketTitle,
@@ -183,7 +188,7 @@ export function addTicketToBoardColumn(boardId, columnId, ticketTitle, ticketDes
     addHistoryStep(boardsData.boards[boardId]);
 }
 
-export function isValidTicketTitle(ticketTitle) {
+export function isValidTicketTitle(ticketTitle: string): boolean {
     if (ticketTitle.length) {
         return true;
     } else {
@@ -193,7 +198,7 @@ export function isValidTicketTitle(ticketTitle) {
     }
 }
 
-export function isValidTicketDescription(ticketDescription) {
+export function isValidTicketDescription(ticketDescription: string): boolean {
     if (ticketDescription.length) {
         return true;
     } else {
@@ -203,8 +208,8 @@ export function isValidTicketDescription(ticketDescription) {
     }
 }
 
-export function removeBoardColumnTicket(boardId, columnId, ticketId) {
-    var boardsData = get();
+export function removeBoardColumnTicket(boardId: number, columnId: number, ticketId: number) {
+    let boardsData: BoardsDataType = get();
 
     delete boardsData.boards[boardId].cols[columnId].tickets[ticketId];
     boardsData.boards[boardId].cols[columnId].tickets = boardsData.boards[boardId].cols[columnId].tickets.filter(function(e){return e});
@@ -212,8 +217,13 @@ export function removeBoardColumnTicket(boardId, columnId, ticketId) {
     addHistoryStep(boardsData.boards[boardId]);
 }
 
-export function updateBoardColumnTicketData(boardId, columnId, ticketId, newTitle, newDescription, newColor) {
-    var boardsData = get();
+export function updateBoardColumnTicketData(boardId: number,
+                                            columnId: number,
+                                            ticketId: number,
+                                            newTitle: string,
+                                            newDescription: string,
+                                            newColor: string) {
+    let boardsData: BoardsDataType = get();
 
     boardsData.boards[boardId].cols[columnId].tickets[ticketId] = {
         title: newTitle,
@@ -224,12 +234,12 @@ export function updateBoardColumnTicketData(boardId, columnId, ticketId, newTitl
     addHistoryStep(boardsData.boards[boardId]);
 }
 
-export function moveLeft(boardId, columnId, ticketId) {
+export function moveLeft(boardId: number, columnId: number, ticketId: number) {
     if (columnId > 0) {
-        var boardsData = get(),
-            ticketData = boardsData.boards[boardId].cols[columnId].tickets[ticketId],
-            newColumn = boardsData.boards[boardId].cols[columnId - 1],
-            newTicketId = newColumn.tickets.length - 1 > ticketId ? ticketId : newColumn.tickets.length - 1;
+        let boardsData: BoardsDataType = get(),
+            ticketData: TicketType = boardsData.boards[boardId].cols[columnId].tickets[ticketId],
+            newColumn: ColumnType = boardsData.boards[boardId].cols[columnId - 1],
+            newTicketId: number = newColumn.tickets.length - 1 > ticketId ? ticketId : newColumn.tickets.length - 1;
 
         delete boardsData.boards[boardId].cols[columnId].tickets[ticketId];
         boardsData.boards[boardId].cols[columnId].tickets = boardsData.boards[boardId].cols[columnId].tickets.filter(function(e){return e});
@@ -240,13 +250,13 @@ export function moveLeft(boardId, columnId, ticketId) {
     }
 }
 
-export function moveRight(boardId, columnId, ticketId) {
-    var boardsData = get();
+export function moveRight(boardId: number, columnId: number, ticketId: number) {
+    let boardsData: BoardsDataType = get();
 
     if (columnId + 1 < boardsData.boards[boardId].cols.length) {
-        var ticketData = boardsData.boards[boardId].cols[columnId].tickets[ticketId],
-            newColumn = boardsData.boards[boardId].cols[columnId + 1],
-            newTicketId = newColumn.tickets.length > ticketId ? ticketId : newColumn.tickets.length;
+        let ticketData: TicketType = boardsData.boards[boardId].cols[columnId].tickets[ticketId],
+            newColumn: ColumnType = boardsData.boards[boardId].cols[columnId + 1],
+            newTicketId: number = newColumn.tickets.length > ticketId ? ticketId : newColumn.tickets.length;
 
         delete boardsData.boards[boardId].cols[columnId].tickets[ticketId];
         boardsData.boards[boardId].cols[columnId].tickets = boardsData.boards[boardId].cols[columnId].tickets.filter(function(e){return e});
@@ -257,12 +267,12 @@ export function moveRight(boardId, columnId, ticketId) {
     }
 }
 
-export function moveUp(boardId, columnId, ticketId) {
-    var boardsData = get();
+export function moveUp(boardId: number, columnId: number, ticketId: number) {
+    let boardsData: BoardsDataType = get();
     
     if (ticketId > 0) {
-        var ticketData = boardsData.boards[boardId].cols[columnId].tickets[ticketId],
-            secondTicketData = boardsData.boards[boardId].cols[columnId].tickets[ticketId - 1];
+        let ticketData: TicketType = boardsData.boards[boardId].cols[columnId].tickets[ticketId],
+            secondTicketData: TicketType = boardsData.boards[boardId].cols[columnId].tickets[ticketId - 1];
 
         boardsData.boards[boardId].cols[columnId].tickets[ticketId] = secondTicketData,
         boardsData.boards[boardId].cols[columnId].tickets[ticketId - 1] = ticketData;
@@ -272,12 +282,12 @@ export function moveUp(boardId, columnId, ticketId) {
     }
 }
 
-export function moveDown(boardId, columnId, ticketId) {
-    var boardsData = get();
+export function moveDown(boardId: number, columnId: number, ticketId: number) {
+    let boardsData: BoardsDataType = get();
     
     if (ticketId + 1 < boardsData.boards[boardId].cols[columnId].tickets.length) {
-        var ticketData = boardsData.boards[boardId].cols[columnId].tickets[ticketId],
-            secondTicketData = boardsData.boards[boardId].cols[columnId].tickets[ticketId + 1];
+        let ticketData: TicketType = boardsData.boards[boardId].cols[columnId].tickets[ticketId],
+            secondTicketData: TicketType = boardsData.boards[boardId].cols[columnId].tickets[ticketId + 1];
 
         boardsData.boards[boardId].cols[columnId].tickets[ticketId] = secondTicketData,
         boardsData.boards[boardId].cols[columnId].tickets[ticketId + 1] = ticketData;
@@ -287,13 +297,13 @@ export function moveDown(boardId, columnId, ticketId) {
     }
 }
 
-function updateCurrentState(boardId, columnid, ticketid) {
-    var selectedTicket = {
+function updateCurrentState(boardId: number, columnid: number, ticketid: number) {
+    let selectedTicket = {
         column: columnid,
         ticket: ticketid,
     };
 
-    ReactDOM.render(<Board boardid={boardId} selectedTicket={selectedTicket}/>, document.getElementById("content"));
+    ReactDOM.render(<Board boardId={boardId} selectedTicket={selectedTicket}/>, document.getElementById("content"));
 }
 
 function initBoardsData() {
@@ -302,6 +312,6 @@ function initBoardsData() {
     });
 }
 
-function set(boardsData) {
+function set(boardsData: BoardsDataType) {
     localStorage.setItem(LS_VAR_NAME, JSON.stringify(boardsData));
 }

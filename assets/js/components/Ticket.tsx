@@ -1,9 +1,9 @@
-import React, {Component} from 'react'
-import ReactDOM from 'react-dom';
+import * as React from 'react'
+import * as ReactDOM from 'react-dom';
 import Board from './Board';
+import {TicketType, ColumnType, BoardType, SelectedTicketDataType, ColorDataType} from '../helpers/TypesHelper';
 import {getTicketForBoardColumn,
         removeBoardColumnTicket,
-        pdateBoardColumnTicketData,
         isValidTicketTitle,
         isValidTicketDescription,
         updateBoardColumnTicketData,
@@ -12,10 +12,26 @@ import {getTicketForBoardColumn,
         moveRight,
         moveUp,
         moveDown} from '../helpers/LocalStorageHelper';
+import {number} from "prop-types";
+import {RefObject} from "react";
 
-export default class Ticket extends Component {
-    constructor() {
-        super();
+export interface TicketProps {
+    boardId: number;
+    columnId: number;
+    ticketId: number;
+    updateAction: Function;
+    selectedTicket: SelectedTicketDataType;
+}
+
+export default class Ticket extends React.PureComponent<TicketProps> {
+
+    private ticketTitleInput: RefObject<HTMLInputElement>;
+    private ticketDescriptionInput: RefObject<HTMLTextAreaElement>;
+    private newTicketColorSelect: RefObject<HTMLSelectElement>;
+    state: any;
+
+    constructor(props: any, state: any) {
+        super(props, state);
 
         this.state = {
             ticketEditing: false,
@@ -29,33 +45,18 @@ export default class Ticket extends Component {
         this.getTicketColorSelect = this.getTicketColorSelect.bind(this);
     }
 
-    getTicketColorSelect(ticket) {
-        var ticketColor = ticket ? ticket.color : 'none',
-            selectOptions = [];
-
-        getColorsData().forEach(function(color, index, arr) {
-            selectOptions.push(<option key={index} value={color.handle}>{color.title}</option>);
-        });
-
-        return (
-            <select ref={this.newTicketColorSelect} defaultValue={ticketColor} className="flex-input-small">
-                {selectOptions}
-            </select>
-        );
-    }
-
-    render() {
-        var ticketData = getTicketForBoardColumn(this.props.boardid, this.props.columnid, this.props.ticketid),
-            itemContent = '',
-            isSelectedTicket = this.isSelectedTicket();
-
-        this.ticketTitleInput = React.createRef();
-        this.ticketDescriptionInput = React.createRef();
-        this.newTicketColorSelect = React.createRef();
+    render(): React.ReactNode {
+        let ticketData: TicketType = getTicketForBoardColumn(this.props.boardId, this.props.columnId, this.props.ticketId),
+            itemContent: any = '',
+            isSelectedTicket: boolean = this.isSelectedTicket();
 
         if (isSelectedTicket) {
             document.onkeydown = this.handleKeyPress;
         }
+
+        this.ticketTitleInput = React.createRef<HTMLInputElement>();
+        this.ticketDescriptionInput = React.createRef<HTMLTextAreaElement>();
+        this.newTicketColorSelect = React.createRef<HTMLSelectElement>();
 
         if (this.state.ticketEditing) {
             return (
@@ -65,7 +66,7 @@ export default class Ticket extends Component {
                            defaultValue={ticketData.title}
                            className="flex-input-small flex-full-row"
                            placeholder="Ticket title..."/>
-                   {this.getTicketColorSelect(ticketData)}
+                    {this.getTicketColorSelect(ticketData)}
                     <textarea
                         ref={this.ticketDescriptionInput}
                         placeholder="Ticket description..."
@@ -96,41 +97,57 @@ export default class Ticket extends Component {
         );
     }
 
-    isSelectedTicket() {
-        var selectedTicket = this.props.selectedTicket;
+    getTicketColorSelect(ticket: TicketType): React.ReactNode {
+        let ticketColor: string = ticket ? ticket.color : 'none',
+            selectOptions: any = [];
 
-        return selectedTicket &&
-            selectedTicket.column === this.props.columnid &&
-            selectedTicket.ticket === this.props.ticketid;
+        getColorsData().forEach(function(color: ColorDataType, index: number) {
+            selectOptions.push(<option key={index} value={color.handle}>{color.title}</option>);
+        });
+
+        return (
+            <select ref={this.newTicketColorSelect} defaultValue={ticketColor} className="flex-input-small">
+                {selectOptions}
+            </select>
+        );
     }
 
-    deleteTicket(e) {
+    isSelectedTicket(): boolean {
+        let selectedTicket: SelectedTicketDataType = this.props.selectedTicket;
+
+        return selectedTicket &&
+            selectedTicket.column === this.props.columnId &&
+            selectedTicket.ticket === this.props.ticketId;
+    }
+
+    deleteTicket(e: MouseEvent<HTMLButtonElement>) {
         e.stopPropagation();
-        removeBoardColumnTicket(this.props.boardid, this.props.columnid, this.props.ticketid);
+        removeBoardColumnTicket(this.props.boardId, this.props.columnId, this.props.ticketId);
         this.props.updateAction();
     }
 
-    toggleUpdateTicket(e) {
+    toggleUpdateTicket(e: MouseEvent<HTMLButtonElement>) {
         e.stopPropagation();
         this.setState({ticketEditing: true});
     }
 
-    updateTicket(e) {
+    updateTicket(e: MouseEvent<HTMLButtonElement>) {
         e.stopPropagation();
-        var newTicketTitle = this.ticketTitleInput.current.value,
-            oldTicketTitle = this.ticketTitleInput.current.defaultValue,
-            newTicketDescription = this.ticketDescriptionInput.current.value,
-            oldTicketDescription = this.ticketDescriptionInput.current.defaultValue,
-            newTicketColor = this.newTicketColorSelect.current.value;
+
+        let newTicketTitle: string = this.ticketTitleInput.current.value,
+            oldTicketTitle: string = this.ticketTitleInput.current.defaultValue,
+            newTicketDescription: string = this.ticketDescriptionInput.current.value,
+            oldTicketDescription: string = this.ticketDescriptionInput.current.defaultValue,
+            newTicketColor: string = this.newTicketColorSelect.current.value;
 
         if (
             (newTicketTitle === oldTicketTitle || isValidTicketTitle(newTicketTitle)) &&
             (newTicketDescription === oldTicketDescription || isValidTicketDescription(newTicketDescription))
         ) {
             updateBoardColumnTicketData(
-                this.props.boardid,
-                this.props.columnid,
-                this.props.ticketid,
+                this.props.boardId,
+                this.props.columnId,
+                this.props.ticketId,
                 newTicketTitle,
                 newTicketDescription,
                 newTicketColor
@@ -140,23 +157,23 @@ export default class Ticket extends Component {
     }
 
     makeSelectedTicket() {
-        var selectedTicket = {
-            column: this.props.columnid,
-            ticket: this.props.ticketid,
+        let selectedTicket = {
+            column: this.props.columnId,
+            ticket: this.props.ticketId,
         };
 
-        ReactDOM.render(<Board boardid={this.props.boardid} selectedTicket={selectedTicket}/>, document.getElementById("content"));
+        ReactDOM.render(<Board boardId={this.props.boardId} selectedTicket={selectedTicket}/>, document.getElementById("content"));
     }
 
-    handleKeyPress(e) {
+    handleKeyPress(e: KeyboardEvent) {
         if (e.keyCode === 38) {
-            moveUp(this.props.boardid, this.props.columnid, this.props.ticketid);
+            moveUp(this.props.boardId, this.props.columnId, this.props.ticketId);
         } else if (e.keyCode === 40) {
-            moveDown(this.props.boardid, this.props.columnid, this.props.ticketid);
+            moveDown(this.props.boardId, this.props.columnId, this.props.ticketId);
         } else if (e.keyCode === 37) {
-            moveLeft(this.props.boardid, this.props.columnid, this.props.ticketid);
+            moveLeft(this.props.boardId, this.props.columnId, this.props.ticketId);
         } else if (e.keyCode === 39) {
-            moveRight(this.props.boardid, this.props.columnid, this.props.ticketid);
+            moveRight(this.props.boardId, this.props.columnId, this.props.ticketId);
         } else if (e.keyCode === 13) {
             this.toggleUpdateTicket(e);
         }

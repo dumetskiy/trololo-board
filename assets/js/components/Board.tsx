@@ -1,9 +1,15 @@
-import React, {Component} from 'react'
+import * as React from 'react'
+import * as Column from './Column';
 import {getBoardById, isValidColumnName, addColumnToBoard} from '../helpers/LocalStorageHelper';
 import {stepForward, stepBackward} from '../helpers/HistoryHelper';
-import Column from './Column';
+import {TicketType, ColumnType, BoardType, SelectedTicketDataType} from '../helpers/TypesHelper';
 
-export default class Board extends Component {
+export interface BoardProps {
+    boardId: number;
+    selectedTicket: SelectedTicketDataType;
+}
+
+export default class Board extends React.PureComponent<BoardProps> {
     constructor() {
         super();
 
@@ -22,21 +28,19 @@ export default class Board extends Component {
         this.setState({colUpdated: !this.state.colUpdated});
     }
 
-    render() {
-
-        var boardId = this.props.boardid,
-            selectedTicket = this.props.selectedTicket,
-            boardData = getBoardById(boardId),
-            boardCols = boardData.cols,
+    render(): React.ReactNode {
+        let boardId: number = this.props.boardId,
+            selectedTicket: TicketType = this.props.selectedTicket,
+            boardData: BoardType = getBoardById(boardId),
+            boardCols: ColumnType[]  = boardData.cols,
             colsTemplate = '',
-            updateAction = this.update;
+            updateAction: Function = this.update;
 
         document.onkeyup = this.handleCombinations;
-
         this.columnNameInput = React.createRef();
 
         if (boardCols.length) {
-            colsTemplate = boardCols.map(function(column, index) {
+            colsTemplate = boardCols.map(function(column: ColumnType, index: number) {
                 return (<Column key={index}
                                 boardid={boardId}
                                 columnid={index}
@@ -46,7 +50,6 @@ export default class Board extends Component {
         }
 
         if (this.state.colAdding) {
-
             return (
                 <div id="board" className="board">
                     {colsTemplate}
@@ -59,7 +62,7 @@ export default class Board extends Component {
                         <button className="flex-button-small cancel-button" onClick={this.cancelAddColumn}>&nbsp;</button>
                     </div>
                 </div>
-            )
+            );
         } else {
             return (
                 <div className="board">
@@ -80,13 +83,13 @@ export default class Board extends Component {
     }
 
     addColumn() {
-        if (isValidColumnName(this.props.boardid, this.columnNameInput.current.value)) {
-            addColumnToBoard(this.props.boardid, this.columnNameInput.current.value);
+        if (isValidColumnName(this.props.boardId, this.columnNameInput.current.value)) {
+            addColumnToBoard(this.props.boardId, this.columnNameInput.current.value);
             this.setState({colAdding: false});
         }
     }
 
-    handleCombinations(e) {
+    handleCombinations(e: event) {
         if (e.keyCode === 90 && e.ctrlKey) {
             stepBackward()
         }

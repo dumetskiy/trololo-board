@@ -8,7 +8,7 @@ const htmlPlugin = new HtmlWebPackPlugin({
 });
 
 module.exports = {
-    entry: ['./assets/js/index.js'],
+    entry: ['./assets/js/index.tsx'],
     output: {
         path: __dirname + '/assets/js',
         publicPath: 'assets/js/',
@@ -52,6 +52,15 @@ module.exports = {
                 exclude: /node_modules/
             },
             {
+                test: /\.tsx?$/,
+                loader: "awesome-typescript-loader"
+            },
+            {
+                enforce: "pre",
+                test: /\.js$/,
+                loader: "source-map-loader"
+            },
+            {
                 test: /\.js$/,
                     exclude: /node_modules/,
                 use: {
@@ -61,4 +70,8 @@ module.exports = {
         ],
     },
     plugins: [htmlPlugin],
+    externals: {
+        "react": "React",
+        "react-dom": "ReactDOM"
+    }
 };
