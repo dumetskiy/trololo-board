@@ -1,7 +1,7 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom';
 import Board from './Board';
-import {TicketType, ColumnType, BoardType, SelectedTicketDataType, ColorDataType} from '../helpers/TypesHelper';
+import {TicketType, SelectedTicketDataType, ColorDataType} from '../helpers/TypesHelper';
 import {getTicketForBoardColumn,
         removeBoardColumnTicket,
         isValidTicketTitle,
@@ -12,8 +12,7 @@ import {getTicketForBoardColumn,
         moveRight,
         moveUp,
         moveDown} from '../helpers/LocalStorageHelper';
-import {number} from "prop-types";
-import {RefObject} from "react";
+import {RefObject} from 'react';
 
 export interface TicketProps {
     boardId: number;
@@ -46,7 +45,6 @@ export default class Ticket extends React.PureComponent<TicketProps> {
 
     render(): React.ReactNode {
         let ticketData: TicketType = getTicketForBoardColumn(this.props.boardId, this.props.columnId, this.props.ticketId),
-            itemContent: any = '',
             isSelectedTicket: boolean = this.isSelectedTicket();
 
         if (isSelectedTicket) {
@@ -70,7 +68,7 @@ export default class Ticket extends React.PureComponent<TicketProps> {
                         ref={this.ticketDescriptionInput}
                         placeholder="Ticket description..."
                         defaultValue={ticketData.description}
-                        className="flex-input-small flex-full-row"></textarea>
+                        className="flex-input-small flex-full-row">&#8203;</textarea>
                     <button
                         onClick={this.updateTicket}
                         className="flex-button-small flex-full-row">Update ticket</button>

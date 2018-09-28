@@ -23,7 +23,7 @@ export default class TopMenu extends React.PureComponent {
             return (
                 <div className="modal-background">
                     <button className="modal-close" onClick={this.toggleSettings}>&nbsp;</button>
-                    <div className="modal"></div>
+                    <div className="modal">&#8203;</div>
                 </div>
             );
         } else {
@@ -49,7 +49,7 @@ export default class TopMenu extends React.PureComponent {
         }
     }
 
-    goHome() {
+    static goHome() {
         ReactDOM.render(<BoardsList/>, document.getElementById("content"));
     }
 
@@ -57,11 +57,11 @@ export default class TopMenu extends React.PureComponent {
         this.setState({settingsOpened: !this.state.settingsOpened});
     }
 
-    doStepForward() {
+    static doStepForward() {
         stepForward();
     }
 
-    doStepBackward() {
+    static doStepBackward() {
         stepBackward();
     }
 }

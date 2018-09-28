@@ -1,5 +1,5 @@
 import {setBoardData} from './LocalStorageHelper'
-import {BoardType, HistoryDataType} from '../helpers/TypesHelper';
+import {BoardType, HistoryDataType} from './TypesHelper';
 
 let historyData: HistoryDataType  = {
     boardId: -1,

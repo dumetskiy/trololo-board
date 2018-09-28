@@ -18,11 +18,11 @@ export default class HistorySwitcher extends React.PureComponent {
         );
     }
 
-    doStepForward() {
+    static doStepForward() {
         stepForward();
     }
 
-    doStepBackward() {
+    static doStepBackward() {
         stepBackward();
     }
 }

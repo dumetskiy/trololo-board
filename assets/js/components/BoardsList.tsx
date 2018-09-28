@@ -1,7 +1,7 @@
 import * as React from 'react';
 import BoardListItem from './BoardListItem';
 import {createBoard, get, isValidBoardName} from '../helpers/LocalStorageHelper';
-import {TicketType, ColumnType, BoardType, SelectedTicketDataType} from '../helpers/TypesHelper';
+import {BoardType} from '../helpers/TypesHelper';
 import {RefObject} from "react";
 
 export default class BoardsList extends React.PureComponent {

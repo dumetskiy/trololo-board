@@ -4,9 +4,9 @@ import Board from '../components/Board';
 import {addHistoryStep} from './HistoryHelper'
 import {TicketType, ColumnType, BoardType, BoardsDataType, SelectedTicketDataType} from './TypesHelper';
 
-const LS_VAR_NAME = 'trololo-data';
-const AUTO_COLUMN_NAME = 'New Tasks';
-const COLORS_DATA = [
+const localStorageVarName = 'trololo-data';
+const defaultColumnName = 'New Tasks';
+const colorsData = [
     {
         handle: 'none',
         title: 'No color',
@@ -38,16 +38,16 @@ const COLORS_DATA = [
 ];
 
 export function getColorsData() {
-    return COLORS_DATA;
+    return colorsData;
 }
 
 export function get(): BoardsDataType
 {
-    let boardsData: any = JSON.parse(localStorage.getItem(LS_VAR_NAME));
+    let boardsData: any = JSON.parse(localStorage.getItem(localStorageVarName));
 
     if (!boardsData) {
         initBoardsData();
-        boardsData = JSON.parse(localStorage.getItem(LS_VAR_NAME));
+        boardsData = JSON.parse(localStorage.getItem(localStorageVarName));
     }
 
     boardsData.boards = boardsData.boards.filter(function(e: BoardType){return e});
@@ -70,18 +70,17 @@ export function removeBoardById(id: number)
 
 export function createBoard(title: string)
 {
-    let boardsData: BoardsDataType = get(),
-        board: BoardType = {
-            title: title,
-            cols: [
-                {
-                    title: AUTO_COLUMN_NAME,
-                    tickets: [],
-                }
-            ],
-    };
+    let boardsData: BoardsDataType = get();
 
-    boardsData.boards[Object.keys(boardsData.boards).length] = board;
+    boardsData.boards[Object.keys(boardsData.boards).length] =  {
+        title: title,
+        cols: [
+            {
+                title: defaultColumnName,
+                tickets: [],
+            }
+        ],
+    };
     set(boardsData);
 }
 
@@ -94,7 +93,7 @@ export function setBoardData(boardId: number, boardData: BoardType) {
 
     boardsData.boards[boardId] = boardData;
     set(boardsData);
-    ReactDOM.render(<Board boardId={boardId} selectedTicket={selectedTicket}/>, document.getElementById("content"));
+    ReactDOM.render(<Board boardId={boardId} selectedTicket={selectedTicket}/>, document.getElementById('content'));
 }
 
 export function setNameForBoardById(boardId: number, name: string) {
@@ -108,7 +107,7 @@ export function isValidBoardName(boardName: string): boolean {
     let isValidBoardName: boolean = true;
 
     if (boardName.length) {
-        get().boards.forEach(function(board: BoardType, index: number) {
+        get().boards.forEach(function(board: BoardType) {
             if (board.title.toLowerCase() === boardName.toLowerCase()) {
                 isValidBoardName = false;
                 alert('Board with the same name already exists!');
@@ -126,7 +125,7 @@ export function isValidColumnName(boardId: number, columnName: string): boolean 
     let isValidBoardName: boolean = true;
 
     if (columnName.length) {
-        get().boards[boardId].cols.forEach(function(column: ColumnType, index: number) {
+        get().boards[boardId].cols.forEach(function(column: ColumnType) {
             if (column.title.toLowerCase() === columnName.toLowerCase()) {
                 isValidBoardName = false;
                 alert('Column with the same name already exists!');
@@ -278,7 +277,7 @@ export function moveUp(boardId: number, columnId: number, ticketId: number) {
         let ticketData: TicketType = boardsData.boards[boardId].cols[columnId].tickets[ticketId],
             secondTicketData: TicketType = boardsData.boards[boardId].cols[columnId].tickets[ticketId - 1];
 
-        boardsData.boards[boardId].cols[columnId].tickets[ticketId] = secondTicketData,
+        boardsData.boards[boardId].cols[columnId].tickets[ticketId] = secondTicketData;
         boardsData.boards[boardId].cols[columnId].tickets[ticketId - 1] = ticketData;
         set(boardsData);
         addHistoryStep(boardsData.boards[boardId]);
@@ -293,7 +292,7 @@ export function moveDown(boardId: number, columnId: number, ticketId: number) {
         let ticketData: TicketType = boardsData.boards[boardId].cols[columnId].tickets[ticketId],
             secondTicketData: TicketType = boardsData.boards[boardId].cols[columnId].tickets[ticketId + 1];
 
-        boardsData.boards[boardId].cols[columnId].tickets[ticketId] = secondTicketData,
+        boardsData.boards[boardId].cols[columnId].tickets[ticketId] = secondTicketData;
         boardsData.boards[boardId].cols[columnId].tickets[ticketId + 1] = ticketData;
         set(boardsData);
         addHistoryStep(boardsData.boards[boardId]);
@@ -307,7 +306,7 @@ function updateCurrentState(boardId: number, columnid: number, ticketid: number)
         ticket: ticketid,
     };
 
-    ReactDOM.render(<Board boardId={boardId} selectedTicket={selectedTicket}/>, document.getElementById("content"));
+    ReactDOM.render(<Board boardId={boardId} selectedTicket={selectedTicket}/>, document.getElementById('content'));
 }
 
 function initBoardsData() {
@@ -317,5 +316,5 @@ function initBoardsData() {
 }
 
 function set(boardsData: BoardsDataType) {
-    localStorage.setItem(LS_VAR_NAME, JSON.stringify(boardsData));
+    localStorage.setItem(localStorageVarName, JSON.stringify(boardsData));
 }

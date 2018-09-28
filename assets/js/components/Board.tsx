@@ -2,8 +2,8 @@ import * as React from 'react'
 import Column from './Column';
 import {getBoardById, isValidColumnName, addColumnToBoard} from '../helpers/LocalStorageHelper';
 import {stepForward, stepBackward} from '../helpers/HistoryHelper';
-import {TicketType, ColumnType, BoardType, SelectedTicketDataType} from '../helpers/TypesHelper';
-import {RefObject} from "react";
+import {ColumnType, BoardType, SelectedTicketDataType} from '../helpers/TypesHelper';
+import {RefObject} from 'react';
 
 export interface BoardProps {
     boardId: number;
@@ -93,7 +93,7 @@ export default class Board extends React.PureComponent<BoardProps> {
         }
     }
 
-    handleCombinations(e: KeyboardEvent) {
+    static handleCombinations(e: KeyboardEvent) {
         if (e.keyCode === 90 && e.ctrlKey) {
             stepBackward()
         }

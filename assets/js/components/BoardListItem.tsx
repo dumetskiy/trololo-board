@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom';
 import {getBoardById, removeBoardById, isValidBoardName, setNameForBoardById} from '../helpers/LocalStorageHelper';
 import {startBoardHistory} from '../helpers/HistoryHelper';
 import Board from './Board';
-import {TicketType, ColumnType, BoardType, SelectedTicketDataType} from '../helpers/TypesHelper';
+import {BoardType, SelectedTicketDataType} from '../helpers/TypesHelper';
 import {RefObject} from "react";
 
 export interface BoardListItemProps {
@@ -78,7 +78,7 @@ export default class BoardListItem extends React.PureComponent<BoardListItemProp
         let selectedTicket: SelectedTicketDataType = {
             column: -1,
             ticket: -1,
-        }
+        };
 
         startBoardHistory(this.props.boardId, getBoardById(this.props.boardId));
         ReactDOM.render(<Board boardId={this.props.boardId} selectedTicket={selectedTicket}/>, document.getElementById("content"));

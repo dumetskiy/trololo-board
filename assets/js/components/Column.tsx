@@ -1,8 +1,7 @@
 import * as React from 'react'
 import {RefObject} from 'react';
-import Board from './Board';
 import Ticket from './Ticket';
-import {TicketType, ColumnType, BoardType, SelectedTicketDataType, ColorDataType} from '../helpers/TypesHelper';
+import {TicketType, ColumnType, SelectedTicketDataType, ColorDataType} from '../helpers/TypesHelper';
 import {getColumnForBoard, getColorsData} from '../helpers/LocalStorageHelper';
 
 import {
@@ -106,7 +105,7 @@ export default class Column extends React.PureComponent<ColumnProps>  {
                     <textarea
                         ref={this.newTicketDescriptionInput}
                         placeholder="Ticket description..."
-                        className="flex-input-small flex-full-row"></textarea>
+                        className="flex-input-small flex-full-row">&#8203;</textarea>
                     <button
                         onClick={this.createNewTicket}
                         className="flex-button-small flex-full-row">Create ticket</button>
