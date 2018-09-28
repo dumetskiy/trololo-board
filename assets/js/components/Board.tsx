@@ -25,7 +25,6 @@ export default class Board extends React.PureComponent<BoardProps> {
         this.addColumn = this.addColumn.bind(this);
         this.cancelAddColumn = this.cancelAddColumn.bind(this);
         this.update = this.update.bind(this);
-        this.handleCombinations = this.handleCombinations.bind(this);
     }
 
     update() {

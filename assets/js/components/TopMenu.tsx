@@ -13,9 +13,6 @@ export default class TopMenu extends React.PureComponent {
             settingsOpened: false,
         };
         this.toggleSettings = this.toggleSettings.bind(this);
-        this.goHome = this.goHome.bind(this);
-        this.doStepForward = this.doStepForward.bind(this);
-        this.doStepBackward = this.doStepBackward.bind(this);
     }
 
     render() {
@@ -49,10 +46,6 @@ export default class TopMenu extends React.PureComponent {
         }
     }
 
-    static goHome() {
-        ReactDOM.render(<BoardsList/>, document.getElementById("content"));
-    }
-
     toggleSettings() {
         this.setState({settingsOpened: !this.state.settingsOpened});
     }
@@ -63,5 +56,9 @@ export default class TopMenu extends React.PureComponent {
 
     static doStepBackward() {
         stepBackward();
+    }
+
+    static goHome() {
+        ReactDOM.render(<BoardsList/>, document.getElementById("content"));
     }
 }
