@@ -6,7 +6,6 @@ const merge = require('webpack-merge');
 const webpack = require('webpack');
 
 module.exports = {
-
     resolve: {
         extensions: ['.ts', '.tsx', '.js', '.jsx'],
     },
@@ -43,7 +42,7 @@ module.exports = {
                         name: '[name].[ext]',
                         outputPath: 'fonts/'
                     }
-                }]
+                }],
             },
             {
                 test: /\.(scss|sass)$/,
@@ -70,7 +69,6 @@ module.exports = {
                     {
                         loader: 'sass-loader'
                     },
-
                 ],
 
             },
