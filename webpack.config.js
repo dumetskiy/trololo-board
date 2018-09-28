@@ -1,31 +1,49 @@
-const path = require('path'),
-    webpack = require('webpack'),
-    HtmlWebPackPlugin = require('html-webpack-plugin');
-
-let HTMLWebpackPluginConfig = new HtmlWebPackPlugin({
-    template: __dirname + '/assets/index.html',
-    filename: 'index.html',
-});
+const {resolve} = require('path');
+const {CheckerPlugin} = require('awesome-typescript-loader');
+const StyleLintPlugin = require('stylelint-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const merge = require('webpack-merge');
+const webpack = require('webpack');
 
 module.exports = {
-    entry: {
-        app: ['./assets/js/index.tsx','react', 'react-dom'],
-    },
-    output: {
-        path: path.resolve(__dirname, 'dist'),
-        filename: 'js/[name].trololo.bundle.js',
-    },
-    devtool: 'source-map',
+
     resolve: {
-        extensions: ['.js', '.json', '.ts', '.tsx'],
+        extensions: ['.ts', '.tsx', '.js', '.jsx'],
     },
+    entry: [
+        'react-hot-loader/patch',
+        'webpack-dev-server/client?http://localhost:8080',
+        'webpack/hot/only-dev-server',
+        './index.tsx',
+    ],
+    devServer: {
+        hot: true,
+        headers: {
+            'Access-Control-Allow-Origin': '*',
+        },
+    },
+    devtool: 'cheap-module-eval-source-map',
+    context: resolve(__dirname, 'assets'),
     module: {
         rules: [
             {
-                test: /\.(png|jpeg|ttf|...)$/,
-                use: [
-                    {loader: 'url-loader', options: {limit: 8192}}
-                ]
+                test: /\.js$/,
+                use: ['babel-loader', 'source-map-loader'],
+                exclude: /node_modules/,
+            },
+            {
+                test: /\.tsx?$/,
+                use: ['babel-loader', 'awesome-typescript-loader'],
+            },
+            {
+                test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
+                use: [{
+                    loader: 'file-loader',
+                    options: {
+                        name: '[name].[ext]',
+                        outputPath: 'fonts/'
+                    }
+                }]
             },
             {
                 test: /\.(scss|sass)$/,
@@ -54,24 +72,18 @@ module.exports = {
                     },
 
                 ],
-                exclude: /node_modules/
-            },
-            {
-                test: /\.(ts|tsx)$/,
-                loader: 'awesome-typescript-loader'
-            },
-            {
-                enforce: "pre",
-                test: /\.js$/,
-                loader: "source-map-loader"
+
             },
         ],
     },
     plugins: [
-        HTMLWebpackPluginConfig,
-        new webpack.ProvidePlugin({
-            "React": "react",
-            "ReactDOM": "react-dom",
-        }),
-    ]
+        new CheckerPlugin(),
+        new StyleLintPlugin(),
+        new HtmlWebpackPlugin({template: 'index.html',}),
+        new webpack.HotModuleReplacementPlugin(),
+        new webpack.NamedModulesPlugin(),
+    ],
+    performance: {
+        hints: false,
+    },
 };

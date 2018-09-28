@@ -120,16 +120,6 @@ body {
                 max-width: $size-boardColumnMaxWidth;
                 transition: .5s;
 
-                &:hover,
-                &.current
-                {
-                    background-color: $color-boardBackgroundHover;
-
-                    .col-header > .column-tools {
-                        opacity: 1;
-                    }
-                }
-
                 .board-col-content {
                     @include flex(0 0 100%, flex-start, flex-start, auto, column nowrap);
                 }
@@ -152,6 +142,16 @@ body {
                         padding-right: 10px;
                         transition: $time-defaultTransition;
                         opacity: 0;
+                    }
+                }
+
+                &:hover,
+                &.current
+                {
+                    background-color: $color-boardBackgroundHover;
+
+                    .col-header > .column-tools {
+                        opacity: 1;
                     }
                 }
 
@@ -255,16 +255,6 @@ body {
                                 }
                             }
 
-                            &:hover,
-                            &.current
-                            {
-                                background-color: $color-lightTransparentBalck;
-
-                                .item-header > .item-tools {
-                                    opacity: 1;
-                                }
-                            }
-
                             .item-header {
                                 @include flex(0 0 100%, flex-start, flex-start, auto, row nowrap);
                                 height: 24px;
@@ -286,6 +276,16 @@ body {
                                     opacity: 0;
                                     transition: $time-defaultTransition;
                                     height: 24px;
+                                }
+                            }
+
+                            &:hover,
+                            &.current
+                            {
+                                background-color: $color-lightTransparentBalck;
+
+                                .item-header > .item-tools {
+                                    opacity: 1;
                                 }
                             }
 

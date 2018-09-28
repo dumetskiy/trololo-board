@@ -24,16 +24,17 @@ export default class BoardsList extends React.PureComponent {
         let boards: BoardType[] = this.state.boards.boards;
 
         if (this.state.visible) {
-            let updateAction: Function = this.update;
+            let updateAction: Function = this.update,
+                boardsTemplate: JSX.Element[] = [];
 
             if (boards.length) {
-                let boardsTemplate: JSX.Element[] = boards.map(function(item: BoardType, index: number) {
+                boardsTemplate = boards.map(function(item: BoardType, index: number) {
                     if (item) {
                         return (<BoardListItem boardId={index} key={index} updateAction={updateAction}/>);
                     }
                 });
             } else {
-                var boardsTemplate = '';
+                boardsTemplate = [];
             }
 
             this.boardNameInput = React.createRef();

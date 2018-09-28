@@ -2,12 +2,13 @@
   "compilerOptions": {
     "outDir": "./dist/",
     "sourceMap": true,
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "module": "commonjs",
     "target": "es6",
-    "jsx": "react"
+    "jsx": "react",
+    "lib": ["es5", "es6", "dom"]
   },
   "include": [
-    "./assets/js/**/*"
+    "./assets/**/*"
   ]
 }
