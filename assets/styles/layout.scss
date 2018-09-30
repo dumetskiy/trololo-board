@@ -189,8 +189,12 @@ body {
                             @include flex(0 0 1, flex-start, flex-start, auto, row wrap);
                             min-height: 100px;
                             background-color: $color-veryLightTransparentBalck;
-                            margin: 0 0 5px;
+                            margin: 0 4px 5px 0;
                             padding: 5px;
+
+                            @media screen and (-webkit-min-device-pixel-ratio:0){
+                                margin: 0 12px 5px 0;
+                            }
 
                             &.current {
                                 border: 1px solid white;

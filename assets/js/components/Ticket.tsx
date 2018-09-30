@@ -14,7 +14,7 @@ import {getTicketForBoardColumn,
 import {RefObject} from 'react';
 import {getColorSelect} from '../helpers/DomElementsHelper';
 
-export interface TicketProps {
+type TicketProps = {
     boardId: number;
     columnId: number;
     ticketId: number;
@@ -22,18 +22,25 @@ export interface TicketProps {
     selectedTicket: SelectedTicketDataType;
 }
 
+type TicketState = {
+    ticketEditing: boolean;
+}
+
 export default class Ticket extends React.PureComponent<TicketProps> {
     private ticketTitleInput: RefObject<HTMLInputElement>;
     private ticketDescriptionInput: RefObject<HTMLTextAreaElement>;
     private newTicketColorSelect: RefObject<HTMLSelectElement>;
-    state: any;
+    state: TicketState;
 
-    constructor(props: any, state: any) {
+    constructor(props: TicketProps, state: TicketState) {
         super(props, state);
 
         this.state = {
             ticketEditing: false,
         };
+        this.ticketTitleInput = React.createRef<HTMLInputElement>();
+        this.ticketDescriptionInput = React.createRef<HTMLTextAreaElement>();
+        this.newTicketColorSelect = React.createRef<HTMLSelectElement>();
         this.deleteTicket = this.deleteTicket.bind(this);
         this.toggleUpdateTicket = this.toggleUpdateTicket.bind(this);
         this.updateTicket = this.updateTicket.bind(this);
@@ -49,10 +56,6 @@ export default class Ticket extends React.PureComponent<TicketProps> {
         if (isSelectedTicket) {
             document.onkeydown = this.handleKeyPress;
         }
-
-        this.ticketTitleInput = React.createRef<HTMLInputElement>();
-        this.ticketDescriptionInput = React.createRef<HTMLTextAreaElement>();
-        this.newTicketColorSelect = React.createRef<HTMLSelectElement>();
 
         if (this.state.ticketEditing) {
             return (

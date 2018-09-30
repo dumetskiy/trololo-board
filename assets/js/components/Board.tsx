@@ -1,26 +1,32 @@
 import * as React from 'react'
+import {RefObject} from 'react';
 import Column from './Column';
 import {getBoardById, isValidColumnName, addColumnToBoard} from '../helpers/LocalStorageHelper';
 import {stepForward, stepBackward} from '../helpers/HistoryHelper';
 import {ColumnType, BoardType, SelectedTicketDataType} from '../helpers/TypesHelper';
-import {RefObject} from 'react';
 
-export interface BoardProps {
+type BoardProps = {
     boardId: number;
     selectedTicket: SelectedTicketDataType;
 }
 
+type BoardStateType = {
+    colAdding: boolean;
+    colUpdated: boolean;
+}
+
 export default class Board extends React.PureComponent<BoardProps> {
     private columnNameInput: RefObject<HTMLInputElement>;
-    state: any;
+    state: BoardStateType;
 
-    constructor(props: any, state: any) {
+    constructor(props: BoardProps, state: BoardStateType) {
         super(props, state);
 
         this.state = {
             colAdding: false,
             colUpdated: false,
         };
+        this.columnNameInput = React.createRef();
         this.toggleAddColumn = this.toggleAddColumn.bind(this);
         this.addColumn = this.addColumn.bind(this);
         this.cancelAddColumn = this.cancelAddColumn.bind(this);
@@ -40,7 +46,6 @@ export default class Board extends React.PureComponent<BoardProps> {
             updateAction: Function = this.update;
 
         document.onkeyup = Board.handleCombinations;
-        this.columnNameInput = React.createRef();
 
         if (boardCols.length) {
             colsTemplate = boardCols.map(function(column: ColumnType, index: number) {

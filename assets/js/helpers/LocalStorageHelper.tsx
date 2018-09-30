@@ -7,44 +7,10 @@ import {TicketType, ColumnType, BoardType, BoardsDataType, SelectedTicketDataTyp
 const localStorageVarName = 'trololo-data';
 const localStorageBackgroundVarName = 'background';
 const defaultColumnName = 'New Tasks';
-const colorsData = [
-    {
-        handle: 'none',
-        title: 'No color',
-    },
-    {
-        handle: 'red',
-        title: 'Red',
-    },
-    {
-        handle: 'green',
-        title: 'Green',
-    },
-    {
-        handle: 'blue',
-        title: 'Blue',
-    },
-    {
-        handle: 'purple',
-        title: 'Purple',
-    },
-    {
-        handle: 'yellow',
-        title: 'Yellow',
-    },
-    {
-        handle: 'orange',
-        title: 'Orange',
-    },
-];
-
-export function getColorsData() {
-    return colorsData;
-}
 
 export function get(): BoardsDataType
 {
-    let boardsData: any = JSON.parse(localStorage.getItem(localStorageVarName));
+    let boardsData: BoardsDataType = JSON.parse(localStorage.getItem(localStorageVarName));
 
     if (!boardsData) {
         initBoardsData();
@@ -262,9 +228,6 @@ export function moveRight(boardId: number, columnId: number, ticketId: number) {
             newColumn: ColumnType = boardsData.boards[boardId].cols[columnId + 1],
             newTicketId: number = newColumn.tickets.length > ticketId ? ticketId : newColumn.tickets.length;
 
-        console.log(columnId + 1);
-        console.log(newTicketId);
-
         delete boardsData.boards[boardId].cols[columnId].tickets[ticketId];
         boardsData.boards[boardId].cols[columnId].tickets = boardsData.boards[boardId].cols[columnId].tickets.filter(function(e){return e});
         boardsData.boards[boardId].cols[columnId + 1].tickets.splice(newTicketId, 0, ticketData);
@@ -315,12 +278,15 @@ function updateCurrentState(boardId: number, columnid: number, ticketid: number)
 
 export function setBackgroundImage(imgElement: HTMLImageElement): boolean {
     let backgroundImageData = getBase64Image(imgElement);
+
     try {
         localStorage.setItem(localStorageBackgroundVarName, backgroundImageData);
+
         return true;
     }
-    catch (e: any) {
+    catch (e) {
         alert("This image is too big. Please select the another one and try again");
+
         return false;
     }
 }

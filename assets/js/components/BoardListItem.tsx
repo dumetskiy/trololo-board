@@ -6,21 +6,26 @@ import Board from './Board';
 import {BoardType, SelectedTicketDataType} from '../helpers/TypesHelper';
 import {RefObject} from "react";
 
-export interface BoardListItemProps {
+type BoardListItemProps = {
     boardId: number;
     updateAction: Function;
 }
 
+type BoardListItemState = {
+    isEditing: boolean;
+}
+
 export default class BoardListItem extends React.PureComponent<BoardListItemProps> {
     private boardNameInput: RefObject<HTMLInputElement>;
-    state: any;
+    state: BoardListItemState;
 
-    constructor(props: any, state: any) {
+    constructor(props: BoardListItemProps, state: BoardListItemState) {
         super(props, state);
 
         this.state = {
             isEditing: false,
         };
+        this.boardNameInput = React.createRef();
         this.removeBoard = this.removeBoard.bind(this);
         this.startBoardEdit = this.startBoardEdit.bind(this);
         this.saveBoardEdit = this.saveBoardEdit.bind(this);
@@ -29,8 +34,6 @@ export default class BoardListItem extends React.PureComponent<BoardListItemProp
 
     render(): React.ReactNode {
         let boardData: BoardType = getBoardById(this.props.boardId);
-
-        this.boardNameInput = React.createRef();
 
         if (this.state.isEditing) {
             return (<div className="list-item" >

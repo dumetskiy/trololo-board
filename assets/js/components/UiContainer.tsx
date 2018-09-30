@@ -4,11 +4,15 @@ import TopMenu from './TopMenu';
 import BoardsList from './BoardsList';
 import {hasBackgroundImage, getBackgroundImage} from '../helpers/LocalStorageHelper';
 
+type UiContainerState = {
+    backgroundUpdated: boolean;
+}
+
 export default class UiContainer extends React.PureComponent {
     private backgroundHolder: RefObject<HTMLDivElement>;
-    state: Object;
+    state: UiContainerState;
 
-    constructor(props: any, state: any) {
+    constructor(props: {}, state: UiContainerState) {
         super(props, state);
 
         this.state = {
@@ -16,18 +20,15 @@ export default class UiContainer extends React.PureComponent {
         };
         this.backgroundHolder = React.createRef();
         this.update = this.update.bind(this);
+        this.reloadBackground = this.reloadBackground.bind(this);
     }
 
     componentDidMount() {
-        if (hasBackgroundImage()) {
-            this.backgroundHolder.current.setAttribute('style', 'background-image: url(' + getBackgroundImage() + ')');
-        }
+        this.reloadBackground();
     }
 
     componentDidUpdate() {
-        if (hasBackgroundImage()) {
-            this.backgroundHolder.current.setAttribute('style', 'background-image: url(' + getBackgroundImage() + ')');
-        }
+        this.reloadBackground();
     }
 
     render(): React.ReactNode {
@@ -45,5 +46,11 @@ export default class UiContainer extends React.PureComponent {
 
     update() {
         this.setState({backgroundUpdated: !this.state.backgroundUpdated});
+    }
+
+    reloadBackground() {
+        if (hasBackgroundImage()) {
+            this.backgroundHolder.current.setAttribute('style', 'background-image: url(' + getBackgroundImage() + ')');
+        }
     }
 }

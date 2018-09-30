@@ -1,26 +1,33 @@
 import * as React from 'react';
 import BoardListItem from './BoardListItem';
 import {createBoard, get, isValidBoardName} from '../helpers/LocalStorageHelper';
-import {BoardType} from '../helpers/TypesHelper';
+import {BoardType, BoardsDataType} from '../helpers/TypesHelper';
 import {RefObject} from "react";
+
+type BoardsListState = {
+    boards: BoardsDataType;
+    visible: boolean;
+}
 
 export default class BoardsList extends React.PureComponent {
     private boardNameInput: RefObject<HTMLInputElement>;
     private addBoardButton: RefObject<HTMLButtonElement>;
-    state: any;
+    state: BoardsListState;
 
-    constructor(props: any, state: any) {
+    constructor(props: {}, state: BoardsListState) {
         super(props, state);
 
         this.state = {
             boards: get(),
             visible: true,
         };
+        this.boardNameInput = React.createRef();
+        this.addBoardButton = React.createRef();
         this.addBoard = this.addBoard.bind(this);
         this.update = this.update.bind(this);
     }
 
-    render() {
+    render(): React.ReactNode {
         let boards: BoardType[] = this.state.boards.boards;
 
         if (this.state.visible) {
@@ -36,9 +43,6 @@ export default class BoardsList extends React.PureComponent {
             } else {
                 boardsTemplate = [];
             }
-
-            this.boardNameInput = React.createRef();
-            this.addBoardButton = React.createRef();
 
             return (
                 <div className="bar message-bar">

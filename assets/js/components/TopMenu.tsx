@@ -2,32 +2,36 @@ import * as React from 'react';
 import {RefObject} from 'react';
 import * as ReactDOM from 'react-dom';
 import BoardsList from './BoardsList';
-import UiContainer from './UiContainer';
 import {stepForward, stepBackward} from '../helpers/HistoryHelper';
 import {setBackgroundImage, hasBackgroundImage, getBackgroundImage} from '../helpers/LocalStorageHelper';
 
-export interface TopMenuProps {
+type TopMenuProps = {
     title: string;
     updateAction: Function;
+}
+
+type TopMenuState = {
+    settingsOpened: boolean;
 }
 
 export default class TopMenu extends React.PureComponent<TopMenuProps> {
     private backgroundPreview: RefObject<HTMLImageElement>;
     private backgroundImageSelect: RefObject<HTMLInputElement>;
+    state: TopMenuState;
 
-    constructor(props: any, state: any) {
+    constructor(props: TopMenuProps, state: TopMenuState) {
         super(props, state);
 
         this.state = {
             settingsOpened: false,
         };
 
+        this.backgroundPreview = React.createRef();
+        this.backgroundImageSelect = React.createRef();
         this.toggleSettings = this.toggleSettings.bind(this);
         this.updatePreview = this.updatePreview.bind(this);
         this.updateBackgroundImage = this.updateBackgroundImage.bind(this);
         this.loadPreviewImage = this.loadPreviewImage.bind(this);
-        this.backgroundPreview = React.createRef();
-        this.backgroundImageSelect = React.createRef();
     }
 
     render(): React.ReactNode {
@@ -79,7 +83,6 @@ export default class TopMenu extends React.PureComponent<TopMenuProps> {
     loadPreviewImage() {
         if (this.state.settingsOpened && hasBackgroundImage()) {
             this.backgroundPreview.current.setAttribute('src', getBackgroundImage());
-            // this.backgroundPreview.current.setAttribute('style', 'background-image: url(' + getBackgroundImage() + ')');
         }
     }
 
@@ -88,14 +91,13 @@ export default class TopMenu extends React.PureComponent<TopMenuProps> {
     }
 
     updatePreview() {
-        let backgroundPreviewElement: any = this.backgroundPreview.current,
-            backgroundImageSelectElement: any = this.backgroundImageSelect.current;
+        let backgroundPreviewElement: HTMLImageElement = this.backgroundPreview.current,
+            backgroundImageSelectElement: HTMLInputElement = this.backgroundImageSelect.current;
 
         if (backgroundImageSelectElement.files && backgroundImageSelectElement.files[0]) {
             let reader = new FileReader();
 
             reader.onload = function(e: any) {
-                console.log(Object.prototype.toString.call(e));
                 backgroundPreviewElement.setAttribute('src', e.target.result);
             };
 

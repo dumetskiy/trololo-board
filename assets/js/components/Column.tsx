@@ -1,8 +1,8 @@
 import * as React from 'react'
 import {RefObject} from 'react';
 import Ticket from './Ticket';
-import {TicketType, ColumnType, SelectedTicketDataType, ColorDataType} from '../helpers/TypesHelper';
-import {getColumnForBoard, getColorsData} from '../helpers/LocalStorageHelper';
+import {ColumnType, SelectedTicketDataType} from '../helpers/TypesHelper';
+import {getColumnForBoard} from '../helpers/LocalStorageHelper';
 import {getColorSelect} from '../helpers/DomElementsHelper';
 
 import {
@@ -14,11 +14,17 @@ import {
     isValidTicketDescription
 } from '../helpers/LocalStorageHelper';
 
-export interface ColumnProps {
+type ColumnProps = {
     boardId: number;
     columnId: number;
     updateAction: Function;
     selectedTicket: SelectedTicketDataType;
+}
+
+type ColumnState = {
+    colEditing: boolean;
+    colAddTicket: boolean;
+    ticketUpdated: boolean;
 }
 
 export default class Column extends React.PureComponent<ColumnProps>  {
@@ -26,9 +32,9 @@ export default class Column extends React.PureComponent<ColumnProps>  {
     private newTicketTitleInput: RefObject<HTMLInputElement>;
     private newTicketDescriptionInput: RefObject<HTMLTextAreaElement>;
     private newTicketColorSelect: RefObject<HTMLSelectElement>;
-    state: any;
+    state: ColumnState;
     
-    constructor(props: any, state: any) {
+    constructor(props: ColumnProps, state: ColumnState) {
         super(props, state);
 
         this.state = {
@@ -36,6 +42,10 @@ export default class Column extends React.PureComponent<ColumnProps>  {
             colAddTicket: false,
             ticketUpdated: false,
         };
+        this.columnNameInput = React.createRef();
+        this.newTicketTitleInput = React.createRef();
+        this.newTicketDescriptionInput = React.createRef();
+        this.newTicketColorSelect = React.createRef();
         this.removeColumn = this.removeColumn.bind(this);
         this.toggleColumnTitleEdit = this.toggleColumnTitleEdit.bind(this);
         this.saveColumnTitle = this.saveColumnTitle.bind(this);
@@ -47,11 +57,6 @@ export default class Column extends React.PureComponent<ColumnProps>  {
     }
 
     render(): React.ReactNode {
-        this.columnNameInput = React.createRef();
-        this.newTicketTitleInput = React.createRef();
-        this.newTicketDescriptionInput = React.createRef();
-        this.newTicketColorSelect = React.createRef();
-
         let columnId: number = this.props.columnId,
             boardId: number = this.props.boardId,
             selectedTicket: SelectedTicketDataType = this.props.selectedTicket,

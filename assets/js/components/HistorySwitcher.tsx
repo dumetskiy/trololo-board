@@ -2,7 +2,7 @@ import * as React from 'react';
 import {stepForward, stepBackward} from '../helpers/HistoryHelper';
 
 export default class HistorySwitcher extends React.PureComponent {
-    constructor(props: any, state: any) {
+    constructor(props: {}, state: {}) {
         super(props, state);
     }
 
