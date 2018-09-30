@@ -1,9 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import BoardsList from './components/BoardsList';
-import TopMenu from './components/TopMenu';
+import UiContainer from './components/UiContainer';
 
 export function trololo() {
-    ReactDOM.render(<BoardsList/>, document.getElementById("content"));
-    ReactDOM.render(<TopMenu />, document.getElementById("main-menu-holder"));
+    ReactDOM.render(<UiContainer/>, document.getElementById('page-wrap'));
 }

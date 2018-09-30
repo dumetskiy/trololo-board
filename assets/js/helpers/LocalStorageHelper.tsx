@@ -5,6 +5,7 @@ import {addHistoryStep} from './HistoryHelper'
 import {TicketType, ColumnType, BoardType, BoardsDataType, SelectedTicketDataType} from './TypesHelper';
 
 const localStorageVarName = 'trololo-data';
+const localStorageBackgroundVarName = 'background';
 const defaultColumnName = 'New Tasks';
 const colorsData = [
     {
@@ -310,6 +311,40 @@ function updateCurrentState(boardId: number, columnid: number, ticketid: number)
     };
 
     ReactDOM.render(<Board boardId={boardId} selectedTicket={selectedTicket}/>, document.getElementById('content'));
+}
+
+export function setBackgroundImage(imgElement: HTMLImageElement): boolean {
+    let backgroundImageData = getBase64Image(imgElement);
+    try {
+        localStorage.setItem(localStorageBackgroundVarName, backgroundImageData);
+        return true;
+    }
+    catch (e: any) {
+        alert("This image is too big. Please select the another one and try again");
+        return false;
+    }
+}
+
+export function hasBackgroundImage(): boolean {
+    return localStorage.getItem(localStorageBackgroundVarName) !== null;
+}
+
+export function getBackgroundImage(): string {
+    return "data:image/png;base64," + localStorage.getItem(localStorageBackgroundVarName);
+}
+
+function getBase64Image(image: HTMLImageElement): string {
+    let canvas: HTMLCanvasElement = document.createElement("canvas");
+
+    canvas.width = image.width;
+    canvas.height = image.height;
+
+    let ctx: CanvasRenderingContext2D = canvas.getContext("2d");
+    ctx.drawImage(image, 0, 0);
+
+    let dataURL: string = canvas.toDataURL("image/png");
+
+    return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
 }
 
 function initBoardsData() {

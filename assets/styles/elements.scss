@@ -101,8 +101,8 @@ h2 {
         position: absolute;
         left: 50%;
         top: 50%;
+        padding: 10px;
         transform: translate(-50%, -50%);
-        height: 300px;
         width: 500px;
         background-color: white;
         border: 1px solid $color-inputBorder;

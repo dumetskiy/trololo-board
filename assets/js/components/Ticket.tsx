@@ -1,13 +1,12 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom';
 import Board from './Board';
-import {TicketType, SelectedTicketDataType, ColorDataType} from '../helpers/TypesHelper';
+import {TicketType, SelectedTicketDataType} from '../helpers/TypesHelper';
 import {getTicketForBoardColumn,
         removeBoardColumnTicket,
         isValidTicketTitle,
         isValidTicketDescription,
         updateBoardColumnTicketData,
-        getColorsData,
         moveLeft,
         moveRight,
         moveUp,

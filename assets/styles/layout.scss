@@ -6,6 +6,13 @@ body {
     cursor: default;
     height: 100vh;
 
+    .page-container {
+        width: 100vw;
+        height: 100vh;
+        background-position: center;
+        background-size: contain;
+    }
+
     .main-menu {
         position: absolute;
         @include flex();
@@ -126,15 +133,15 @@ body {
 
                 .col-header {
                     @include flex(0 0 $size-boardColumnHeaderHeight, center, center, auto, row nowrap);
+                    @include font-pacifico();
+                    @include text-truncate();
                     width: calc(100% - 5px);
                     margin: -5px;
                     padding-left: 15px;
                     background-color: $color-lightTransparentBalck;
                     color: $color-primaryWhite;
                     line-height: $size-boardColumnHeaderHeight;
-                    @include font-pacifico();
-                    @include text-truncate();
-                    font-size: 26px;
+                    $fontSize-large: 20px;
 
                     .column-tools {
                         @include flex(1, center, flex-end, center, row nowrap);
@@ -159,14 +166,17 @@ body {
                     @include flex(1, center, center, auto, row nowrap);
                     width: 100%;
                     padding: 10px 0 5px;
+                    overflow-x: hidden;
 
                     .col-items-wrap {
                         @include flex(1, flex-start, flex-start, auto, column nowrap);
                         padding: 0 5px;
                         overflow-y: scroll;
+                        margin-right: -15px;
+                        max-height: calc(100vh - 120px);
 
-                        &::-webkit-scrollbar {
-                            display: none;
+                        div::-webkit-scrollbar {
+                            width: 15px;
                         }
 
                         .col-item-wrap {
@@ -373,6 +383,35 @@ body {
                     @include background('cancel-white.svg');
                 }
             }
+        }
+    }
+
+    .settings-modal {
+        @include flex(1, center, flex-start, auto, row wrap);
+
+        .header {
+            text-align: center;
+        }
+
+        .background-preview-wrap {
+            overflow: auto;
+            height: 250px;
+        }
+
+        .background-preview {
+            border: 1px dotted $color-primaryBlack;
+        }
+
+        .background-selector,
+        .settings-submit,
+        .header,
+        .background-preview-wrap
+        {
+            @include flex(100%, center, center, auto, row wrap);
+        }
+
+        .flex-input-small {
+            background-color: $color-boardSpecialElementBackground;
         }
     }
 }
