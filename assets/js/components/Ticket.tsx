@@ -13,6 +13,7 @@ import {getTicketForBoardColumn,
         moveUp,
         moveDown} from '../helpers/LocalStorageHelper';
 import {RefObject} from 'react';
+import {getColorSelect} from '../helpers/DomElementsHelper';
 
 export interface TicketProps {
     boardId: number;
@@ -40,7 +41,6 @@ export default class Ticket extends React.PureComponent<TicketProps> {
         this.handleKeyPress = this.handleKeyPress.bind(this);
         this.isSelectedTicket = this.isSelectedTicket.bind(this);
         this.makeSelectedTicket = this.makeSelectedTicket.bind(this);
-        this.getTicketColorSelect = this.getTicketColorSelect.bind(this);
     }
 
     render(): React.ReactNode {
@@ -63,12 +63,12 @@ export default class Ticket extends React.PureComponent<TicketProps> {
                            defaultValue={ticketData.title}
                            className="flex-input-small flex-full-row"
                            placeholder="Ticket title..."/>
-                    {this.getTicketColorSelect(ticketData)}
+                    {getColorSelect(ticketData.color, this.newTicketColorSelect)}
                     <textarea
                         ref={this.ticketDescriptionInput}
                         placeholder="Ticket description..."
                         defaultValue={ticketData.description}
-                        className="flex-input-small flex-full-row">&#8203;</textarea>
+                        className="flex-input-small flex-full-row"></textarea>
                     <button
                         onClick={this.updateTicket}
                         className="flex-button-small flex-full-row">Update ticket</button>
@@ -91,21 +91,6 @@ export default class Ticket extends React.PureComponent<TicketProps> {
                     </div>
                 </div>
             </div>
-        );
-    }
-
-    getTicketColorSelect(ticket: TicketType): React.ReactNode {
-        let ticketColor: string = ticket ? ticket.color : 'none',
-            selectOptions: any = [];
-
-        getColorsData().forEach(function(color: ColorDataType, index: number) {
-            selectOptions.push(<option key={index} value={color.handle}>{color.title}</option>);
-        });
-
-        return (
-            <select ref={this.newTicketColorSelect} defaultValue={ticketColor} className="flex-input-small">
-                {selectOptions}
-            </select>
         );
     }
 

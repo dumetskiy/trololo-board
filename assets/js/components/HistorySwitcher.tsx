@@ -9,8 +9,8 @@ export default class HistorySwitcher extends React.PureComponent {
     render() {
         return (
             <div className="menu-buttons-wrap">
-                <button className="menu-button backward" onClick={this.doStepBackward}>&nbsp;</button>
-                <button className="menu-button forward" onClick={this.doStepForward}>&nbsp;</button>
+                <button className="menu-button backward" onClick={HistorySwitcher.doStepBackward}>&nbsp;</button>
+                <button className="menu-button forward" onClick={HistorySwitcher.doStepForward}>&nbsp;</button>
             </div>
         );
     }

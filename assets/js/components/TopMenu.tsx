@@ -28,8 +28,8 @@ export default class TopMenu extends React.PureComponent {
                 <div className="main-menu">
                     <div className="menu-section side-section" id="history-block">
                         <div className="menu-buttons-wrap">
-                            <button className="menu-button backward" onClick={this.doStepBackward}>&nbsp;</button>
-                            <button className="menu-button forward" onClick={this.doStepForward}>&nbsp;</button>
+                            <button className="menu-button backward" onClick={TopMenu.doStepBackward}>&nbsp;</button>
+                            <button className="menu-button forward" onClick={TopMenu.doStepForward}>&nbsp;</button>
                         </div>
                     </div>
                     <div className="menu-section">
@@ -38,7 +38,7 @@ export default class TopMenu extends React.PureComponent {
                     <div className="menu-section side-section" id="toolbar-block">
                         <div className="menu-buttons-wrap right">
                             <button className="menu-button settings" onClick={this.toggleSettings}>&nbsp;</button>
-                            <button className="menu-button home" onClick={this.goHome}>&nbsp;</button>
+                            <button className="menu-button home" onClick={TopMenu.goHome}>&nbsp;</button>
                         </div>
                     </div>
                 </div>

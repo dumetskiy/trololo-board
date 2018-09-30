@@ -612,7 +612,7 @@ body {
                 border: 1px solid white; }
               body .content .board .board-col .col-items-holder .col-items-wrap .col-item.special-item {
                 background-color: rgba(0, 0, 0, 0.4);
-                min-height: 140px;
+                min-height: 175px;
                 box-shadow: 0 0 10px rgba(0, 0, 0, 0.75); }
                 body .content .board .board-col .col-items-holder .col-items-wrap .col-item.special-item:hover {
                   background-color: rgba(0, 0, 0, 0.6); }

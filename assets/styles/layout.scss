@@ -188,7 +188,7 @@ body {
 
                             &.special-item {
                                 background-color: $color-boardSpecialElementBackground;
-                                min-height: 140px;
+                                min-height: 180px;
                                 @include small-box-shadow($color-defaultShadowHover);
 
                                 &:hover {

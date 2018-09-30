@@ -3,6 +3,7 @@ import {RefObject} from 'react';
 import Ticket from './Ticket';
 import {TicketType, ColumnType, SelectedTicketDataType, ColorDataType} from '../helpers/TypesHelper';
 import {getColumnForBoard, getColorsData} from '../helpers/LocalStorageHelper';
+import {getColorSelect} from '../helpers/DomElementsHelper';
 
 import {
     removeBoardColumn,
@@ -43,7 +44,6 @@ export default class Column extends React.PureComponent<ColumnProps>  {
         this.createNewTicket = this.createNewTicket.bind(this);
         this.update = this.update.bind(this);
         this.isSelectedColumn = this.isSelectedColumn.bind(this);
-        this.getTicketColorSelect = this.getTicketColorSelect.bind(this);
     }
 
     render(): React.ReactNode {
@@ -101,11 +101,11 @@ export default class Column extends React.PureComponent<ColumnProps>  {
                            ref={this.newTicketTitleInput}
                            className="flex-input-small flex-full-row"
                            placeholder="Ticket title..."/>
-                   {this.getTicketColorSelect(null)}
+                   {getColorSelect('', this.newTicketColorSelect)}
                     <textarea
                         ref={this.newTicketDescriptionInput}
                         placeholder="Ticket description..."
-                        className="flex-input-small flex-full-row">&#8203;</textarea>
+                        className="flex-input-small flex-full-row"></textarea>
                     <button
                         onClick={this.createNewTicket}
                         className="flex-button-small flex-full-row">Create ticket</button>
@@ -138,21 +138,6 @@ export default class Column extends React.PureComponent<ColumnProps>  {
                     </div>
                 </div>
             </div>
-        );
-    }
-
-    getTicketColorSelect(ticket: TicketType) {
-        let ticketColor: string = ticket ? ticket.color : 'none',
-            selectOptions: JSX.Element[] = [];
-
-        getColorsData().forEach(function(color: ColorDataType, index: number) {
-            selectOptions.push(<option key={index} value={color.handle} >{color.title}</option>);
-        });
-
-        return (
-            <select ref={this.newTicketColorSelect} defaultValue={ticketColor} className="flex-input-small">
-                {selectOptions}
-            </select>
         );
     }
 

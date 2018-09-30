@@ -14,6 +14,7 @@ module.exports = {
         'webpack-dev-server/client?http://localhost:8080',
         'webpack/hot/only-dev-server',
         './index.tsx',
+        './styles/main.scss',
     ],
     devServer: {
         hot: true,
@@ -40,7 +41,7 @@ module.exports = {
                     loader: 'file-loader',
                     options: {
                         name: '[name].[ext]',
-                        outputPath: 'fonts/'
+                        outputPath: './'
                     }
                 }],
             },
@@ -51,7 +52,7 @@ module.exports = {
                         loader: 'file-loader',
                         options: {
                             name: '[name].css',
-                            outputPath: '../styles'
+                            outputPath: './'
                         }
                     },
                     {

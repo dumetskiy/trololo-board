@@ -39,7 +39,7 @@ export default class Board extends React.PureComponent<BoardProps> {
             colsTemplate: JSX.Element[] = null,
             updateAction: Function = this.update;
 
-        document.onkeyup = this.handleCombinations;
+        document.onkeyup = Board.handleCombinations;
         this.columnNameInput = React.createRef();
 
         if (boardCols.length) {

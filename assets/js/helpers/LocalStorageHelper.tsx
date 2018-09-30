@@ -242,7 +242,7 @@ export function moveLeft(boardId: number, columnId: number, ticketId: number) {
         let boardsData: BoardsDataType = get(),
             ticketData: TicketType = boardsData.boards[boardId].cols[columnId].tickets[ticketId],
             newColumn: ColumnType = boardsData.boards[boardId].cols[columnId - 1],
-            newTicketId: number = newColumn.tickets.length - 1 > ticketId ? ticketId : newColumn.tickets.length - 1;
+            newTicketId: number = newColumn.tickets.length > ticketId ? ticketId : newColumn.tickets.length;
 
         delete boardsData.boards[boardId].cols[columnId].tickets[ticketId];
         boardsData.boards[boardId].cols[columnId].tickets = boardsData.boards[boardId].cols[columnId].tickets.filter(function(e){return e});
@@ -260,6 +260,9 @@ export function moveRight(boardId: number, columnId: number, ticketId: number) {
         let ticketData: TicketType = boardsData.boards[boardId].cols[columnId].tickets[ticketId],
             newColumn: ColumnType = boardsData.boards[boardId].cols[columnId + 1],
             newTicketId: number = newColumn.tickets.length > ticketId ? ticketId : newColumn.tickets.length;
+
+        console.log(columnId + 1);
+        console.log(newTicketId);
 
         delete boardsData.boards[boardId].cols[columnId].tickets[ticketId];
         boardsData.boards[boardId].cols[columnId].tickets = boardsData.boards[boardId].cols[columnId].tickets.filter(function(e){return e});
