@@ -55,9 +55,22 @@ $size-mainMenuButtonHeight: 35px;
 $size-barDefaultMargin: 10px;
 $size-barDefaultPadding: 10px;
 $size-messageBarWidth: 35%;
+$size-messageBarWidthTablet: 75%;
+$size-messageBarWidthMobile: 85%;
 $size-boardColumnHeaderHeight: 40px;
 $size-boardColumnMaxWidth: 25%;
 $size-boardColumnMinWidth: 15%;
+$size-boardColumnMaxWidthTablet: 33%;
+$size-boardColumnMinWidthTablet: 25%;
+$size-boardColumnMaxWidthMobile: 50%;
+$size-boardColumnMinWidthMobile: 33%;
 
 $time-defaultTransition: .5s;
 $time-defaultFastTransition: .2s;
+
+$fontWeight-light: 300;
+$fontWeight-medium: 400;
+$fontWeight-bold: 600;
+
+$tabletWidthLimit: 1000px;
+$mobileWidthLimit: 500px;

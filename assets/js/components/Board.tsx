@@ -74,14 +74,14 @@ export default class Board extends React.PureComponent<BoardPropsType> {
                     </div>
                 </div>
             );
-        } else {
-            return (
-                <div className="board">
-                    {colsTemplate}
-                    <button className="add-board-button" onClick={this.toggleAddColumn}>&nbsp;</button>
-                </div>
-            );
         }
+
+        return (
+            <div className="board">
+                {colsTemplate}
+                <button className="add-board-button" onClick={this.toggleAddColumn}>&nbsp;</button>
+            </div>
+        );
     }
 
     toggleAddColumn() {

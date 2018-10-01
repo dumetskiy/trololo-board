@@ -1,3 +1,16 @@
+$boardsListMaxHeight: 185px;
+$boardsListMinHeight: 123px;
+$boardsListItemHeight: 30px;
+$boardsListItemHeightTablet: 50px;
+$boardsListItemHeightMobile: 60px;
+$toolItemSize: 20px;
+$addBoardButtonSize: 20px;
+$addColumnFormWidth: 300px;
+$addColumnFormHeight: 60px;
+$ticketMinHeight: 100px;
+$ticketDescriptionMinHeight: 65px;
+$backgroundPreviewHeight: 250px;
+
 body {
     @include font-varela();
     padding: 0;
@@ -10,7 +23,7 @@ body {
         width: 100vw;
         height: 100vh;
         background-position: center;
-        background-size: contain;
+        background-size: cover;
     }
 
     .main-menu {
@@ -51,11 +64,18 @@ body {
         .message-bar {
             @include flex(0 0 $size-messageBarWidth, center, center, center, row wrap);
 
+            @include mobile {
+                @include flex(0 0 $size-messageBarWidthMobile, center, center, center, row wrap);
+            }
+            
+            @include tablet {
+                @include flex(0 0 $size-messageBarWidthTablet, center, center, center, row wrap);
+            }
+
             .boards-list {
                 @include flex(1, flex-start, flex-start, flex-start, row wrap);
+                @include height-limits($boardsListMinHeight, $boardsListMaxHeight);
                 margin: 5px 6px;
-                max-height: 185px;
-                min-height: 123px;
                 overflow-y: auto;
                 border: 1px solid $color-lightTransparentBlack;
                 color: $color-primaryWhite;
@@ -63,11 +83,23 @@ body {
                 .list-item {
                     @include font-varela();
                     width: 100%;
-                    height: 30px;
-                    line-height: 30px;
+                    height: $boardsListItemHeight;
+                    line-height: $boardsListItemHeight;
                     font-size: $fontSize-small;
                     padding-left: 15px;
                     border-bottom: 1px solid $color-lightTransparentBlack;
+
+                    @include mobile {
+                        height: $boardsListItemHeightMobile;
+                        line-height: $boardsListItemHeightMobile;
+                        font-size: $fontSize-large;
+                    }
+
+                    @include tablet {
+                        height: $boardsListItemHeightTablet;
+                        line-height: $boardsListItemHeightTablet;
+                        font-size: $fontSize-large;
+                    }
 
                     &:hover {
                         background-color: $color-lightTransparentBlack;
@@ -77,16 +109,28 @@ body {
                         position: relative;
                         float: right;
                         border: none;
-                        height: 30px;
-                        width: 30px;
-                        line-height: 30px;
+                        height: $boardsListItemHeight;
+                        width: $boardsListItemHeight;
+                        line-height: $boardsListItemHeight;
                         text-align: center;
-                        font-weight: 600;
+                        font-weight: $fontWeight-bold;
                         background-color: $color-veryLightTransparentBalck;
                         top: 0;
                         right: 0;
                         transition: $time-defaultFastTransition;
                         cursor: pointer;
+
+                        @include mobile {
+                            height: $boardsListItemHeightMobile;
+                            width: $boardsListItemHeightMobile;
+                            line-height: $boardsListItemHeightMobile;
+                        }
+
+                        @include tablet {
+                            height: $boardsListItemHeightTablet;
+                            width: $boardsListItemHeightTablet;
+                            line-height: $boardsListItemHeightTablet;
+                        }
 
                         &:hover {
                             background-color: $color-lightTransparentBlack;
@@ -120,9 +164,9 @@ body {
         }
 
         .tool-item {
-            @include flex(0 0 20px, flex-end, center, auto, row nowrap);
+            @include flex(0 0 $toolItemSize, flex-end, center, auto, row nowrap);
             border: none;
-            height: 20px;
+            height: $toolItemSize;
             background-color: $color-veryLightTransparentBalck;
             margin: 0 3px;
             transition: $time-defaultFastTransition;
@@ -150,12 +194,12 @@ body {
         }
 
         .add-board-button {
-            @include flex(0 0 30px, flex-start, flex-start, auto, row nowrap);
+            @include flex(0 0 $addBoardButtonSize, flex-start, flex-start, auto, row nowrap);
             @include background('add-white.svg');
             border-radius: 3px;
-            width: 30px;
+            width: $addBoardButtonSize;
             opacity: .5;
-            height: 30px;
+            height: $addBoardButtonSize;
             background-color: $color-boardSpecialElementBackground;
             border: 1px solid $color-boardAddButtonBorder;
             transition: $time-defaultFastTransition;
@@ -168,9 +212,9 @@ body {
         }
 
         .add-column-from {
-            @include flex(0 0 300px, flex-start, flex-start, auto, row nowrap);
+            @include flex(0 0 $addColumnFormWidth, flex-start, flex-start, auto, row nowrap);
             background-color: $color-boardAddColumnFormBackground;
-            height: 60px;
+            height: $addColumnFormHeight;
             padding: 0 10px;
 
             .flex-button-small {
@@ -198,13 +242,20 @@ body {
 
         .board-col {
             @include flex(1, flex-start, flex-start, auto, row nowrap);
+            @include width-limits($size-boardColumnMinWidth, $size-boardColumnMaxWidth);
             display: inline-block;
             margin: 0 10px;
             padding: 5px;
             background-color: $color-boardBackground;
-            min-width: $size-boardColumnMinWidth;
-            max-width: $size-boardColumnMaxWidth;
             transition: .5s;
+
+            @include mobile {
+                @include width-limits($size-boardColumnMinWidthMobile, $size-boardColumnMaxWidthMobile);
+            }
+
+            @include tablet {
+                @include width-limits($size-boardColumnMinWidthTablet, $size-boardColumnMaxWidthTablet);
+            }
 
             &:hover,
             &.current
@@ -276,9 +327,9 @@ body {
         .col-item {
             @include font-varela();
             @include flex(0 0 auto, flex-start, flex-start, auto, row wrap);
+            @include height-limits($ticketMinHeight);
             border: 1px solid transparent;
             transition: $time-defaultTransition;
-            min-height: 100px;
             background-color: $color-veryLightTransparentBalck;
             margin: 0 4px 5px 0;
             padding: 5px;
@@ -293,7 +344,7 @@ body {
 
             &.special-item {
                 @include small-box-shadow($color-defaultShadowHover);
-                min-height: 180px;
+                @include height-limits(120px);
                 background-color: $color-boardSpecialElementBackground;
 
                 &:hover {
@@ -336,8 +387,8 @@ body {
             }
 
             .item-description {
+                @include height-limits($ticketDescriptionMinHeight);
                 margin-top: 5px;
-                min-height: 65px;
                 line-height: 16px;
                 color: $color-primaryWhite;
                 font-size: $fontSize-small;
@@ -374,7 +425,7 @@ body {
 
         .background-preview-wrap {
             overflow: auto;
-            height: 250px;
+            height: $backgroundPreviewHeight;
         }
 
         .background-preview {

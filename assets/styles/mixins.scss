@@ -61,7 +61,7 @@
     text-align: center;
     border-radius: 3px;
     color: $color-primaryWhite;
-    font-weight: bold;
+    font-weight: $fontWeight-bold;
     transition: $time-defaultTransition;
 
     &:hover {
@@ -79,7 +79,7 @@
     font-size: $fontSize;
     text-align: center;
     border-radius: 3px;
-    font-weight: bold;
+    font-weight: $fontWeight-bold;
     transition: $time-defaultTransition;
 
     &:hover {
@@ -104,3 +104,24 @@
     }
 }
 
+@mixin height-limits($minHeight: none, $maxHeight: none) {
+    max-height: $maxHeight;
+    min-height: $minHeight;
+}
+
+@mixin width-limits($minWidth: none, $maxWidth: none) {
+    max-width: $maxWidth;
+    min-width: $minWidth;
+}
+
+@mixin mobile {
+    @media only screen and (max-width: #{$mobileWidthLimit}) {
+        @content;
+    }
+}
+
+@mixin tablet {
+    @media only screen and (min-width: #{$mobileWidthLimit + 1px}) and (max-width: #{$tabletWidthLimit}) {
+        @content;
+    }
+}
