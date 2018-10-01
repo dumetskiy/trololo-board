@@ -302,62 +302,27 @@ body {
             }
 
             &.red {
-                background-color: $color-ticketColorRed;
-
-                &:hover,
-                &.current
-                {
-                    background-color: $color-ticketColorRedActive;
-                }
+                @include element-background($color-ticketColorRed, $color-ticketColorRedActive);
             }
 
             &.green {
-                background-color: $color-ticketColorGreen;
-                &:hover,
-                &.current
-                {
-                    background-color: $color-ticketColorGreenActive;
-                }
+                @include element-background($color-ticketColorGreen, $color-ticketColorGreenActive);
             }
 
             &.blue {
-                background-color: $color-ticketColorBlue;
-
-                &:hover,
-                &.current
-                {
-                    background-color: $color-ticketColorBlueActive;
-                }
+                @include element-background($color-ticketColorBlue, $color-ticketColorBlueActive);
             }
 
             &.purple {
-                background-color: $color-ticketColorPurple;
-
-                &:hover,
-                &.current
-                {
-                    background-color: $color-ticketColorPurpleActive;
-                }
+                @include element-background($color-ticketColorPurple, $color-ticketColorPurpleActive);
             }
 
             &.yellow {
-                background-color: $color-ticketColorYellow;
-
-                &:hover,
-                &.current
-                {
-                    background-color: $color-ticketColorYellowActive;
-                }
+                @include element-background($color-ticketColorYellow, $color-ticketColorYellowActive);
             }
 
             &.orange {
-                background-color: $color-ticketColorOrange;
-
-                &:hover,
-                &.current
-                {
-                    background-color: $color-ticketColorOrangeActive;
-                }
+                @include element-background($color-ticketColorOrange, $color-ticketColorOrangeActive);
             }
 
             &:hover,

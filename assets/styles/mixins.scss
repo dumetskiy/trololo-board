@@ -94,3 +94,13 @@
     text-overflow: ellipsis;
 }
 
+@mixin element-background($inactiveBackgroundColor, $activeBackgroundColor) {
+    background-color: $inactiveBackgroundColor;
+
+    &:hover,
+    &.current
+    {
+        background-color: $activeBackgroundColor;
+    }
+}
+
