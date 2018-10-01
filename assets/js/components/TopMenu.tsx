@@ -14,7 +14,7 @@ type TopMenuStateType = {
     settingsOpened: boolean;
 }
 
-export default class TopMenu extends React.PureComponent<TopMenuProps> {
+export default class TopMenu extends React.PureComponent<TopMenuPropsType> {
     private backgroundPreview: RefObject<HTMLImageElement>;
     private backgroundImageSelect: RefObject<HTMLInputElement>;
     state: TopMenuStateType;

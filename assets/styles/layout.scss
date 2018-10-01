@@ -14,33 +14,33 @@ body {
     }
 
     .main-menu {
-        position: absolute;
         @include flex();
+        position: absolute;
         width: 100vw;
         height: $size-mainMenuHeight;
         background-color: $color-mainMenuBackground;
         transition: $time-defaultTransition;
         border-bottom: 1px solid rgba(0, 0, 0, 0.34);
 
-        .menu-section {
-            @include flex();
-            height: 100%;
-            padding: 0 20px;
-
-            &.side-section {
-                @include flex(0 0 $size-mainMenuSideElementWidth);
-            }
-
-            .heading {
-                @include flex(1, center, center, center);
-            }
-        }
-
         &:hover {
             @include big-box-shadow();
             background-color: $color-mainMenuBackgroundHover;
             border-bottom: 1px solid rgba(0, 0, 0, 0.44);
             height: $size-mainMenuHeightHover;
+        }
+    }
+
+    .menu-section {
+        @include flex();
+        height: 100%;
+        padding: 0 20px;
+
+        &.side-section {
+            @include flex(0 0 $size-mainMenuSideElementWidth);
+        }
+
+        .heading {
+            @include flex(1, center, center, center);
         }
     }
 
@@ -113,290 +113,290 @@ body {
         }
 
         .board {
-            margin-top: $size-mainMenuHeight;
             @include flex(100%, flex-start, flex-start, auto, row nowrap);
+            margin-top: $size-mainMenuHeight;
             padding: 10px;
             overflow-x: auto;
+        }
 
-            .board-col {
-                @include flex(1, flex-start, flex-start, auto, row nowrap);
-                display: inline-block;
-                margin: 0 10px;
-                padding: 5px;
-                background-color: $color-boardBackground;
-                min-width: $size-boardColumnMinWidth;
-                max-width: $size-boardColumnMaxWidth;
-                transition: .5s;
+        .tool-item {
+            @include flex(0 0 20px, flex-end, center, auto, row nowrap);
+            border: none;
+            height: 20px;
+            background-color: $color-veryLightTransparentBalck;
+            margin: 0 3px;
+            transition: $time-defaultFastTransition;
+            cursor: pointer;
 
-                .board-col-content {
-                    @include flex(0 0 100%, flex-start, flex-start, auto, column nowrap);
+            &.remove {
+                @include background('remove-xs-white.svg');
+            }
+
+            &.edit {
+                @include background('edit-xs-white.svg');
+            }
+
+            &.add {
+                @include background('add-xs-white.svg');
+            }
+
+            &.delete {
+                @include background('delete-xs-white.svg');
+            }
+
+            &:hover {
+                background-color: $color-lightTransparentBalck;
+            }
+        }
+
+        .add-board-button {
+            @include flex(0 0 30px, flex-start, flex-start, auto, row nowrap);
+            @include background('add-white.svg');
+            border-radius: 3px;
+            width: 30px;
+            opacity: .5;
+            height: 30px;
+            background-color: $color-boardSpecialElementBackground;
+            border: 1px solid $color-boardAddButtonBorder;
+            transition: $time-defaultFastTransition;
+
+            &:hover {
+                @include small-box-shadow($color-primaryBlack);
+                border: 1px solid $color-primaryBlack;
+                opacity: 1;
+            }
+        }
+
+        .add-column-from {
+            @include flex(0 0 300px, flex-start, flex-start, auto, row nowrap);
+            background-color: $color-boardAddColumnFormBackground;
+            height: 60px;
+            padding: 0 10px;
+
+            .flex-button-small {
+                height: 28px;
+            }
+
+            .add-button {
+                @include background('add-white.svg');
+                padding: 0 18px;
+            }
+
+            .cancel-button {
+                @include background('cancel-white.svg');
+                padding: 0 10px;
+            }
+        }
+
+        .column-tools {
+            @include flex(0 0 60px, center, flex-end, center, row nowrap);
+            height: 24px;
+            padding-right: 10px;
+            transition: $time-defaultTransition;
+            opacity: 0;
+        }
+
+        .board-col {
+            @include flex(1, flex-start, flex-start, auto, row nowrap);
+            display: inline-block;
+            margin: 0 10px;
+            padding: 5px;
+            background-color: $color-boardBackground;
+            min-width: $size-boardColumnMinWidth;
+            max-width: $size-boardColumnMaxWidth;
+            transition: .5s;
+
+            &:hover,
+            &.current
+            {
+                background-color: $color-boardBackgroundHover;
+
+                .col-header > .column-tools {
+                    opacity: 1;
                 }
+            }
 
-                .col-header {
-                    @include flex(0 0 $size-boardColumnHeaderHeight, center, center, auto, row nowrap);
-                    @include font-pacifico();
-                    @include text-truncate();
-                    width: calc(100% - 5px);
-                    margin: -5px;
-                    padding-left: 15px;
-                    background-color: $color-lightTransparentBalck;
-                    color: $color-primaryWhite;
-                    line-height: $size-boardColumnHeaderHeight;
-                    $fontSize-large: 20px;
+            .board-col-content {
+                @include flex(0 0 100%, flex-start, flex-start, auto, column nowrap);
+            }
+        }
 
-                    .column-title {
-                        @include flex(1, center, flex-start, center, row nowrap);
-                        @include text-truncate();
-                        margin-right: 20px;
-                    }
+        .col-header {
+            @include flex(0 0 $size-boardColumnHeaderHeight, center, center, auto, row nowrap);
+            @include font-pacifico();
+            @include text-truncate();
+            width: calc(100% - 5px);
+            margin: -5px;
+            padding-left: 15px;
+            background-color: $color-lightTransparentBalck;
+            color: $color-primaryWhite;
+            line-height: $size-boardColumnHeaderHeight;
+            $fontSize-large: 20px;
+        }
 
-                    .column-tools {
-                        @include flex(0 0 60px, center, flex-end, center, row nowrap);
-                        height: 24px;
-                        padding-right: 10px;
-                        transition: $time-defaultTransition;
-                        opacity: 0;
-                    }
+        .column-title {
+            @include flex(1, center, flex-start, center, row nowrap);
+            @include text-truncate();
+            margin-right: 20px;
+        }
+
+        .col-items-holder {
+            @include flex(1, center, center, auto, row nowrap);
+            width: 100%;
+            padding: 10px 0 5px;
+            overflow-x: hidden;
+        }
+
+        .col-items-wrap {
+            @include flex(1, flex-start, flex-start, auto, column nowrap);
+            padding: 0 5px;
+            overflow-y: scroll;
+            margin-right: -15px;
+            max-height: calc(100vh - 120px);
+
+            div::-webkit-scrollbar {
+                width: 15px;
+            }
+
+            .col-item-wrap {
+                @include flex(100%, flex-start, flex-start, flex-start, column nowrap);
+                display: block;
+                max-width: 100%;
+            }
+        }
+
+        .item-tools {
+            @include flex(0 0 50px, center, flex-end, auto, row nowrap);
+            margin-left: 5px;
+            opacity: 0;
+            transition: $time-defaultTransition;
+            height: 24px;
+        }
+
+        .col-item {
+            @include font-varela();
+            @include flex(0 0 auto, flex-start, flex-start, auto, row wrap);
+            border: 1px solid transparent;
+            transition: $time-defaultTransition;
+            min-height: 100px;
+            background-color: $color-veryLightTransparentBalck;
+            margin: 0 4px 5px 0;
+            padding: 5px;
+
+            @media screen and (-webkit-min-device-pixel-ratio:0){
+                margin: 0 12px 5px 0;
+            }
+
+            &.current {
+                border: 1px solid white;
+            }
+
+            &.special-item {
+                @include small-box-shadow($color-defaultShadowHover);
+                min-height: 180px;
+                background-color: $color-boardSpecialElementBackground;
+
+                &:hover {
+                    background-color: $color-boardSpecialElementBackgroundHover;
                 }
+            }
+
+            &.red {
+                background-color: $color-ticketColorRed;
 
                 &:hover,
                 &.current
                 {
-                    background-color: $color-boardBackgroundHover;
-
-                    .col-header > .column-tools {
-                        opacity: 1;
-                    }
-                }
-
-                .col-items-holder {
-                    @include flex(1, center, center, auto, row nowrap);
-                    width: 100%;
-                    padding: 10px 0 5px;
-                    overflow-x: hidden;
-
-                    .col-items-wrap {
-                        @include flex(1, flex-start, flex-start, auto, column nowrap);
-                        padding: 0 5px;
-                        overflow-y: scroll;
-                        margin-right: -15px;
-                        max-height: calc(100vh - 120px);
-
-                        div::-webkit-scrollbar {
-                            width: 15px;
-                        }
-
-                        .col-item-wrap {
-                            @include flex(100%, flex-start, flex-start, flex-start, column nowrap);
-                            display: block;
-                            max-width: 100%;
-                        }
-
-                        .col-item {
-                            border: 1px solid transparent;
-                            @include font-varela();
-                            @include flex(0 0 auto, flex-start, flex-start, auto, row wrap);
-                            transition: $time-defaultTransition;
-                            min-height: 100px;
-                            background-color: $color-veryLightTransparentBalck;
-                            margin: 0 4px 5px 0;
-                            padding: 5px;
-
-                            @media screen and (-webkit-min-device-pixel-ratio:0){
-                                margin: 0 12px 5px 0;
-                            }
-
-                            &.current {
-                                border: 1px solid white;
-                            }
-
-                            &.special-item {
-                                min-height: 180px;
-                                background-color: $color-boardSpecialElementBackground;
-                                @include small-box-shadow($color-defaultShadowHover);
-
-                                &:hover {
-                                    background-color: $color-boardSpecialElementBackgroundHover;
-                                }
-                            }
-
-                            &.red {
-                                background-color: $color-ticketColorRed;
-
-                                &:hover,
-                                &.current
-                                {
-                                    background-color: $color-ticketColorRedActive;
-                                }
-                            }
-
-                            &.green {
-                                background-color: $color-ticketColorGreen;
-                                &:hover,
-                                &.current
-                                {
-                                    background-color: $color-ticketColorGreenActive;
-                                }
-                            }
-
-                            &.blue {
-                                background-color: $color-ticketColorBlue;
-
-                                &:hover,
-                                &.current
-                                {
-                                    background-color: $color-ticketColorBlueActive;
-                                }
-                            }
-
-                            &.purple {
-                                background-color: $color-ticketColorPurple;
-
-                                &:hover,
-                                &.current
-                                {
-                                    background-color: $color-ticketColorPurpleActive;
-                                }
-                            }
-
-                            &.yellow {
-                                background-color: $color-ticketColorYellow;
-
-                                &:hover,
-                                &.current
-                                {
-                                    background-color: $color-ticketColorYellowActive;
-                                }
-                            }
-
-                            &.orange {
-                                background-color: $color-ticketColorOrange;
-
-                                &:hover,
-                                &.current
-                                {
-                                    background-color: $color-ticketColorOrangeActive;
-                                }
-                            }
-
-                            .item-header {
-                                @include flex(0 0 100%, flex-start, flex-start, auto, row nowrap);
-                                height: 24px;
-                                border-bottom: 1px solid $color-lightTransparentBalck;
-
-                                .item-title {
-                                    display: block;
-                                    text-transform: uppercase;
-                                    line-height: 26px;
-                                    color: white;
-                                    font-size: 17px;
-                                    margin-left: 10px;
-                                    height: 24px;
-                                    @include text-truncate();
-                                }
-
-                                .item-tools {
-                                    margin-left: 5px;
-                                    @include flex(0 0 50px, center, flex-end, auto, row nowrap);
-                                    opacity: 0;
-                                    transition: $time-defaultTransition;
-                                    height: 24px;
-                                }
-                            }
-
-                            &:hover,
-                            &.current
-                            {
-                                background-color: $color-lightTransparentBalck;
-
-                                .item-header > .item-tools {
-                                    opacity: 1;
-                                }
-                            }
-
-                            .item-description {
-                                margin-top: 5px;
-                                min-height: 65px;
-                                line-height: 16px;
-                                color: white;
-                                font-size: $fontSize-small;
-                                margin-left: 10px;
-                                max-width: 90%;
-                                overflow-y: hidden;
-                            }
-                        }
-                    }
+                    background-color: $color-ticketColorRedActive;
                 }
             }
 
-            .tool-item {
-                @include flex(0 0 20px, flex-end, center, auto, row nowrap);
-                border: none;
-                height: 20px;
-                background-color: $color-veryLightTransparentBalck;
-                margin: 0 3px;
-                transition: $time-defaultFastTransition;
-                cursor: pointer;
-
-                &.remove {
-                    @include background('remove-xs-white.svg');
-                }
-
-                &.edit {
-                    @include background('edit-xs-white.svg');
-                }
-
-                &.add {
-                    @include background('add-xs-white.svg');
-                }
-
-                &.delete {
-                    @include background('delete-xs-white.svg');
-                }
-
-                &:hover {
-                    background-color: $color-lightTransparentBalck;
+            &.green {
+                background-color: $color-ticketColorGreen;
+                &:hover,
+                &.current
+                {
+                    background-color: $color-ticketColorGreenActive;
                 }
             }
 
-            .add-board-button {
-                border-radius: 3px;
-                width: 30px;
-                opacity: .5;
-                height: 30px;
-                background-color: $color-boardSpecialElementBackground;
-                border: 1px solid $color-boardAddButtonBorder;
-                transition: $time-defaultFastTransition;
-                @include flex(0 0 30px, flex-start, flex-start, auto, row nowrap);
-                @include background('add-white.svg');
+            &.blue {
+                background-color: $color-ticketColorBlue;
 
-                &:hover {
-                    border: 1px solid $color-primaryBlack;
+                &:hover,
+                &.current
+                {
+                    background-color: $color-ticketColorBlueActive;
+                }
+            }
+
+            &.purple {
+                background-color: $color-ticketColorPurple;
+
+                &:hover,
+                &.current
+                {
+                    background-color: $color-ticketColorPurpleActive;
+                }
+            }
+
+            &.yellow {
+                background-color: $color-ticketColorYellow;
+
+                &:hover,
+                &.current
+                {
+                    background-color: $color-ticketColorYellowActive;
+                }
+            }
+
+            &.orange {
+                background-color: $color-ticketColorOrange;
+
+                &:hover,
+                &.current
+                {
+                    background-color: $color-ticketColorOrangeActive;
+                }
+            }
+
+            &:hover,
+            &.current
+            {
+                background-color: $color-lightTransparentBalck;
+
+                .item-header > .item-tools {
                     opacity: 1;
-                    @include small-box-shadow($color-primaryBlack);
                 }
             }
 
-            .add-column-from {
-                background-color: $color-boardAddColumnFormBackground;
-                height: 60px;
-                padding: 0 10px;
-                @include flex(0 0 300px, flex-start, flex-start, auto, row nowrap);
-
-                .flex-button-small {
-                    height: 28px;
-                }
-
-                .add-button {
-                    padding: 0 18px;
-                    @include background('add-white.svg');
-                }
-
-                .cancel-button {
-                    padding: 0 10px;
-                    @include background('cancel-white.svg');
-                }
+            .item-description {
+                margin-top: 5px;
+                min-height: 65px;
+                line-height: 16px;
+                color: white;
+                font-size: $fontSize-small;
+                margin-left: 10px;
+                max-width: 90%;
+                overflow-y: hidden;
             }
+        }
+
+        .item-header {
+             @include flex(0 0 100%, flex-start, flex-start, auto, row nowrap);
+             height: 24px;
+             border-bottom: 1px solid $color-lightTransparentBalck;
+         }
+
+        .item-title {
+            @include text-truncate();
+            display: block;
+            text-transform: uppercase;
+            line-height: 26px;
+            color: white;
+            font-size: 17px;
+            margin-left: 10px;
+            height: 24px;
         }
     }
 

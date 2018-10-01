@@ -33,7 +33,7 @@ export default class Ticket extends React.PureComponent<TicketPropsType> {
     private newTicketColorSelect: RefObject<HTMLSelectElement>;
     state: TicketStateType;
 
-    constructor(props: TicketProps, state: TicketStateType) {
+    constructor(props: TicketPropsType, state: TicketStateType) {
         super(props, state);
 
         this.state = {
