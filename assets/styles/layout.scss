@@ -20,12 +20,12 @@ body {
         height: $size-mainMenuHeight;
         background-color: $color-mainMenuBackground;
         transition: $time-defaultTransition;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.34);
+        border-bottom: 1px solid $color-lightTransparentBlack;
 
         &:hover {
             @include big-box-shadow();
             background-color: $color-mainMenuBackgroundHover;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.44);
+            border-bottom: 1px solid $color-mainMenuButtonHover;
             height: $size-mainMenuHeightHover;
         }
     }
@@ -57,7 +57,7 @@ body {
                 max-height: 185px;
                 min-height: 123px;
                 overflow-y: auto;
-                border: 1px solid $color-lightTransparentBalck;
+                border: 1px solid $color-lightTransparentBlack;
                 color: $color-primaryWhite;
 
                 .list-item {
@@ -67,10 +67,10 @@ body {
                     line-height: 30px;
                     font-size: $fontSize-small;
                     padding-left: 15px;
-                    border-bottom: 1px solid $color-lightTransparentBalck;
+                    border-bottom: 1px solid $color-lightTransparentBlack;
 
                     &:hover {
-                        background-color: $color-lightTransparentBalck;
+                        background-color: $color-lightTransparentBlack;
                     }
 
                     .tool-button {
@@ -89,7 +89,7 @@ body {
                         cursor: pointer;
 
                         &:hover {
-                            background-color: $color-lightTransparentBalck;
+                            background-color: $color-lightTransparentBlack;
                         }
 
                         &.remove {
@@ -105,7 +105,7 @@ body {
                         }
 
                         &:last-child {
-                            border-right: 1px solid $color-lightTransparentBalck;
+                            border-right: 1px solid $color-lightTransparentBlack;
                         }
                     }
                 }
@@ -145,7 +145,7 @@ body {
             }
 
             &:hover {
-                background-color: $color-lightTransparentBalck;
+                background-color: $color-lightTransparentBlack;
             }
         }
 
@@ -228,10 +228,10 @@ body {
             width: calc(100% - 5px);
             margin: -5px;
             padding-left: 15px;
-            background-color: $color-lightTransparentBalck;
+            background-color: $color-lightTransparentBlack;
             color: $color-primaryWhite;
             line-height: $size-boardColumnHeaderHeight;
-            $fontSize-large: 20px;
+            font-size: $fontSize-large;
         }
 
         .column-title {
@@ -363,7 +363,7 @@ body {
             &:hover,
             &.current
             {
-                background-color: $color-lightTransparentBalck;
+                background-color: $color-lightTransparentBlack;
 
                 .item-header > .item-tools {
                     opacity: 1;
@@ -374,7 +374,7 @@ body {
                 margin-top: 5px;
                 min-height: 65px;
                 line-height: 16px;
-                color: white;
+                color: $color-primaryWhite;
                 font-size: $fontSize-small;
                 margin-left: 10px;
                 max-width: 90%;
@@ -385,7 +385,7 @@ body {
         .item-header {
              @include flex(0 0 100%, flex-start, flex-start, auto, row nowrap);
              height: 24px;
-             border-bottom: 1px solid $color-lightTransparentBalck;
+             border-bottom: 1px solid $color-lightTransparentBlack;
          }
 
         .item-title {
@@ -393,8 +393,8 @@ body {
             display: block;
             text-transform: uppercase;
             line-height: 26px;
-            color: white;
-            font-size: 17px;
+            color: $color-primaryWhite;
+            font-size: $fontSize-medium;
             margin-left: 10px;
             height: 24px;
         }
