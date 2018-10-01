@@ -3,6 +3,7 @@ import * as ReactDOM from 'react-dom';
 import Board from '../components/Board';
 import {addHistoryStep} from './HistoryHelper'
 import {TicketType, ColumnType, BoardType, BoardsDataType, SelectedTicketDataType} from './TypesHelper';
+import {ticketTitleMaxLength, columnNameMaxLength} from './DomElementsHelper';
 
 const localStorageVarName = 'trololo-data';
 const localStorageBackgroundVarName = 'background';
@@ -89,21 +90,27 @@ export function isValidBoardName(boardName: string): boolean {
 }
 
 export function isValidColumnName(boardId: number, columnName: string): boolean {
-    let isValidBoardName: boolean = true;
-
     if (columnName.length) {
-        get().boards[boardId].cols.forEach(function(column: ColumnType) {
-            if (column.title.toLowerCase() === columnName.toLowerCase()) {
-                isValidBoardName = false;
-                alert('Column with the same name already exists!');
-            }
-        });
+        if (columnName.length <= columnNameMaxLength) {
+            get().boards[boardId].cols.forEach(function(column: ColumnType) {
+                if (column.title.toLowerCase() === columnName.toLowerCase()) {
+                    alert('Column with the same name already exists!');
+
+                    return false;
+                }
+            });
+        } else {
+            alert('Maximum column name length exceeded!');
+
+            return false;
+        }
     } else {
-        isValidBoardName = false;
         alert('Empty column name provided!');
+
+        return false;
     }
 
-    return isValidBoardName;
+    return true;
 }
 
 export function addColumnToBoard(boardId: number, columnName: string) {
@@ -160,7 +167,13 @@ export function addTicketToBoardColumn(boardId: number,
 
 export function isValidTicketTitle(ticketTitle: string): boolean {
     if (ticketTitle.length) {
-        return true;
+        if (ticketTitle.length <= ticketTitleMaxLength) {
+            return true;
+        } else {
+            alert('Maximum ticket title length exceeded!');
+
+            return false;
+        }
     } else {
         alert('Empty ticket title provided!');
 

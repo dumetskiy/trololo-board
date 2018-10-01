@@ -4,6 +4,7 @@ import Column from './Column';
 import {getBoardById, isValidColumnName, addColumnToBoard} from '../helpers/LocalStorageHelper';
 import {stepForward, stepBackward} from '../helpers/HistoryHelper';
 import {ColumnType, BoardType, SelectedTicketDataType} from '../helpers/TypesHelper';
+import {columnNameMaxLength} from '../helpers/DomElementsHelper';
 
 type BoardProps = {
     boardId: number;
@@ -63,6 +64,7 @@ export default class Board extends React.PureComponent<BoardProps> {
                     {colsTemplate}
                     <div className="add-column-from">
                         <input type="text"
+                               maxLength={columnNameMaxLength}
                                ref={this.columnNameInput}
                                className="flex-input-small flex-width-60"
                                placeholder="Column name..." />

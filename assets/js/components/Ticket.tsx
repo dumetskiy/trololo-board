@@ -13,6 +13,7 @@ import {getTicketForBoardColumn,
         moveDown} from '../helpers/LocalStorageHelper';
 import {RefObject} from 'react';
 import {getColorSelect} from '../helpers/DomElementsHelper';
+import {ticketTitleMaxLength, collapsedTicketDescriptionLength} from '../helpers/DomElementsHelper';
 
 type TicketProps = {
     boardId: number;
@@ -61,6 +62,7 @@ export default class Ticket extends React.PureComponent<TicketProps> {
             return (
                 <div className={isSelectedTicket ? 'col-item current ' + ticketData.color : 'col-item ' + ticketData.color} onClick={this.makeSelectedTicket}>
                     <input type="text"
+                           maxLength={ticketTitleMaxLength}
                            ref={this.ticketTitleInput}
                            defaultValue={ticketData.title}
                            className="flex-input-small flex-full-row"
@@ -89,7 +91,7 @@ export default class Ticket extends React.PureComponent<TicketProps> {
                         </div>
                     </div>
                     <div className="item-description">
-                        {ticketData.description}
+                        {isSelectedTicket ? ticketData.description : Ticket.getTruncatedDescription(ticketData.description)}
                     </div>
                 </div>
             </div>
@@ -161,5 +163,13 @@ export default class Ticket extends React.PureComponent<TicketProps> {
         } else if (e.keyCode === 13) {
             this.setState({ticketEditing: true});
         }
+    }
+
+    static getTruncatedDescription(description: string): string {
+        if (description.length <= collapsedTicketDescriptionLength) {
+            return description;
+        }
+
+        return description.substr(0, collapsedTicketDescriptionLength) + '...';
     }
 }

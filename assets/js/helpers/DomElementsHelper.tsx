@@ -33,6 +33,10 @@ const colorsData = [
     },
 ];
 
+export const ticketTitleMaxLength = 50;
+export const columnNameMaxLength = 45;
+export const collapsedTicketDescriptionLength = 350;
+
 export function getColorSelect(currentColor: string, ref: RefObject<HTMLSelectElement>): React.ReactNode {
     let selectOptions: JSX.Element[] = [];
 

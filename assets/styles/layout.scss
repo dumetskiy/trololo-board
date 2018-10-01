@@ -120,6 +120,7 @@ body {
 
             .board-col {
                 @include flex(1, flex-start, flex-start, auto, row nowrap);
+                display: inline-block;
                 margin: 0 10px;
                 padding: 5px;
                 background-color: $color-boardBackground;
@@ -143,8 +144,14 @@ body {
                     line-height: $size-boardColumnHeaderHeight;
                     $fontSize-large: 20px;
 
+                    .column-title {
+                        @include flex(1, center, flex-start, center, row nowrap);
+                        @include text-truncate();
+                        margin-right: 20px;
+                    }
+
                     .column-tools {
-                        @include flex(1, center, flex-end, center, row nowrap);
+                        @include flex(0 0 60px, center, flex-end, center, row nowrap);
                         height: 24px;
                         padding-right: 10px;
                         transition: $time-defaultTransition;
@@ -181,12 +188,15 @@ body {
 
                         .col-item-wrap {
                             @include flex(100%, flex-start, flex-start, flex-start, column nowrap);
+                            display: block;
+                            max-width: 100%;
                         }
 
                         .col-item {
                             border: 1px solid transparent;
                             @include font-varela();
-                            @include flex(0 0 1, flex-start, flex-start, auto, row wrap);
+                            @include flex(0 0 auto, flex-start, flex-start, auto, row wrap);
+                            transition: $time-defaultTransition;
                             min-height: 100px;
                             background-color: $color-veryLightTransparentBalck;
                             margin: 0 4px 5px 0;
@@ -201,8 +211,8 @@ body {
                             }
 
                             &.special-item {
-                                background-color: $color-boardSpecialElementBackground;
                                 min-height: 180px;
+                                background-color: $color-boardSpecialElementBackground;
                                 @include small-box-shadow($color-defaultShadowHover);
 
                                 &:hover {
@@ -275,7 +285,7 @@ body {
                                 border-bottom: 1px solid $color-lightTransparentBalck;
 
                                 .item-title {
-                                    @include flex(1, flex-start, flex-start, auto, row nowrap);
+                                    display: block;
                                     text-transform: uppercase;
                                     line-height: 26px;
                                     color: white;
@@ -286,7 +296,8 @@ body {
                                 }
 
                                 .item-tools {
-                                    @include flex(0 0 80px, center, flex-end, auto, row nowrap);
+                                    margin-left: 5px;
+                                    @include flex(0 0 50px, center, flex-end, auto, row nowrap);
                                     opacity: 0;
                                     transition: $time-defaultTransition;
                                     height: 24px;
@@ -305,8 +316,7 @@ body {
 
                             .item-description {
                                 margin-top: 5px;
-                                max-height: 65px;
-                                height: 65px;
+                                min-height: 65px;
                                 line-height: 16px;
                                 color: white;
                                 font-size: $fontSize-small;

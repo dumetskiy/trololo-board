@@ -16,6 +16,10 @@ h2 {
     color: $color-primaryWhite;
 }
 
+textarea {
+    min-height: 150px;
+}
+
 .menu-buttons-wrap {
     @include flex();
 

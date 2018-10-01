@@ -4,7 +4,6 @@ import Ticket from './Ticket';
 import {ColumnType, SelectedTicketDataType} from '../helpers/TypesHelper';
 import {getColumnForBoard} from '../helpers/LocalStorageHelper';
 import {getColorSelect} from '../helpers/DomElementsHelper';
-
 import {
     removeBoardColumn,
     isValidColumnName,
@@ -13,6 +12,7 @@ import {
     isValidTicketTitle,
     isValidTicketDescription
 } from '../helpers/LocalStorageHelper';
+import {ticketTitleMaxLength, columnNameMaxLength} from '../helpers/DomElementsHelper';
 
 type ColumnProps = {
     boardId: number;
@@ -81,6 +81,7 @@ export default class Column extends React.PureComponent<ColumnProps>  {
             colHeader = (
                 <div className="col-header">
                     <input type="text"
+                           maxLength={columnNameMaxLength}
                            className="flex-input-small flex-width-70"
                            defaultValue={columnData.title}
                            ref={this.columnNameInput}
@@ -93,7 +94,9 @@ export default class Column extends React.PureComponent<ColumnProps>  {
         if (this.state.colAddTicket) {
             colHeader = (
                 <div className="col-header">
-                    {columnData.title}
+                    <div className="column-title">
+                        {columnData.title}
+                    </div>
                     <div className="column-tools">
                         <button className="tool-item remove" onClick={this.cancelAddTicket}>&nbsp;</button>
                     </div>
@@ -103,6 +106,7 @@ export default class Column extends React.PureComponent<ColumnProps>  {
             extraColumnElement = (
                 <div className="col-item special-item">
                     <input type="text"
+                           maxLength={ticketTitleMaxLength}
                            ref={this.newTicketTitleInput}
                            className="flex-input-small flex-full-row"
                            placeholder="Ticket title..."/>
@@ -121,7 +125,9 @@ export default class Column extends React.PureComponent<ColumnProps>  {
         if (!this.state.colAddTicket && !this.state.colEditing) {
             colHeader = (
                 <div className="col-header">
-                    {columnData.title}
+                    <div className="column-title">
+                        {columnData.title}
+                    </div>
                     <div className="column-tools">
                         <button className="tool-item add" onClick={this.toggleColumnAddTicket}>&nbsp;</button>
                         <button className="tool-item edit" onClick={this.toggleColumnTitleEdit}>&nbsp;</button>
