@@ -36,19 +36,21 @@ export default class BoardListItem extends React.PureComponent<BoardListItemProp
         let boardData: BoardType = getBoardById(this.props.boardId);
 
         if (this.state.isEditing) {
-            return (<div className="list-item" >
+            return (
+                <div className="list-item" >
                     <input type="text" ref={this.boardNameInput} className="input-style" defaultValue={boardData.title}/>
                     <button className="tool-button save" onClick={this.saveBoardEdit}>&nbsp;</button>
                 </div>
             );
-        } else {
-            return (<div className="list-item" onClick={this.openBoard}>
-                    {boardData.title}
-                    <button className="tool-button remove" onClick={this.removeBoard}>&nbsp;</button>
-                    <button className="tool-button edit" onClick={this.startBoardEdit}>&nbsp;</button>
-                </div>
-            );
         }
+
+        return (
+            <div className="list-item" onClick={this.openBoard}>
+                {boardData.title}
+                <button className="tool-button remove" onClick={this.removeBoard}>&nbsp;</button>
+                <button className="tool-button edit" onClick={this.startBoardEdit}>&nbsp;</button>
+            </div>
+        );
     }
 
     removeBoard(e: React.MouseEvent) {
@@ -59,9 +61,7 @@ export default class BoardListItem extends React.PureComponent<BoardListItemProp
 
     startBoardEdit(e: React.MouseEvent) {
         e.stopPropagation();
-        this.setState({
-            isEditing: true
-        });
+        this.setState({isEditing: true});
     }
 
     saveBoardEdit(e: React.MouseEvent) {
@@ -71,9 +71,7 @@ export default class BoardListItem extends React.PureComponent<BoardListItemProp
 
         if (newBoardName === this.boardNameInput.current.defaultValue || isValidBoardName(newBoardName)) {
             setNameForBoardById(this.props.boardId, newBoardName);
-            this.setState({
-                isEditing: false
-            });
+            this.setState({isEditing: false});
         }
     }
 

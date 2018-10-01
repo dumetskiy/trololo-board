@@ -14,6 +14,7 @@ import {getTicketForBoardColumn,
 import {RefObject} from 'react';
 import {getColorSelect} from '../helpers/DomElementsHelper';
 import {ticketTitleMaxLength, collapsedTicketDescriptionLength} from '../helpers/DomElementsHelper';
+import {isUpToggled, isDownToggled, isLeftToggled, isRightToggled, isEditToggled} from '../helpers/NavigationHelper';
 
 type TicketPropsType = {
     boardId: number;
@@ -152,15 +153,15 @@ export default class Ticket extends React.PureComponent<TicketPropsType> {
     }
 
     handleKeyPress(e: KeyboardEvent) {
-        if (e.keyCode === 38) {
+        if (isUpToggled(e)) {
             moveUp(this.props.boardId, this.props.columnId, this.props.ticketId);
-        } else if (e.keyCode === 40) {
+        } else if (isDownToggled(e)) {
             moveDown(this.props.boardId, this.props.columnId, this.props.ticketId);
-        } else if (e.keyCode === 37) {
+        } else if (isLeftToggled(e)) {
             moveLeft(this.props.boardId, this.props.columnId, this.props.ticketId);
-        } else if (e.keyCode === 39) {
+        } else if (isRightToggled(e)) {
             moveRight(this.props.boardId, this.props.columnId, this.props.ticketId);
-        } else if (e.keyCode === 13) {
+        } else if (isEditToggled(e)) {
             this.setState({ticketEditing: true});
         }
     }

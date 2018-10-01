@@ -57,27 +57,27 @@ export default class TopMenu extends React.PureComponent<TopMenuPropsType> {
                     </div>
                 </div>
             );
-        } else {
-            return (
-                <div className="main-menu">
-                    <div className="menu-section side-section" id="history-block">
-                        <div className="menu-buttons-wrap">
-                            <button className="menu-button backward" onClick={TopMenu.doStepBackward}>&nbsp;</button>
-                            <button className="menu-button forward" onClick={TopMenu.doStepForward}>&nbsp;</button>
-                        </div>
-                    </div>
-                    <div className="menu-section">
-                        <h1 className="heading" id="heading">{this.props.title}</h1>
-                    </div>
-                    <div className="menu-section side-section" id="toolbar-block">
-                        <div className="menu-buttons-wrap right">
-                            <button className="menu-button settings" onClick={this.toggleSettings}>&nbsp;</button>
-                            <button className="menu-button home" onClick={TopMenu.goHome}>&nbsp;</button>
-                        </div>
+        }
+
+        return (
+            <div className="main-menu">
+                <div className="menu-section side-section" id="history-block">
+                    <div className="menu-buttons-wrap">
+                        <button className="menu-button backward" onClick={TopMenu.doStepBackward}>&nbsp;</button>
+                        <button className="menu-button forward" onClick={TopMenu.doStepForward}>&nbsp;</button>
                     </div>
                 </div>
-            );
-        }
+                <div className="menu-section">
+                    <h1 className="heading" id="heading">{this.props.title}</h1>
+                </div>
+                <div className="menu-section side-section" id="toolbar-block">
+                    <div className="menu-buttons-wrap right">
+                        <button className="menu-button settings" onClick={this.toggleSettings}>&nbsp;</button>
+                        <button className="menu-button home" onClick={TopMenu.goHome}>&nbsp;</button>
+                    </div>
+                </div>
+            </div>
+        );
     }
 
     loadPreviewImage() {

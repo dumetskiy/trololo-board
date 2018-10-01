@@ -40,8 +40,6 @@ export default class BoardsList extends React.PureComponent {
                         return (<BoardListItem boardId={index} key={index} updateAction={updateAction}/>);
                     }
                 });
-            } else {
-                boardsTemplate = [];
             }
 
             return (

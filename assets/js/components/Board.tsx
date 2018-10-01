@@ -5,6 +5,7 @@ import {getBoardById, isValidColumnName, addColumnToBoard} from '../helpers/Loca
 import {stepForward, stepBackward} from '../helpers/HistoryHelper';
 import {ColumnType, BoardType, SelectedTicketDataType} from '../helpers/TypesHelper';
 import {columnNameMaxLength} from '../helpers/DomElementsHelper';
+import {isStepBackToggled, isStepForwardToggled} from '../helpers/NavigationHelper';
 
 type BoardPropsType = {
     boardId: number;
@@ -100,10 +101,10 @@ export default class Board extends React.PureComponent<BoardPropsType> {
     }
 
     static handleCombinations(e: KeyboardEvent) {
-        if (e.keyCode === 90 && e.ctrlKey) {
+        if (isStepBackToggled(e)) {
             stepBackward()
         }
-        if (e.keyCode === 89 && e.ctrlKey) {
+        if (isStepForwardToggled(e)) {
             stepForward()
         }
     }
