@@ -5,21 +5,21 @@ import BoardsList from './BoardsList';
 import {stepForward, stepBackward} from '../helpers/HistoryHelper';
 import {setBackgroundImage, hasBackgroundImage, getBackgroundImage} from '../helpers/LocalStorageHelper';
 
-type TopMenuProps = {
+type TopMenuPropsType = {
     title: string;
     updateAction: Function;
 }
 
-type TopMenuState = {
+type TopMenuStateType = {
     settingsOpened: boolean;
 }
 
 export default class TopMenu extends React.PureComponent<TopMenuProps> {
     private backgroundPreview: RefObject<HTMLImageElement>;
     private backgroundImageSelect: RefObject<HTMLInputElement>;
-    state: TopMenuState;
+    state: TopMenuStateType;
 
-    constructor(props: TopMenuProps, state: TopMenuState) {
+    constructor(props: TopMenuPropsType, state: TopMenuStateType) {
         super(props, state);
 
         this.state = {

@@ -14,27 +14,27 @@ import {
 } from '../helpers/LocalStorageHelper';
 import {ticketTitleMaxLength, columnNameMaxLength} from '../helpers/DomElementsHelper';
 
-type ColumnProps = {
+type ColumnPropsType = {
     boardId: number;
     columnId: number;
     updateAction: Function;
     selectedTicket: SelectedTicketDataType;
 }
 
-type ColumnState = {
+type ColumnStateType = {
     colEditing: boolean;
     colAddTicket: boolean;
     ticketUpdated: boolean;
 }
 
-export default class Column extends React.PureComponent<ColumnProps>  {
+export default class Column extends React.PureComponent<ColumnPropsType>  {
     private columnNameInput: RefObject<HTMLInputElement>;
     private newTicketTitleInput: RefObject<HTMLInputElement>;
     private newTicketDescriptionInput: RefObject<HTMLTextAreaElement>;
     private newTicketColorSelect: RefObject<HTMLSelectElement>;
-    state: ColumnState;
+    state: ColumnStateType;
     
-    constructor(props: ColumnProps, state: ColumnState) {
+    constructor(props: ColumnPropsType, state: ColumnStateType) {
         super(props, state);
 
         this.state = {

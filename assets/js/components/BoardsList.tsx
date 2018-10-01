@@ -4,7 +4,7 @@ import {createBoard, get, isValidBoardName} from '../helpers/LocalStorageHelper'
 import {BoardType, BoardsDataType} from '../helpers/TypesHelper';
 import {RefObject} from "react";
 
-type BoardsListState = {
+type BoardsListStateType = {
     boards: BoardsDataType;
     visible: boolean;
 }
@@ -12,9 +12,9 @@ type BoardsListState = {
 export default class BoardsList extends React.PureComponent {
     private boardNameInput: RefObject<HTMLInputElement>;
     private addBoardButton: RefObject<HTMLButtonElement>;
-    state: BoardsListState;
+    state: BoardsListStateType;
 
-    constructor(props: {}, state: BoardsListState) {
+    constructor(props: {}, state: BoardsListStateType) {
         super(props, state);
 
         this.state = {

@@ -4,15 +4,15 @@ import TopMenu from './TopMenu';
 import BoardsList from './BoardsList';
 import {hasBackgroundImage, getBackgroundImage} from '../helpers/LocalStorageHelper';
 
-type UiContainerState = {
+type UiContainerStateType = {
     backgroundUpdated: boolean;
 }
 
 export default class UiContainer extends React.PureComponent {
     private backgroundHolder: RefObject<HTMLDivElement>;
-    state: UiContainerState;
+    state: UiContainerStateType;
 
-    constructor(props: {}, state: UiContainerState) {
+    constructor(props: {}, state: UiContainerStateType) {
         super(props, state);
 
         this.state = {

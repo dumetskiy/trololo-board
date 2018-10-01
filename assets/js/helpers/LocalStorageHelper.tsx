@@ -280,10 +280,10 @@ export function moveDown(boardId: number, columnId: number, ticketId: number) {
     }
 }
 
-function updateCurrentState(boardId: number, columnid: number, ticketid: number) {
+function updateCurrentState(boardId: number, columnId: number, ticketId: number) {
     let selectedTicket = {
-        column: columnid,
-        ticket: ticketid,
+        column: columnId,
+        ticket: ticketId,
     };
 
     ReactDOM.render(<Board boardId={boardId} selectedTicket={selectedTicket}/>, document.getElementById('content'));

@@ -6,20 +6,20 @@ import Board from './Board';
 import {BoardType, SelectedTicketDataType} from '../helpers/TypesHelper';
 import {RefObject} from "react";
 
-type BoardListItemProps = {
+type BoardListItemPropsType = {
     boardId: number;
     updateAction: Function;
 }
 
-type BoardListItemState = {
+type BoardListItemStateType = {
     isEditing: boolean;
 }
 
-export default class BoardListItem extends React.PureComponent<BoardListItemProps> {
+export default class BoardListItem extends React.PureComponent<BoardListItemPropsType> {
     private boardNameInput: RefObject<HTMLInputElement>;
-    state: BoardListItemState;
+    state: BoardListItemStateType;
 
-    constructor(props: BoardListItemProps, state: BoardListItemState) {
+    constructor(props: BoardListItemPropsType, state: BoardListItemStateType) {
         super(props, state);
 
         this.state = {

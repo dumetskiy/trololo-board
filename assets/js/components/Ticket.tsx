@@ -15,7 +15,7 @@ import {RefObject} from 'react';
 import {getColorSelect} from '../helpers/DomElementsHelper';
 import {ticketTitleMaxLength, collapsedTicketDescriptionLength} from '../helpers/DomElementsHelper';
 
-type TicketProps = {
+type TicketPropsType = {
     boardId: number;
     columnId: number;
     ticketId: number;
@@ -23,17 +23,17 @@ type TicketProps = {
     selectedTicket: SelectedTicketDataType;
 }
 
-type TicketState = {
+type TicketStateType = {
     ticketEditing: boolean;
 }
 
-export default class Ticket extends React.PureComponent<TicketProps> {
+export default class Ticket extends React.PureComponent<TicketPropsType> {
     private ticketTitleInput: RefObject<HTMLInputElement>;
     private ticketDescriptionInput: RefObject<HTMLTextAreaElement>;
     private newTicketColorSelect: RefObject<HTMLSelectElement>;
-    state: TicketState;
+    state: TicketStateType;
 
-    constructor(props: TicketProps, state: TicketState) {
+    constructor(props: TicketProps, state: TicketStateType) {
         super(props, state);
 
         this.state = {

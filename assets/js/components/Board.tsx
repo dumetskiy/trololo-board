@@ -6,7 +6,7 @@ import {stepForward, stepBackward} from '../helpers/HistoryHelper';
 import {ColumnType, BoardType, SelectedTicketDataType} from '../helpers/TypesHelper';
 import {columnNameMaxLength} from '../helpers/DomElementsHelper';
 
-type BoardProps = {
+type BoardPropsType = {
     boardId: number;
     selectedTicket: SelectedTicketDataType;
 }
@@ -16,11 +16,11 @@ type BoardStateType = {
     colUpdated: boolean;
 }
 
-export default class Board extends React.PureComponent<BoardProps> {
+export default class Board extends React.PureComponent<BoardPropsType> {
     private columnNameInput: RefObject<HTMLInputElement>;
     state: BoardStateType;
 
-    constructor(props: BoardProps, state: BoardStateType) {
+    constructor(props: BoardPropsType, state: BoardStateType) {
         super(props, state);
 
         this.state = {
