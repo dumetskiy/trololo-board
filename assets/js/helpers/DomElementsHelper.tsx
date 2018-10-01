@@ -52,3 +52,7 @@ export function getColorSelect(currentColor: string, ref: RefObject<HTMLSelectEl
         </select>
     );
 }
+
+export function getContentElement(): HTMLElement {
+    return document.getElementById('content');
+}

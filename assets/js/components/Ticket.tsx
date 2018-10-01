@@ -13,7 +13,7 @@ import {getTicketForBoardColumn,
         moveDown} from '../helpers/LocalStorageHelper';
 import {RefObject} from 'react';
 import {getColorSelect} from '../helpers/DomElementsHelper';
-import {ticketTitleMaxLength, collapsedTicketDescriptionLength} from '../helpers/DomElementsHelper';
+import {ticketTitleMaxLength, collapsedTicketDescriptionLength, getContentElement} from '../helpers/DomElementsHelper';
 import {isUpToggled, isDownToggled, isLeftToggled, isRightToggled, isEditToggled} from '../helpers/NavigationHelper';
 
 type TicketPropsType = {
@@ -149,7 +149,10 @@ export default class Ticket extends React.PureComponent<TicketPropsType> {
             ticket: this.props.ticketId,
         };
 
-        ReactDOM.render(<Board boardId={this.props.boardId} selectedTicket={selectedTicket}/>, document.getElementById("content"));
+        ReactDOM.render(
+            <Board boardId={this.props.boardId} selectedTicket={selectedTicket}/>,
+            getContentElement()
+        );
     }
 
     handleKeyPress(e: KeyboardEvent) {

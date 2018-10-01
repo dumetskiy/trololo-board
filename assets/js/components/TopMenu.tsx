@@ -4,6 +4,7 @@ import * as ReactDOM from 'react-dom';
 import BoardsList from './BoardsList';
 import {stepForward, stepBackward} from '../helpers/HistoryHelper';
 import {setBackgroundImage, hasBackgroundImage, getBackgroundImage} from '../helpers/LocalStorageHelper';
+import {getContentElement} from '../helpers/DomElementsHelper';
 
 type TopMenuPropsType = {
     title: string;
@@ -121,6 +122,6 @@ export default class TopMenu extends React.PureComponent<TopMenuPropsType> {
     }
 
     static goHome() {
-        ReactDOM.render(<BoardsList/>, document.getElementById("content"));
+        ReactDOM.render(<BoardsList/>, getContentElement());
     }
 }

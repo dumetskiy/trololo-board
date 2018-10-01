@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom';
 import Board from '../components/Board';
 import {addHistoryStep} from './HistoryHelper'
 import {TicketType, ColumnType, BoardType, BoardsDataType, SelectedTicketDataType} from './TypesHelper';
-import {ticketTitleMaxLength, columnNameMaxLength} from './DomElementsHelper';
+import {ticketTitleMaxLength, columnNameMaxLength, getContentElement} from './DomElementsHelper';
 
 const localStorageVarName = 'trololo-data';
 const localStorageBackgroundVarName = 'background';
@@ -61,7 +61,10 @@ export function setBoardData(boardId: number, boardData: BoardType) {
 
     boardsData.boards[boardId] = boardData;
     set(boardsData);
-    ReactDOM.render(<Board boardId={boardId} selectedTicket={selectedTicket}/>, document.getElementById('content'));
+    ReactDOM.render(
+        <Board boardId={boardId} selectedTicket={selectedTicket}/>,
+        getContentElement()
+    );
 }
 
 export function setNameForBoardById(boardId: number, name: string) {
@@ -72,21 +75,21 @@ export function setNameForBoardById(boardId: number, name: string) {
 }
 
 export function isValidBoardName(boardName: string): boolean {
-    let isValidBoardName: boolean = true;
-
     if (boardName.length) {
         get().boards.forEach(function(board: BoardType) {
             if (board.title.toLowerCase() === boardName.toLowerCase()) {
-                isValidBoardName = false;
                 alert('Board with the same name already exists!');
+
+                return false;
             }
         });
     } else {
-        isValidBoardName = false;
         alert('Empty board name provided!');
+
+        return false
     }
 
-    return isValidBoardName;
+    return true;
 }
 
 export function isValidColumnName(boardId: number, columnName: string): boolean {
@@ -195,7 +198,9 @@ export function removeBoardColumnTicket(boardId: number, columnId: number, ticke
     let boardsData: BoardsDataType = get();
 
     delete boardsData.boards[boardId].cols[columnId].tickets[ticketId];
-    boardsData.boards[boardId].cols[columnId].tickets = boardsData.boards[boardId].cols[columnId].tickets.filter(function(e){return e});
+    boardsData.boards[boardId].cols[columnId].tickets = boardsData.boards[boardId].cols[columnId].tickets.filter(
+        function(e){return e}
+        );
     set(boardsData);
     addHistoryStep(boardsData.boards[boardId]);
 }
@@ -225,7 +230,9 @@ export function moveLeft(boardId: number, columnId: number, ticketId: number) {
             newTicketId: number = newColumn.tickets.length > ticketId ? ticketId : newColumn.tickets.length;
 
         delete boardsData.boards[boardId].cols[columnId].tickets[ticketId];
-        boardsData.boards[boardId].cols[columnId].tickets = boardsData.boards[boardId].cols[columnId].tickets.filter(function(e){return e});
+        boardsData.boards[boardId].cols[columnId].tickets = boardsData.boards[boardId].cols[columnId].tickets.filter(
+            function(e){return e}
+            );
         boardsData.boards[boardId].cols[columnId - 1].tickets.splice(newTicketId, 0, ticketData);
         set(boardsData);
         addHistoryStep(boardsData.boards[boardId]);
@@ -242,7 +249,9 @@ export function moveRight(boardId: number, columnId: number, ticketId: number) {
             newTicketId: number = newColumn.tickets.length > ticketId ? ticketId : newColumn.tickets.length;
 
         delete boardsData.boards[boardId].cols[columnId].tickets[ticketId];
-        boardsData.boards[boardId].cols[columnId].tickets = boardsData.boards[boardId].cols[columnId].tickets.filter(function(e){return e});
+        boardsData.boards[boardId].cols[columnId].tickets = boardsData.boards[boardId].cols[columnId].tickets.filter(
+            function(e){return e}
+            );
         boardsData.boards[boardId].cols[columnId + 1].tickets.splice(newTicketId, 0, ticketData);
         set(boardsData);
         addHistoryStep(boardsData.boards[boardId]);
@@ -286,7 +295,10 @@ function updateCurrentState(boardId: number, columnId: number, ticketId: number)
         ticket: ticketId,
     };
 
-    ReactDOM.render(<Board boardId={boardId} selectedTicket={selectedTicket}/>, document.getElementById('content'));
+    ReactDOM.render(
+        <Board boardId={boardId} selectedTicket={selectedTicket}/>,
+        getContentElement()
+    );
 }
 
 export function setBackgroundImage(imgElement: HTMLImageElement): boolean {

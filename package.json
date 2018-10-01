@@ -4,7 +4,7 @@
   "scripts": {
     "build": "webpack -w",
     "watch": "webpack --watch",
-    "server-start": "webpack-dev-server --mode development --open"
+    "server-start": "webpack-dev-server --mode production --open"
   },
   "devDependencies": {
     "@types/react": "^16.4.14",

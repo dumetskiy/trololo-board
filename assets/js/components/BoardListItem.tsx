@@ -2,6 +2,7 @@ import * as React from 'react'
 import * as ReactDOM from 'react-dom';
 import {getBoardById, removeBoardById, isValidBoardName, setNameForBoardById} from '../helpers/LocalStorageHelper';
 import {startBoardHistory} from '../helpers/HistoryHelper';
+import {getContentElement} from '../helpers/DomElementsHelper';
 import Board from './Board';
 import {BoardType, SelectedTicketDataType} from '../helpers/TypesHelper';
 import {RefObject} from "react";
@@ -82,6 +83,9 @@ export default class BoardListItem extends React.PureComponent<BoardListItemProp
         };
 
         startBoardHistory(this.props.boardId, getBoardById(this.props.boardId));
-        ReactDOM.render(<Board boardId={this.props.boardId} selectedTicket={selectedTicket}/>, document.getElementById("content"));
+        ReactDOM.render(
+            <Board boardId={this.props.boardId} selectedTicket={selectedTicket}/>,
+            getContentElement()
+        );
     }
 }
