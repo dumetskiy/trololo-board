@@ -54,6 +54,14 @@ body {
 
         .heading {
             @include flex(1, center, center, center);
+
+            @include mobile {
+                display: none;
+            }
+
+            @include tablet {
+                font-size: $fontSize-large;
+            }
         }
     }
 

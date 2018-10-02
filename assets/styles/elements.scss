@@ -1,5 +1,7 @@
 $textareaMinHeight: 150px;
 $menuButtonWidth: 100px;
+$menuButtonMobileWidth: 50px;
+$menuButtonTabletWidth: 70px;
 $modalWidth: 500px;
 
 h1 {
@@ -43,6 +45,14 @@ textarea {
     font-weight: $fontWeight-bold;
     text-transform: uppercase;
     transition: $time-defaultTransition;
+
+    @include mobile {
+        @include flex(0 0 $menuButtonMobileWidth, center, center, center);
+    }
+
+    @include tablet {
+        @include flex(0 0 $menuButtonTabletWidth, center, center, center);
+    }
 
     &:first-child {
         margin-right: 20px;

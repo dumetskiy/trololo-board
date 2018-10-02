@@ -115,13 +115,13 @@
 }
 
 @mixin mobile {
-    @media only screen and (max-width: #{$mobileWidthLimit}) {
+    @media all and (max-width: #{$mobileWidthLimit})  and  (min-width: #{100px}) {
         @content;
     }
 }
 
 @mixin tablet {
-    @media only screen and (min-width: #{$mobileWidthLimit + 1px}) and (max-width: #{$tabletWidthLimit}) {
+    @media all and (max-width: #{$tabletWidthLimit}) and  (min-width: #{$mobileWidthLimit + 1px})  {
         @content;
     }
 }
