@@ -1,24 +1,34 @@
-import * as React from 'react';
-import {RefObject} from 'react';
-import * as ReactDOM from 'react-dom';
-import BoardsList from './BoardsList';
-import {stepForward, stepBackward} from '../helpers/HistoryHelper';
-import {setBackgroundImage, hasBackgroundImage, getBackgroundImage} from '../helpers/LocalStorageHelper';
-import {getContentElement} from '../helpers/DomElementsHelper';
+import * as React from "react";
+import * as ReactDOM from "react-dom";
+import {getContentElement} from "../helpers/DomElementsHelper";
+import {stepBackward, stepForward} from "../helpers/HistoryHelper";
+import {getBackgroundImage, hasBackgroundImage, setBackgroundImage} from "../service/BackgroundImageService";
+import BoardsList from "./BoardsList";
 
-type TopMenuPropsType = {
+interface TopMenuPropsType {
     title: string;
-    updateAction: Function;
+    updateAction: () => void;
 }
 
-type TopMenuStateType = {
+interface TopMenuStateType {
     settingsOpened: boolean;
 }
 
-export default class TopMenu extends React.PureComponent<TopMenuPropsType> {
-    private backgroundPreview: RefObject<HTMLImageElement>;
-    private backgroundImageSelect: RefObject<HTMLInputElement>;
-    state: TopMenuStateType;
+export default class TopMenu extends React.PureComponent<TopMenuPropsType, TopMenuStateType> {
+
+    private static doStepForward() {
+        stepForward();
+    }
+
+    private static doStepBackward() {
+        stepBackward();
+    }
+
+    private static goHome() {
+        ReactDOM.render(<BoardsList/>, getContentElement());
+    }
+    private backgroundPreview: React.RefObject<HTMLImageElement>;
+    private backgroundImageSelect: React.RefObject<HTMLInputElement>;
 
     constructor(props: TopMenuPropsType, state: TopMenuStateType) {
         super(props, state);
@@ -33,33 +43,51 @@ export default class TopMenu extends React.PureComponent<TopMenuPropsType> {
         this.updatePreview = this.updatePreview.bind(this);
         this.updateBackgroundImage = this.updateBackgroundImage.bind(this);
         this.loadPreviewImage = this.loadPreviewImage.bind(this);
+        this.getSettingsModal = this.getSettingsModal.bind(this);
+        this.getTopMenuTemplate = this.getTopMenuTemplate.bind(this);
     }
 
-    render(): React.ReactNode {
+    public render(): React.ReactNode {
         if (this.state.settingsOpened) {
-            return (
-                <div className="modal-background">
-                    <button className="modal-close" onClick={this.toggleSettings}>&nbsp;</button>
-                    <div className="modal settings-modal">
-                        <h3 className="header">Settings</h3>
-                        <div className="background-preview-wrap">
-                            <div className="background-preview-holder">
-                                <img ref={this.backgroundPreview}
-                                     className="background-preview" />
-                            </div>
-                        </div>
-                        <input ref={this.backgroundImageSelect}
-                               onChange={this.updatePreview}
-                               className="flex-input-small background-selector"
-                               type="file"
-                               accept="image/*"/>
-                        <button className="flex-input-small settings-submit"
-                                onClick={this.updateBackgroundImage}>Save</button>
-                    </div>
-                </div>
-            );
+            return this.getSettingsModal();
         }
 
+        return this.getTopMenuTemplate();
+    }
+
+    private getSettingsModal(): JSX.Element {
+        return (
+            <div className="modal-background">
+                <button className="modal-close" onClick={this.toggleSettings}>&nbsp;</button>
+                <div className="modal settings-modal">
+                    <h3 className="header">Settings</h3>
+                    <div className="background-preview-wrap">
+                        <div className="background-preview-holder">
+                            <img
+                                ref={this.backgroundPreview}
+                                className="background-preview"
+                            />
+                        </div>
+                    </div>
+                    <input
+                        ref={this.backgroundImageSelect}
+                        onChange={this.updatePreview}
+                        className="flex-input-small background-selector"
+                        type="file"
+                        accept="image/*"
+                    />
+                    <button
+                        className="flex-input-small settings-submit"
+                        onClick={this.updateBackgroundImage}
+                    >
+                        Save
+                    </button>
+                </div>
+            </div>
+        );
+    }
+
+    private getTopMenuTemplate(): JSX.Element {
         return (
             <div className="main-menu">
                 <div className="menu-section side-section" id="history-block">
@@ -81,47 +109,35 @@ export default class TopMenu extends React.PureComponent<TopMenuPropsType> {
         );
     }
 
-    loadPreviewImage() {
+    private loadPreviewImage() {
         if (this.state.settingsOpened && hasBackgroundImage()) {
-            this.backgroundPreview.current.setAttribute('src', getBackgroundImage());
+            this.backgroundPreview.current.setAttribute("src", getBackgroundImage());
         }
     }
 
-    toggleSettings() {
+    private toggleSettings() {
         this.setState({settingsOpened: !this.state.settingsOpened}, this.loadPreviewImage);
     }
 
-    updatePreview() {
-        let backgroundPreviewElement: HTMLImageElement = this.backgroundPreview.current,
+    private updatePreview() {
+        const backgroundPreviewElement: HTMLImageElement = this.backgroundPreview.current,
             backgroundImageSelectElement: HTMLInputElement = this.backgroundImageSelect.current;
 
         if (backgroundImageSelectElement.files && backgroundImageSelectElement.files[0]) {
-            let reader = new FileReader();
+            const reader = new FileReader();
 
-            reader.onload = function(e: any) {
-                backgroundPreviewElement.setAttribute('src', e.target.result);
+            reader.onload = (e: any) => {
+                backgroundPreviewElement.setAttribute("src", e.target.result);
             };
 
             reader.readAsDataURL(backgroundImageSelectElement.files[0]);
         }
     }
 
-    updateBackgroundImage() {
+    private updateBackgroundImage() {
         if (setBackgroundImage(this.backgroundPreview.current)) {
             this.setState({settingsOpened: false});
             this.props.updateAction();
         }
-    }
-
-    static doStepForward() {
-        stepForward();
-    }
-
-    static doStepBackward() {
-        stepBackward();
-    }
-
-    static goHome() {
-        ReactDOM.render(<BoardsList/>, getContentElement());
     }
 }

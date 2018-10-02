@@ -1,38 +1,46 @@
-import * as React from 'react'
-import * as ReactDOM from 'react-dom';
-import Board from './Board';
-import {TicketType, SelectedTicketDataType} from '../helpers/TypesHelper';
+import * as React from "react";
+import * as ReactDOM from "react-dom";
+import {collapsedTicketDescriptionLength,
+        getColorSelect,
+        getContentElement,
+        ticketTitleMaxLength} from "../helpers/DomElementsHelper";
+import {isDownToggled, isEditToggled, isLeftToggled, isRightToggled, isUpToggled} from "../helpers/NavigationHelper";
+import {SelectedTicketDataType, TicketType} from "../helpers/TypesHelper";
 import {getTicketForBoardColumn,
-        removeBoardColumnTicket,
-        isValidTicketTitle,
         isValidTicketDescription,
-        updateBoardColumnTicketData,
+        isValidTicketTitle,
+        moveDown,
         moveLeft,
         moveRight,
         moveUp,
-        moveDown} from '../helpers/LocalStorageHelper';
-import {RefObject} from 'react';
-import {getColorSelect} from '../helpers/DomElementsHelper';
-import {ticketTitleMaxLength, collapsedTicketDescriptionLength, getContentElement} from '../helpers/DomElementsHelper';
-import {isUpToggled, isDownToggled, isLeftToggled, isRightToggled, isEditToggled} from '../helpers/NavigationHelper';
+        removeBoardColumnTicket,
+        updateBoardColumnTicketData} from "../service/BoardDataService";
+import Board from "./Board";
 
-type TicketPropsType = {
+interface TicketPropsType {
     boardId: number;
     columnId: number;
     ticketId: number;
-    updateAction: Function;
+    updateAction: () => void;
     selectedTicket: SelectedTicketDataType;
 }
 
-type TicketStateType = {
+interface TicketStateType {
     ticketEditing: boolean;
 }
 
-export default class Ticket extends React.PureComponent<TicketPropsType> {
-    private ticketTitleInput: RefObject<HTMLInputElement>;
-    private ticketDescriptionInput: RefObject<HTMLTextAreaElement>;
-    private newTicketColorSelect: RefObject<HTMLSelectElement>;
-    state: TicketStateType;
+export default class Ticket extends React.PureComponent<TicketPropsType, TicketStateType> {
+
+    private static getTruncatedDescription(description: string): string {
+        if (description.length <= collapsedTicketDescriptionLength) {
+            return description;
+        }
+
+        return description.substr(0, collapsedTicketDescriptionLength) + "...";
+    }
+    private ticketTitleInput: React.RefObject<HTMLInputElement>;
+    private ticketDescriptionInput: React.RefObject<HTMLTextAreaElement>;
+    private newTicketColorSelect: React.RefObject<HTMLSelectElement>;
 
     constructor(props: TicketPropsType, state: TicketStateType) {
         super(props, state);
@@ -49,40 +57,42 @@ export default class Ticket extends React.PureComponent<TicketPropsType> {
         this.handleKeyPress = this.handleKeyPress.bind(this);
         this.isSelectedTicket = this.isSelectedTicket.bind(this);
         this.makeSelectedTicket = this.makeSelectedTicket.bind(this);
+        this.getTicketEditingTemplate = this.getTicketEditingTemplate.bind(this);
+        this.getTicketTemplate = this.getTicketTemplate.bind(this);
     }
 
-    render(): React.ReactNode {
-        let ticketData: TicketType = getTicketForBoardColumn(this.props.boardId, this.props.columnId, this.props.ticketId),
-            isSelectedTicket: boolean = this.isSelectedTicket();
+    public render(): React.ReactNode {
+        const ticketData: TicketType = getTicketForBoardColumn(
+            this.props.boardId,
+            this.props.columnId,
+            this.props.ticketId,
+            ),
+            isSelectedTicket: boolean = this.isSelectedTicket(),
+            className: string = isSelectedTicket
+                ? "col-item current " + ticketData.color
+                : "col-item " + ticketData.color;
 
         if (isSelectedTicket) {
             document.onkeydown = this.handleKeyPress;
         }
 
         if (this.state.ticketEditing) {
-            return (
-                <div className={isSelectedTicket ? 'col-item current ' + ticketData.color : 'col-item ' + ticketData.color} onClick={this.makeSelectedTicket}>
-                    <input type="text"
-                           maxLength={ticketTitleMaxLength}
-                           ref={this.ticketTitleInput}
-                           defaultValue={ticketData.title}
-                           className="flex-input-small flex-full-row"
-                           placeholder="Ticket title..."/>
-                    {getColorSelect(ticketData.color, this.newTicketColorSelect)}
-                    <textarea
-                        ref={this.ticketDescriptionInput}
-                        placeholder="Ticket description..."
-                        defaultValue={ticketData.description}
-                        className="flex-input-small flex-full-row"></textarea>
-                    <button
-                        onClick={this.updateTicket}
-                        className="flex-button-small flex-full-row">Update ticket</button>
-                </div>
-            );
+            return this.getTicketEditingTemplate(ticketData, className);
         }
 
+        return this.getTicketTemplate(ticketData, className, isSelectedTicket);
+    }
+
+    private getTicketTemplate(ticketData: TicketType, className: string, isSelectedTicket: boolean): JSX.Element {
+        const descriptionText: string = isSelectedTicket
+                ? ticketData.description
+                : Ticket.getTruncatedDescription(ticketData.description);
+
         return (
-            <div className={isSelectedTicket ? 'col-item current ' + ticketData.color : 'col-item ' + ticketData.color} onClick={this.makeSelectedTicket}>
+            <div
+                className={className}
+                onClick={this.makeSelectedTicket}
+            >
                 <div className="col-item-wrap">
                     <div className="item-header">
                         <div className="item-title">{ticketData.title}</div>
@@ -92,36 +102,67 @@ export default class Ticket extends React.PureComponent<TicketPropsType> {
                         </div>
                     </div>
                     <div className="item-description">
-                        {isSelectedTicket ? ticketData.description : Ticket.getTruncatedDescription(ticketData.description)}
+                        {descriptionText}
                     </div>
                 </div>
             </div>
         );
     }
 
-    isSelectedTicket(): boolean {
-        let selectedTicket: SelectedTicketDataType = this.props.selectedTicket;
+    private getTicketEditingTemplate(ticketData: TicketType, className: string): JSX.Element {
+        return (
+            <div
+                className={className}
+                onClick={this.makeSelectedTicket}
+            >
+                <input
+                    type="text"
+                    maxLength={ticketTitleMaxLength}
+                    ref={this.ticketTitleInput}
+                    defaultValue={ticketData.title}
+                    className="flex-input-small flex-full-row"
+                    placeholder="Ticket title..."
+                />
+                {getColorSelect(ticketData.color, this.newTicketColorSelect)}
+                <textarea
+                    ref={this.ticketDescriptionInput}
+                    placeholder="Ticket description..."
+                    defaultValue={ticketData.description}
+                    className="flex-input-small flex-full-row"
+                />
+                <button
+                    onClick={this.updateTicket}
+                    className="flex-button-small flex-full-row"
+                >
+                    Update ticket
+                </button>
+            </div>
+        );
+    }
+
+    private isSelectedTicket(): boolean {
+        const selectedTicket: SelectedTicketDataType = this.props.selectedTicket;
 
         return selectedTicket &&
             selectedTicket.column === this.props.columnId &&
             selectedTicket.ticket === this.props.ticketId;
     }
 
-    deleteTicket(e: React.MouseEvent) {
+    private deleteTicket(e: React.MouseEvent) {
         e.stopPropagation();
         removeBoardColumnTicket(this.props.boardId, this.props.columnId, this.props.ticketId);
         this.props.updateAction();
     }
 
-    toggleUpdateTicket(e: React.MouseEvent) {
+    private toggleUpdateTicket(e: React.MouseEvent) {
         e.stopPropagation();
         this.setState({ticketEditing: true});
     }
 
-    updateTicket(e: React.MouseEvent) {
+    private updateTicket(e: React.MouseEvent) {
         e.stopPropagation();
 
-        let newTicketTitle: string = this.ticketTitleInput.current.value,
+        const newTicketTitle: string = this.ticketTitleInput.current.value,
             oldTicketTitle: string = this.ticketTitleInput.current.defaultValue,
             newTicketDescription: string = this.ticketDescriptionInput.current.value,
             oldTicketDescription: string = this.ticketDescriptionInput.current.defaultValue,
@@ -137,25 +178,25 @@ export default class Ticket extends React.PureComponent<TicketPropsType> {
                 this.props.ticketId,
                 newTicketTitle,
                 newTicketDescription,
-                newTicketColor
+                newTicketColor,
             );
             this.setState({ticketEditing: false});
         }
     }
 
-    makeSelectedTicket() {
-        let selectedTicket = {
+    private makeSelectedTicket() {
+        const selectedTicket = {
             column: this.props.columnId,
             ticket: this.props.ticketId,
         };
 
         ReactDOM.render(
             <Board boardId={this.props.boardId} selectedTicket={selectedTicket}/>,
-            getContentElement()
+            getContentElement(),
         );
     }
 
-    handleKeyPress(e: KeyboardEvent) {
+    private handleKeyPress(e: KeyboardEvent) {
         if (isUpToggled(e)) {
             moveUp(this.props.boardId, this.props.columnId, this.props.ticketId);
         } else if (isDownToggled(e)) {
@@ -167,13 +208,5 @@ export default class Ticket extends React.PureComponent<TicketPropsType> {
         } else if (isEditToggled(e)) {
             this.setState({ticketEditing: true});
         }
-    }
-
-    static getTruncatedDescription(description: string): string {
-        if (description.length <= collapsedTicketDescriptionLength) {
-            return description;
-        }
-
-        return description.substr(0, collapsedTicketDescriptionLength) + '...';
     }
 }

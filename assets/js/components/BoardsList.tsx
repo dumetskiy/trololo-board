@@ -1,24 +1,22 @@
-import * as React from 'react';
-import BoardListItem from './BoardListItem';
-import {createBoard, get, isValidBoardName} from '../helpers/LocalStorageHelper';
-import {BoardType, BoardsDataType} from '../helpers/TypesHelper';
-import {RefObject} from "react";
+import * as React from "react";
+import {BoardType} from "../helpers/TypesHelper";
+import {createBoard, getBoards, isValidBoardName} from "../service/BoardDataService";
+import BoardListItem from "./BoardListItem";
 
-type BoardsListStateType = {
-    boards: BoardsDataType;
+interface BoardsListStateType {
+    boards: BoardType[];
     visible: boolean;
 }
 
-export default class BoardsList extends React.PureComponent {
-    private boardNameInput: RefObject<HTMLInputElement>;
-    private addBoardButton: RefObject<HTMLButtonElement>;
-    state: BoardsListStateType;
+export default class BoardsList extends React.PureComponent<{}, BoardsListStateType> {
+    private boardNameInput: React.RefObject<HTMLInputElement>;
+    private addBoardButton: React.RefObject<HTMLButtonElement>;
 
     constructor(props: {}, state: BoardsListStateType) {
         super(props, state);
 
         this.state = {
-            boards: get(),
+            boards: getBoards(),
             visible: true,
         };
         this.boardNameInput = React.createRef();
@@ -27,15 +25,16 @@ export default class BoardsList extends React.PureComponent {
         this.update = this.update.bind(this);
     }
 
-    render(): React.ReactNode {
-        let boards: BoardType[] = this.state.boards.boards;
+    public render(): React.ReactNode {
+        const boards: BoardType[] = this.state.boards;
 
         if (this.state.visible) {
-            let updateAction: Function = this.update,
-                boardsTemplate: JSX.Element[] = [];
+            const updateAction: () => void = this.update;
+
+            let boardsTemplate: JSX.Element[] = [];
 
             if (boards.length) {
-                boardsTemplate = boards.map(function(item: BoardType, index: number) {
+                boardsTemplate = boards.map((item: BoardType, index: number) => {
                     if (item) {
                         return (<BoardListItem boardId={index} key={index} updateAction={updateAction}/>);
                     }
@@ -58,27 +57,29 @@ export default class BoardsList extends React.PureComponent {
                             ref={this.addBoardButton}
                             className="flex-button-small uppercase"
                             onClick={this.addBoard}
-                        >Add</button>
+                        >
+                            Add
+                        </button>
                     </div>
                 </div>
             );
         }
 
-        return ('');
+        return ("");
     }
 
-    update() {
-        this.setState({boards: get()});
+    private update() {
+        this.setState({boards: getBoards()});
     }
 
-    addBoard() {
-        let boardNameInput = this.boardNameInput.current,
+    private addBoard() {
+        const boardNameInput = this.boardNameInput.current,
             boardName = boardNameInput.value;
 
         if (isValidBoardName(boardName)) {
             createBoard(boardName);
             this.update();
-            boardNameInput.value = '';
+            boardNameInput.value = "";
         }
     }
 }

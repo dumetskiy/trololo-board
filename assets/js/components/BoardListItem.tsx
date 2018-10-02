@@ -1,24 +1,22 @@
-import * as React from 'react'
-import * as ReactDOM from 'react-dom';
-import {getBoardById, removeBoardById, isValidBoardName, setNameForBoardById} from '../helpers/LocalStorageHelper';
-import {startBoardHistory} from '../helpers/HistoryHelper';
-import {getContentElement} from '../helpers/DomElementsHelper';
-import Board from './Board';
-import {BoardType, SelectedTicketDataType} from '../helpers/TypesHelper';
-import {RefObject} from "react";
+import * as React from "react";
+import * as ReactDOM from "react-dom";
+import {getContentElement} from "../helpers/DomElementsHelper";
+import {startBoardHistory} from "../helpers/HistoryHelper";
+import {BoardType, SelectedTicketDataType} from "../helpers/TypesHelper";
+import {getBoardById, isValidBoardName, removeBoardById, setNameForBoardById} from "../service/BoardDataService";
+import Board from "./Board";
 
-type BoardListItemPropsType = {
+interface BoardListItemPropsType {
     boardId: number;
-    updateAction: Function;
+    updateAction: () => void;
 }
 
-type BoardListItemStateType = {
+interface BoardListItemStateType {
     isEditing: boolean;
 }
 
-export default class BoardListItem extends React.PureComponent<BoardListItemPropsType> {
-    private boardNameInput: RefObject<HTMLInputElement>;
-    state: BoardListItemStateType;
+export default class BoardListItem extends React.PureComponent<BoardListItemPropsType, BoardListItemStateType> {
+    private boardNameInput: React.RefObject<HTMLInputElement>;
 
     constructor(props: BoardListItemPropsType, state: BoardListItemStateType) {
         super(props, state);
@@ -33,13 +31,18 @@ export default class BoardListItem extends React.PureComponent<BoardListItemProp
         this.openBoard = this.openBoard.bind(this);
     }
 
-    render(): React.ReactNode {
-        let boardData: BoardType = getBoardById(this.props.boardId);
+    public render(): React.ReactNode {
+        const boardData: BoardType = getBoardById(this.props.boardId);
 
         if (this.state.isEditing) {
             return (
                 <div className="list-item" >
-                    <input type="text" ref={this.boardNameInput} className="input-style" defaultValue={boardData.title}/>
+                    <input
+                        type="text"
+                        ref={this.boardNameInput}
+                        className="input-style"
+                        defaultValue={boardData.title}
+                    />
                     <button className="tool-button save" onClick={this.saveBoardEdit}>&nbsp;</button>
                 </div>
             );
@@ -54,21 +57,21 @@ export default class BoardListItem extends React.PureComponent<BoardListItemProp
         );
     }
 
-    removeBoard(e: React.MouseEvent) {
+    private removeBoard(e: React.MouseEvent) {
         e.stopPropagation();
         removeBoardById(this.props.boardId);
         this.props.updateAction();
     }
 
-    startBoardEdit(e: React.MouseEvent) {
+    private startBoardEdit(e: React.MouseEvent) {
         e.stopPropagation();
         this.setState({isEditing: true});
     }
 
-    saveBoardEdit(e: React.MouseEvent) {
+    private saveBoardEdit(e: React.MouseEvent) {
         e.stopPropagation();
 
-        let newBoardName: string = this.boardNameInput.current.value;
+        const newBoardName: string = this.boardNameInput.current.value;
 
         if (newBoardName === this.boardNameInput.current.defaultValue || isValidBoardName(newBoardName)) {
             setNameForBoardById(this.props.boardId, newBoardName);
@@ -76,8 +79,8 @@ export default class BoardListItem extends React.PureComponent<BoardListItemProp
         }
     }
 
-    openBoard() {
-        let selectedTicket: SelectedTicketDataType = {
+    private openBoard() {
+        const selectedTicket: SelectedTicketDataType = {
             column: -1,
             ticket: -1,
         };
@@ -85,7 +88,7 @@ export default class BoardListItem extends React.PureComponent<BoardListItemProp
         startBoardHistory(this.props.boardId, getBoardById(this.props.boardId));
         ReactDOM.render(
             <Board boardId={this.props.boardId} selectedTicket={selectedTicket}/>,
-            getContentElement()
+            getContentElement(),
         );
     }
 }

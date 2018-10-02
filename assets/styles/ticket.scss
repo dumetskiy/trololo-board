@@ -1,0 +1,93 @@
+$ticketMinHeight: 100px;
+$ticketDescriptionMinHeight: 65px;
+
+.col-item {
+    @include font-varela();
+    @include flex(0 0 auto, flex-start, flex-start, auto, row wrap);
+    @include height-limits($ticketMinHeight);
+    border: 1px solid transparent;
+    transition: $time-defaultTransition;
+    background-color: $color-veryLightTransparentBalck;
+    margin: 0 4px 5px 0;
+    padding: 5px;
+
+    @media screen and (-webkit-min-device-pixel-ratio:0){
+        margin: 0 12px 5px 0;
+    }
+
+    &.current {
+        border: 1px solid white;
+    }
+
+    &.special-item {
+        @include small-box-shadow($color-defaultShadowHover);
+        @include height-limits(120px);
+        background-color: $color-boardSpecialElementBackground;
+
+        &:hover {
+            background-color: $color-boardSpecialElementBackgroundHover;
+        }
+    }
+
+    &.red {
+        @include element-background($color-ticketColorRed, $color-ticketColorRedActive);
+    }
+
+    &.green {
+        @include element-background($color-ticketColorGreen, $color-ticketColorGreenActive);
+    }
+
+    &.blue {
+        @include element-background($color-ticketColorBlue, $color-ticketColorBlueActive);
+    }
+
+    &.purple {
+        @include element-background($color-ticketColorPurple, $color-ticketColorPurpleActive);
+    }
+
+    &.yellow {
+        @include element-background($color-ticketColorYellow, $color-ticketColorYellowActive);
+    }
+
+    &.orange {
+        @include element-background($color-ticketColorOrange, $color-ticketColorOrangeActive);
+    }
+
+    &:hover,
+    &.current
+    {
+        background-color: $color-lightTransparentBlack;
+
+        .item-header > .item-tools {
+            opacity: 1;
+        }
+    }
+
+    .item-description {
+        @include height-limits($ticketDescriptionMinHeight);
+        margin-top: 5px;
+        line-height: 16px;
+        color: $color-primaryWhite;
+        font-size: $fontSize-small;
+        margin-left: 10px;
+        max-width: 90%;
+        overflow-y: hidden;
+    }
+}
+
+.item-header {
+    @include flex(0 0 100%, flex-start, flex-start, auto, row nowrap);
+    height: 24px;
+    border-bottom: 1px solid $color-lightTransparentBlack;
+}
+
+.item-title {
+    @include text-truncate();
+    display: block;
+    text-transform: uppercase;
+    line-height: 26px;
+    color: $color-primaryWhite;
+    font-size: $fontSize-medium;
+    margin-left: 10px;
+    height: 24px;
+}

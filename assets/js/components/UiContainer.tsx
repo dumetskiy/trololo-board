@@ -1,16 +1,14 @@
-import * as React from 'react';
-import {RefObject} from 'react';
-import TopMenu from './TopMenu';
-import BoardsList from './BoardsList';
-import {hasBackgroundImage, getBackgroundImage} from '../helpers/LocalStorageHelper';
+import * as React from "react";
+import {getBackgroundImage, hasBackgroundImage} from "../service/BackgroundImageService";
+import BoardsList from "./BoardsList";
+import TopMenu from "./TopMenu";
 
-type UiContainerStateType = {
+interface UiContainerStateType {
     backgroundUpdated: boolean;
 }
 
-export default class UiContainer extends React.PureComponent {
-    private backgroundHolder: RefObject<HTMLDivElement>;
-    state: UiContainerStateType;
+export default class UiContainer extends React.PureComponent<{}, UiContainerStateType> {
+    private backgroundHolder: React.RefObject<HTMLDivElement>;
 
     constructor(props: {}, state: UiContainerStateType) {
         super(props, state);
@@ -23,15 +21,15 @@ export default class UiContainer extends React.PureComponent {
         this.reloadBackground = this.reloadBackground.bind(this);
     }
 
-    componentDidMount() {
+    public componentDidMount() {
         this.reloadBackground();
     }
 
-    componentDidUpdate() {
+    public componentDidUpdate() {
         this.reloadBackground();
     }
 
-    render(): React.ReactNode {
+    public render(): React.ReactNode {
         return(
             <div className="page-container" ref={this.backgroundHolder}>
                 <div id="main-menu-holder">
@@ -44,13 +42,13 @@ export default class UiContainer extends React.PureComponent {
         );
     }
 
-    update() {
+    private update() {
         this.setState({backgroundUpdated: !this.state.backgroundUpdated});
     }
 
-    reloadBackground() {
+    private reloadBackground() {
         if (hasBackgroundImage()) {
-            this.backgroundHolder.current.setAttribute('style', 'background-image: url(' + getBackgroundImage() + ')');
+            this.backgroundHolder.current.setAttribute("style", "background-image: url(" + getBackgroundImage() + ")");
         }
     }
 }

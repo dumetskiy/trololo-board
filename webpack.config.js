@@ -2,6 +2,7 @@ const {resolve} = require('path');
 const {CheckerPlugin} = require('awesome-typescript-loader');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const TSLintPlugin = require('tslint-webpack-plugin');
 const webpack = require('webpack');
 
 module.exports = {
@@ -80,6 +81,9 @@ module.exports = {
         new HtmlWebpackPlugin({template: 'index.html',}),
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NamedModulesPlugin(),
+        new TSLintPlugin({
+            files: ['./assets/js/**/*.tsx']
+        }),
     ],
     performance: {
         hints: false,

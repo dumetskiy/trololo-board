@@ -1,35 +1,34 @@
-import * as React from 'react'
-import {RefObject} from 'react';
-import {ColorDataType} from './TypesHelper';
+import * as React from "react";
+import {ColorDataType} from "./TypesHelper";
 
 const colorsData = [
     {
-        handle: 'none',
-        title: 'No color',
+        handle: "none",
+        title: "No color",
     },
     {
-        handle: 'red',
-        title: 'Red',
+        handle: "red",
+        title: "Red",
     },
     {
-        handle: 'green',
-        title: 'Green',
+        handle: "green",
+        title: "Green",
     },
     {
-        handle: 'blue',
-        title: 'Blue',
+        handle: "blue",
+        title: "Blue",
     },
     {
-        handle: 'purple',
-        title: 'Purple',
+        handle: "purple",
+        title: "Purple",
     },
     {
-        handle: 'yellow',
-        title: 'Yellow',
+        handle: "yellow",
+        title: "Yellow",
     },
     {
-        handle: 'orange',
-        title: 'Orange',
+        handle: "orange",
+        title: "Orange",
     },
 ];
 
@@ -37,12 +36,12 @@ export const ticketTitleMaxLength = 50;
 export const columnNameMaxLength = 45;
 export const collapsedTicketDescriptionLength = 350;
 
-export function getColorSelect(currentColor: string, ref: RefObject<HTMLSelectElement>): React.ReactNode {
-    let selectOptions: JSX.Element[] = [];
+export function getColorSelect(currentColor: string, ref: React.RefObject<HTMLSelectElement>): React.ReactNode {
+    const selectOptions: JSX.Element[] = [];
 
-    currentColor = currentColor === '' ? 'none' : currentColor;
+    currentColor = currentColor === "" ? "none" : currentColor;
 
-    colorsData.forEach(function(color: ColorDataType, index: number) {
+    colorsData.forEach((color: ColorDataType, index: number) => {
         selectOptions.push(<option key={index} value={color.handle} >{color.title}</option>);
     });
 
@@ -54,5 +53,5 @@ export function getColorSelect(currentColor: string, ref: RefObject<HTMLSelectEl
 }
 
 export function getContentElement(): HTMLElement {
-    return document.getElementById('content');
+    return document.getElementById("content");
 }

@@ -1,0 +1,100 @@
+$boardsListMaxHeight: 185px;
+$boardsListMinHeight: 123px;
+$boardsListItemHeight: 30px;
+$boardsListItemHeightTablet: 50px;
+$boardsListItemHeightMobile: 60px;
+
+.message-bar {
+    @include flex(0 0 $size-messageBarWidth, center, center, center, row wrap);
+
+    @include mobile {
+        @include flex(0 0 $size-messageBarWidthMobile, center, center, center, row wrap);
+    }
+
+    @include tablet {
+        @include flex(0 0 $size-messageBarWidthTablet, center, center, center, row wrap);
+    }
+
+    .boards-list {
+        @include flex(1, flex-start, flex-start, flex-start, row wrap);
+        @include height-limits($boardsListMinHeight, $boardsListMaxHeight);
+        margin: 5px 6px;
+        overflow-y: auto;
+        border: 1px solid $color-lightTransparentBlack;
+        color: $color-primaryWhite;
+
+        .list-item {
+            @include font-varela();
+            width: 100%;
+            height: $boardsListItemHeight;
+            line-height: $boardsListItemHeight;
+            font-size: $fontSize-small;
+            padding-left: 15px;
+            border-bottom: 1px solid $color-lightTransparentBlack;
+
+            @include mobile {
+                height: $boardsListItemHeightMobile;
+                line-height: $boardsListItemHeightMobile;
+                font-size: $fontSize-large;
+            }
+
+            @include tablet {
+                height: $boardsListItemHeightTablet;
+                line-height: $boardsListItemHeightTablet;
+                font-size: $fontSize-large;
+            }
+
+            &:hover {
+                background-color: $color-lightTransparentBlack;
+            }
+
+            .tool-button {
+                position: relative;
+                float: right;
+                border: none;
+                height: $boardsListItemHeight;
+                width: $boardsListItemHeight;
+                line-height: $boardsListItemHeight;
+                text-align: center;
+                font-weight: $fontWeight-bold;
+                background-color: $color-veryLightTransparentBalck;
+                top: 0;
+                right: 0;
+                transition: $time-defaultFastTransition;
+                cursor: pointer;
+
+                @include mobile {
+                    height: $boardsListItemHeightMobile;
+                    width: $boardsListItemHeightMobile;
+                    line-height: $boardsListItemHeightMobile;
+                }
+
+                @include tablet {
+                    height: $boardsListItemHeightTablet;
+                    width: $boardsListItemHeightTablet;
+                    line-height: $boardsListItemHeightTablet;
+                }
+
+                &:hover {
+                    background-color: $color-lightTransparentBlack;
+                }
+
+                &.remove {
+                    @include background('remove-white.svg');
+                }
+
+                &.edit {
+                    @include background('edit-white.svg');
+                }
+
+                &.save {
+                    @include background('save-white.svg');
+                }
+
+                &:last-child {
+                    border-right: 1px solid $color-lightTransparentBlack;
+                }
+            }
+        }
+    }
+}

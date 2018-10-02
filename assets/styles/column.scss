@@ -1,0 +1,83 @@
+.column-tools {
+    @include flex(0 0 60px, center, flex-end, center, row nowrap);
+    height: 24px;
+    padding-right: 10px;
+    transition: $time-defaultTransition;
+    opacity: 0;
+}
+
+.board-col {
+    @include flex(1, flex-start, flex-start, auto, row nowrap);
+    @include width-limits($size-boardColumnMinWidth, $size-boardColumnMaxWidth);
+    display: inline-block;
+    margin: 0 10px;
+    padding: 5px;
+    background-color: $color-boardBackground;
+    transition: .5s;
+
+    @include mobile {
+        @include width-limits($size-boardColumnMinWidthMobile, $size-boardColumnMaxWidthMobile);
+    }
+
+    @include tablet {
+        @include width-limits($size-boardColumnMinWidthTablet, $size-boardColumnMaxWidthTablet);
+    }
+
+    &:hover,
+    &.current
+    {
+        background-color: $color-boardBackgroundHover;
+
+        .col-header > .column-tools {
+            opacity: 1;
+        }
+    }
+
+    .board-col-content {
+        @include flex(0 0 100%, flex-start, flex-start, auto, column nowrap);
+    }
+}
+
+.col-header {
+    @include flex(0 0 $size-boardColumnHeaderHeight, center, center, auto, row nowrap);
+    @include font-pacifico();
+    @include text-truncate();
+    width: calc(100% - 5px);
+    margin: -5px;
+    padding-left: 15px;
+    background-color: $color-lightTransparentBlack;
+    color: $color-primaryWhite;
+    line-height: $size-boardColumnHeaderHeight;
+    font-size: $fontSize-large;
+}
+
+.column-title {
+    @include flex(1, center, flex-start, center, row nowrap);
+    @include text-truncate();
+    margin-right: 20px;
+}
+
+.col-items-holder {
+    @include flex(1, center, center, auto, row nowrap);
+    width: 100%;
+    padding: 10px 0 5px;
+    overflow-x: hidden;
+}
+
+.col-items-wrap {
+    @include flex(1, flex-start, flex-start, auto, column nowrap);
+    padding: 0 5px;
+    overflow-y: scroll;
+    margin-right: -15px;
+    max-height: calc(100vh - 120px);
+
+    div::-webkit-scrollbar {
+        width: 15px;
+    }
+
+    .col-item-wrap {
+        @include flex(100%, flex-start, flex-start, flex-start, column nowrap);
+        display: block;
+        max-width: 100%;
+    }
+}

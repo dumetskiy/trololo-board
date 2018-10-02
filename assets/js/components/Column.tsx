@@ -1,45 +1,42 @@
-import * as React from 'react'
-import {RefObject} from 'react';
-import Ticket from './Ticket';
-import {ColumnType, SelectedTicketDataType} from '../helpers/TypesHelper';
-import {getColumnForBoard} from '../helpers/LocalStorageHelper';
-import {getColorSelect} from '../helpers/DomElementsHelper';
+import * as React from "react";
+import {columnNameMaxLength, getColorSelect, ticketTitleMaxLength} from "../helpers/DomElementsHelper";
+import {ColumnType, SelectedTicketDataType} from "../helpers/TypesHelper";
 import {
-    removeBoardColumn,
-    isValidColumnName,
-    updateBoardColumnName,
     addTicketToBoardColumn,
+    getColumnForBoard,
+    isValidColumnName,
+    isValidTicketDescription,
     isValidTicketTitle,
-    isValidTicketDescription
-} from '../helpers/LocalStorageHelper';
-import {ticketTitleMaxLength, columnNameMaxLength} from '../helpers/DomElementsHelper';
+    removeBoardColumn,
+    updateBoardColumnName,
+} from "../service/BoardDataService";
+import Ticket from "./Ticket";
 
-type ColumnPropsType = {
+interface ColumnPropsType {
     boardId: number;
     columnId: number;
-    updateAction: Function;
+    updateAction: () => void;
     selectedTicket: SelectedTicketDataType;
 }
 
-type ColumnStateType = {
+interface ColumnStateType {
     colEditing: boolean;
     colAddTicket: boolean;
     ticketUpdated: boolean;
 }
 
-export default class Column extends React.PureComponent<ColumnPropsType>  {
-    private columnNameInput: RefObject<HTMLInputElement>;
-    private newTicketTitleInput: RefObject<HTMLInputElement>;
-    private newTicketDescriptionInput: RefObject<HTMLTextAreaElement>;
-    private newTicketColorSelect: RefObject<HTMLSelectElement>;
-    state: ColumnStateType;
-    
-    constructor(props: ColumnPropsType, state: ColumnStateType) {
+export default class Column extends React.PureComponent<ColumnPropsType, ColumnStateType>  {
+    private columnNameInput: React.RefObject<HTMLInputElement>;
+    private newTicketTitleInput: React.RefObject<HTMLInputElement>;
+    private newTicketDescriptionInput: React.RefObject<HTMLTextAreaElement>;
+    private newTicketColorSelect: React.RefObject<HTMLSelectElement>;
+
+    private constructor(props: ColumnPropsType, state: ColumnStateType) {
         super(props, state);
 
         this.state = {
-            colEditing: false,
             colAddTicket: false,
+            colEditing: false,
             ticketUpdated: false,
         };
         this.columnNameInput = React.createRef();
@@ -54,91 +51,42 @@ export default class Column extends React.PureComponent<ColumnPropsType>  {
         this.createNewTicket = this.createNewTicket.bind(this);
         this.update = this.update.bind(this);
         this.isSelectedColumn = this.isSelectedColumn.bind(this);
+        this.getColumnHeaderTemplate = this.getColumnHeaderTemplate.bind(this);
+        this.getTicketAddForm = this.getTicketAddForm.bind(this);
     }
 
-    render(): React.ReactNode {
-        let columnId: number = this.props.columnId,
+    public render(): React.ReactNode {
+        const columnId: number = this.props.columnId,
             boardId: number = this.props.boardId,
             selectedTicket: SelectedTicketDataType = this.props.selectedTicket,
             columnData: ColumnType = getColumnForBoard(boardId, columnId),
-            ticketsTemplate: JSX.Element[] = [],
-            extraColumnElement: JSX.Element = null,
-            colHeader: JSX.Element = null,
-            updateAction: Function = this.update;
+            colHeader: JSX.Element = this.getColumnHeaderTemplate(columnData),
+            updateAction: () => void = this.update;
+
+        let ticketsTemplate: JSX.Element[] = [],
+            extraColumnElement: JSX.Element = null;
 
         if (columnData.tickets.length) {
-            ticketsTemplate = columnData.tickets.map(function(ticket, index) {
-                return (<Ticket key={index}
-                                boardId={boardId}
-                                columnId={columnId}
-                                ticketId={index}
-                                updateAction={updateAction}
-                                selectedTicket={selectedTicket}/>);
+            ticketsTemplate = columnData.tickets.map((ticket, index) => {
+                return (
+                    <Ticket
+                        key={index}
+                        boardId={boardId}
+                        columnId={columnId}
+                        ticketId={index}
+                        updateAction={updateAction}
+                        selectedTicket={selectedTicket}
+                    />
+                );
             });
         }
 
-        if (this.state.colEditing) {
-            colHeader = (
-                <div className="col-header">
-                    <input type="text"
-                           maxLength={columnNameMaxLength}
-                           className="flex-input-small flex-width-70"
-                           defaultValue={columnData.title}
-                           ref={this.columnNameInput}
-                           placeholder="New column name..."/>
-                    <button className="flex-button-small add-button" onClick={this.saveColumnTitle}>Save</button>
-                </div>
-            );
-        }
-
         if (this.state.colAddTicket) {
-            colHeader = (
-                <div className="col-header">
-                    <div className="column-title">
-                        {columnData.title}
-                    </div>
-                    <div className="column-tools">
-                        <button className="tool-item remove" onClick={this.cancelAddTicket}>&nbsp;</button>
-                    </div>
-                </div>
-            );
-
-            extraColumnElement = (
-                <div className="col-item special-item">
-                    <input type="text"
-                           maxLength={ticketTitleMaxLength}
-                           ref={this.newTicketTitleInput}
-                           className="flex-input-small flex-full-row"
-                           placeholder="Ticket title..."/>
-                   {getColorSelect('', this.newTicketColorSelect)}
-                    <textarea
-                        ref={this.newTicketDescriptionInput}
-                        placeholder="Ticket description..."
-                        className="flex-input-small flex-full-row"></textarea>
-                    <button
-                        onClick={this.createNewTicket}
-                        className="flex-button-small flex-full-row">Create ticket</button>
-                </div>
-            )
-        }
-
-        if (!this.state.colAddTicket && !this.state.colEditing) {
-            colHeader = (
-                <div className="col-header">
-                    <div className="column-title">
-                        {columnData.title}
-                    </div>
-                    <div className="column-tools">
-                        <button className="tool-item add" onClick={this.toggleColumnAddTicket}>&nbsp;</button>
-                        <button className="tool-item edit" onClick={this.toggleColumnTitleEdit}>&nbsp;</button>
-                        <button className="tool-item delete" onClick={this.removeColumn}>&nbsp;</button>
-                    </div>
-                </div>
-            );
+            extraColumnElement = this.getTicketAddForm();
         }
 
         return (
-            <div className={this.isSelectedColumn() ? 'board-col current' : 'board-col'}>
+            <div className={this.isSelectedColumn() ? "board-col current" : "board-col"}>
                 <div className="board-col-content">
                     {colHeader}
                     <div className="col-items-holder">
@@ -152,35 +100,109 @@ export default class Column extends React.PureComponent<ColumnPropsType>  {
         );
     }
 
-    isSelectedColumn(): boolean {
-        let selectedTicket: SelectedTicketDataType = this.props.selectedTicket;
+    private getTicketAddForm(): JSX.Element {
+        return (
+            <div className="col-item special-item">
+                <input
+                    type="text"
+                    maxLength={ticketTitleMaxLength}
+                    ref={this.newTicketTitleInput}
+                    className="flex-input-small flex-full-row"
+                    placeholder="Ticket title..."
+                />
+                {getColorSelect("", this.newTicketColorSelect)}
+                <textarea
+                    ref={this.newTicketDescriptionInput}
+                    placeholder="Ticket description..."
+                    className="flex-input-small flex-full-row"
+                />
+                <button
+                    onClick={this.createNewTicket}
+                    className="flex-button-small flex-full-row"
+                >
+                    Create ticket
+                </button>
+            </div>
+        );
+    }
+
+    private getColumnHeaderTemplate(columnData: ColumnType): JSX.Element {
+        if (this.state.colEditing) {
+            return (
+                <div className="col-header">
+                    <input
+                        type="text"
+                        maxLength={columnNameMaxLength}
+                        className="flex-input-small flex-width-70"
+                        defaultValue={columnData.title}
+                        ref={this.columnNameInput}
+                        placeholder="New column name..."
+                    />
+                    <button className="flex-button-small add-button" onClick={this.saveColumnTitle}>
+                        Save
+                    </button>
+                </div>
+            );
+        }
+
+        if (this.state.colAddTicket) {
+            return (
+                <div className="col-header">
+                    <div className="column-title">
+                        {columnData.title}
+                    </div>
+                    <div className="column-tools">
+                        <button className="tool-item remove" onClick={this.cancelAddTicket}>
+                            &nbsp;
+                        </button>
+                    </div>
+                </div>
+            );
+        }
+
+        return (
+            <div className="col-header">
+                <div className="column-title">
+                    {columnData.title}
+                </div>
+                <div className="column-tools">
+                    <button className="tool-item add" onClick={this.toggleColumnAddTicket}>&nbsp;</button>
+                    <button className="tool-item edit" onClick={this.toggleColumnTitleEdit}>&nbsp;</button>
+                    <button className="tool-item delete" onClick={this.removeColumn}>&nbsp;</button>
+                </div>
+            </div>
+        );
+    }
+
+    private isSelectedColumn(): boolean {
+        const selectedTicket: SelectedTicketDataType = this.props.selectedTicket;
 
         return selectedTicket && selectedTicket.column === this.props.columnId;
     }
 
-    update() {
+    private update() {
         this.setState({ticketUpdated: !this.state.ticketUpdated});
     }
 
-    removeColumn() {
+    private removeColumn() {
         removeBoardColumn(this.props.boardId, this.props.columnId);
         this.props.updateAction();
     }
 
-    toggleColumnTitleEdit() {
+    private toggleColumnTitleEdit() {
         this.setState({colEditing: true, colAddTicket: false});
     }
 
-    toggleColumnAddTicket() {
+    private toggleColumnAddTicket() {
         this.setState({colEditing: false, colAddTicket: true});
     }
 
-    cancelAddTicket() {
+    private cancelAddTicket() {
         this.setState({colEditing: false, colAddTicket: false});
     }
 
-    saveColumnTitle() {
-        let newColumnName: string = this.columnNameInput.current.value,
+    private saveColumnTitle() {
+        const newColumnName: string = this.columnNameInput.current.value,
             originalColumnName: string = this.columnNameInput.current.defaultValue;
 
         if (newColumnName === originalColumnName || isValidColumnName(this.props.boardId, newColumnName)) {
@@ -190,7 +212,7 @@ export default class Column extends React.PureComponent<ColumnPropsType>  {
         }
     }
 
-    createNewTicket() {
+    private createNewTicket() {
         if (
             isValidTicketTitle(this.newTicketTitleInput.current.value) &&
             isValidTicketDescription(this.newTicketDescriptionInput.current.value)
@@ -200,7 +222,7 @@ export default class Column extends React.PureComponent<ColumnPropsType>  {
                 this.props.columnId,
                 this.newTicketTitleInput.current.value,
                 this.newTicketDescriptionInput.current.value,
-                this.newTicketColorSelect.current.value
+                this.newTicketColorSelect.current.value,
             );
             this.setState({colEditing: false, colAddTicket: false});
             this.props.updateAction();

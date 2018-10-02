@@ -1,5 +1,5 @@
-import {setBoardData} from './LocalStorageHelper'
-import {BoardType, HistoryDataType} from './TypesHelper';
+import {setBoardData} from "../service/BoardDataService";
+import {BoardType, HistoryDataType} from "./TypesHelper";
 
 let historyData: HistoryDataType  = {
     boardId: -1,
@@ -9,10 +9,10 @@ let historyData: HistoryDataType  = {
 
 export function startBoardHistory(boardId: number, boardState: BoardType) {
     historyData = {
-        boardId: boardId,
+        boardId,
         history: [boardState],
         historyStep: 0,
-    }
+    };
 }
 
 export function addHistoryStep(boardState: BoardType) {

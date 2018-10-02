@@ -1,35 +1,35 @@
-export type TicketType = {
+export interface TicketType {
     title: string;
     description: string;
     color: string;
 }
 
-export type ColumnType = {
+export interface ColumnType {
     title: string;
     tickets: TicketType[];
 }
 
-export type BoardType = {
+export interface BoardType {
     title: string;
     cols: ColumnType[];
 }
 
-export type BoardsDataType = {
+export interface BoardsDataType {
     boards: BoardType[];
 }
 
-export type SelectedTicketDataType = {
+export interface SelectedTicketDataType {
     column: number;
     ticket: number;
 }
 
-export type ColorDataType = {
+export interface ColorDataType {
     handle: string;
     title: string;
 }
 
-export type HistoryDataType = {
-    boardId: number,
-    history: BoardType[],
-    historyStep: number,
+export interface HistoryDataType {
+    boardId: number;
+    history: BoardType[];
+    historyStep: number;
 }
