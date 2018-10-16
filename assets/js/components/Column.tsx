@@ -3,7 +3,6 @@ import {columnNameMaxLength, getColorSelect, ticketTitleMaxLength} from "../help
 import {ColumnType, SelectedTicketDataType} from "../helpers/TypesHelper";
 import {
     addTicketToBoardColumn,
-    getColumnForBoard,
     isValidColumnName,
     isValidTicketDescription,
     isValidTicketTitle,
@@ -15,6 +14,7 @@ import Ticket from "./Ticket";
 interface ColumnPropsType {
     boardId: number;
     columnId: number;
+    columnData: ColumnType;
     updateAction: () => void;
     selectedTicket: SelectedTicketDataType;
 }
@@ -59,7 +59,7 @@ export default class Column extends React.PureComponent<ColumnPropsType, ColumnS
         const columnId: number = this.props.columnId,
             boardId: number = this.props.boardId,
             selectedTicket: SelectedTicketDataType = this.props.selectedTicket,
-            columnData: ColumnType = getColumnForBoard(boardId, columnId),
+            columnData: ColumnType = this.props.columnData,
             colHeader: JSX.Element = this.getColumnHeaderTemplate(columnData),
             updateAction: () => void = this.update;
 

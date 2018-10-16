@@ -2,7 +2,6 @@ import * as React from "react";
 import {BoardsDataType, BoardType} from "./TypesHelper";
 
 const localStorageVarName = "trololo-data";
-const defaultColumnName = "New Tasks";
 
 export function get(): BoardsDataType {
     let boardsData: BoardsDataType = JSON.parse(localStorage.getItem(localStorageVarName));

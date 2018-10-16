@@ -1,8 +1,7 @@
 import * as React from "react";
-import * as ReactDOM from "react-dom";
+import {connect} from "react-redux";
 import {collapsedTicketDescriptionLength,
         getColorSelect,
-        getContentElement,
         ticketTitleMaxLength} from "../helpers/DomElementsHelper";
 import {isDownToggled, isEditToggled, isLeftToggled, isRightToggled, isUpToggled} from "../helpers/NavigationHelper";
 import {SelectedTicketDataType, TicketType} from "../helpers/TypesHelper";
@@ -15,7 +14,7 @@ import {getTicketForBoardColumn,
         moveUp,
         removeBoardColumnTicket,
         updateBoardColumnTicketData} from "../service/BoardDataService";
-import Board from "./Board";
+import {actionTypeSetSelectedTicket} from "./UiContainer";
 
 interface TicketPropsType {
     boardId: number;
@@ -23,13 +22,14 @@ interface TicketPropsType {
     ticketId: number;
     updateAction: () => void;
     selectedTicket: SelectedTicketDataType;
+    onChangeCurrentTicket: (selectedTicket: SelectedTicketDataType) => void;
 }
 
 interface TicketStateType {
     ticketEditing: boolean;
 }
 
-export default class Ticket extends React.PureComponent<TicketPropsType, TicketStateType> {
+class Ticket extends React.PureComponent<TicketPropsType, TicketStateType> {
 
     private static getTruncatedDescription(description: string): string {
         if (description.length <= collapsedTicketDescriptionLength) {
@@ -59,6 +59,7 @@ export default class Ticket extends React.PureComponent<TicketPropsType, TicketS
         this.makeSelectedTicket = this.makeSelectedTicket.bind(this);
         this.getTicketEditingTemplate = this.getTicketEditingTemplate.bind(this);
         this.getTicketTemplate = this.getTicketTemplate.bind(this);
+        this.getCurrentTicketData = this.getCurrentTicketData.bind(this);
     }
 
     public render(): React.ReactNode {
@@ -185,28 +186,48 @@ export default class Ticket extends React.PureComponent<TicketPropsType, TicketS
     }
 
     private makeSelectedTicket() {
-        const selectedTicket = {
+        const selectedTicket: SelectedTicketDataType = this.getCurrentTicketData();
+
+        this.props.onChangeCurrentTicket(selectedTicket);
+    }
+
+    private getCurrentTicketData(): SelectedTicketDataType {
+        return {
             column: this.props.columnId,
             ticket: this.props.ticketId,
         };
-
-        ReactDOM.render(
-            <Board boardId={this.props.boardId} selectedTicket={selectedTicket}/>,
-            getContentElement(),
-        );
     }
 
     private handleKeyPress(e: KeyboardEvent) {
+        let selectedTicketUpdatedData: SelectedTicketDataType = this.getCurrentTicketData();
+
         if (isUpToggled(e)) {
-            moveUp(this.props.boardId, this.props.columnId, this.props.ticketId);
+            selectedTicketUpdatedData = moveUp(this.props.boardId, this.props.columnId, this.props.ticketId);
         } else if (isDownToggled(e)) {
-            moveDown(this.props.boardId, this.props.columnId, this.props.ticketId);
+            selectedTicketUpdatedData = moveDown(this.props.boardId, this.props.columnId, this.props.ticketId);
         } else if (isLeftToggled(e)) {
-            moveLeft(this.props.boardId, this.props.columnId, this.props.ticketId);
+            selectedTicketUpdatedData = moveLeft(this.props.boardId, this.props.columnId, this.props.ticketId);
         } else if (isRightToggled(e)) {
-            moveRight(this.props.boardId, this.props.columnId, this.props.ticketId);
+            selectedTicketUpdatedData = moveRight(this.props.boardId, this.props.columnId, this.props.ticketId);
         } else if (isEditToggled(e)) {
             this.setState({ticketEditing: true});
         }
+
+        if (this.getCurrentTicketData() !== selectedTicketUpdatedData) {
+            this.props.onChangeCurrentTicket(selectedTicketUpdatedData);
+        }
     }
 }
+
+export default connect(
+    (state) => ({}),
+    (dispatch) => ({
+        onChangeCurrentTicket: (selectedTicket: SelectedTicketDataType) => {
+            dispatch(
+                {
+                    selectedTicket,
+                    type: actionTypeSetSelectedTicket,
+                });
+        },
+    }),
+)(Ticket);

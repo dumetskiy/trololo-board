@@ -1,6 +1,8 @@
 import * as React from "react";
-import {BoardType} from "../helpers/TypesHelper";
-import {createBoard, getBoards, isValidBoardName} from "../service/BoardDataService";
+import {connect} from "react-redux";
+import {BoardsStateType, BoardType} from "../helpers/TypesHelper";
+import {createBoard, getBoardById, getBoards, isValidBoardName} from "../service/BoardDataService";
+import Board from "./Board";
 import BoardListItem from "./BoardListItem";
 
 interface BoardsListStateType {
@@ -8,11 +10,15 @@ interface BoardsListStateType {
     visible: boolean;
 }
 
-export default class BoardsList extends React.PureComponent<{}, BoardsListStateType> {
+interface BoardsListPropsType {
+    boardsState: BoardsStateType;
+}
+
+class BoardsList extends React.PureComponent<BoardsListPropsType, BoardsListStateType> {
     private boardNameInput: React.RefObject<HTMLInputElement>;
     private addBoardButton: React.RefObject<HTMLButtonElement>;
 
-    constructor(props: {}, state: BoardsListStateType) {
+    constructor(props: BoardsListPropsType, state: BoardsListStateType) {
         super(props, state);
 
         this.state = {
@@ -26,6 +32,16 @@ export default class BoardsList extends React.PureComponent<{}, BoardsListStateT
     }
 
     public render(): React.ReactNode {
+        if (this.props.boardsState.boardId !== -1) {
+            return (
+                <Board
+                    boardId={this.props.boardsState.boardId}
+                    boardData={getBoardById(this.props.boardsState.boardId)}
+                    selectedTicket={this.props.boardsState.selectedTicket}
+                />
+            );
+        }
+
         const boards: BoardType[] = this.state.boards;
 
         if (this.state.visible) {
@@ -83,3 +99,10 @@ export default class BoardsList extends React.PureComponent<{}, BoardsListStateT
         }
     }
 }
+
+export default connect(
+    (state) => ({
+        boardsState: state,
+    }),
+    (dispatch) => ({}),
+)(BoardsList);

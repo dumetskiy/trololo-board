@@ -1,22 +1,24 @@
 import * as React from "react";
-import * as ReactDOM from "react-dom";
-import {getContentElement} from "../helpers/DomElementsHelper";
+import {connect} from "react-redux";
 import {startBoardHistory} from "../helpers/HistoryHelper";
-import {BoardType, SelectedTicketDataType} from "../helpers/TypesHelper";
+import {BoardsStateType, BoardType} from "../helpers/TypesHelper";
 import {getBoardById, isValidBoardName, removeBoardById, setNameForBoardById} from "../service/BoardDataService";
-import Board from "./Board";
+import {actionTypeSetBoard} from "./UiContainer";
 
 interface BoardListItemPropsType {
     boardId: number;
     updateAction: () => void;
+    onSelectBoard: (boardId: number, title: string) => void;
+    boardsState: BoardsStateType;
 }
 
 interface BoardListItemStateType {
     isEditing: boolean;
 }
 
-export default class BoardListItem extends React.PureComponent<BoardListItemPropsType, BoardListItemStateType> {
+class BoardListItem extends React.PureComponent<BoardListItemPropsType, BoardListItemStateType> {
     private boardNameInput: React.RefObject<HTMLInputElement>;
+    private boardData: BoardType;
 
     constructor(props: BoardListItemPropsType, state: BoardListItemStateType) {
         super(props, state);
@@ -32,7 +34,7 @@ export default class BoardListItem extends React.PureComponent<BoardListItemProp
     }
 
     public render(): React.ReactNode {
-        const boardData: BoardType = getBoardById(this.props.boardId);
+        this.boardData = getBoardById(this.props.boardId);
 
         if (this.state.isEditing) {
             return (
@@ -41,7 +43,7 @@ export default class BoardListItem extends React.PureComponent<BoardListItemProp
                         type="text"
                         ref={this.boardNameInput}
                         className="input-style"
-                        defaultValue={boardData.title}
+                        defaultValue={this.boardData.title}
                     />
                     <button className="tool-button save" onClick={this.saveBoardEdit}>&nbsp;</button>
                 </div>
@@ -50,7 +52,7 @@ export default class BoardListItem extends React.PureComponent<BoardListItemProp
 
         return (
             <div className="list-item" onClick={this.openBoard}>
-                {boardData.title}
+                {this.boardData.title}
                 <button className="tool-button remove" onClick={this.removeBoard}>&nbsp;</button>
                 <button className="tool-button edit" onClick={this.startBoardEdit}>&nbsp;</button>
             </div>
@@ -80,15 +82,23 @@ export default class BoardListItem extends React.PureComponent<BoardListItemProp
     }
 
     private openBoard() {
-        const selectedTicket: SelectedTicketDataType = {
-            column: -1,
-            ticket: -1,
-        };
-
         startBoardHistory(this.props.boardId, getBoardById(this.props.boardId));
-        ReactDOM.render(
-            <Board boardId={this.props.boardId} selectedTicket={selectedTicket}/>,
-            getContentElement(),
-        );
+        this.props.onSelectBoard(this.props.boardId, this.boardData.title);
     }
 }
+
+export default connect(
+    (state) => ({
+        boardsState: state,
+    }),
+    (dispatch) => ({
+        onSelectBoard: (boardId: number, title: string) => {
+            dispatch(
+                {
+                    boardId,
+                    title,
+                    type: actionTypeSetBoard,
+                });
+        },
+    }),
+)(BoardListItem);

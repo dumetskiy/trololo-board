@@ -1,7 +1,4 @@
 import * as React from "react";
-import * as ReactDOM from "react-dom";
-import Board from "../components/Board";
-import {getContentElement} from "../helpers/DomElementsHelper";
 
 const localStorageBackgroundVarName = "background";
 

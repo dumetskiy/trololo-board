@@ -33,3 +33,10 @@ export interface HistoryDataType {
     history: BoardType[];
     historyStep: number;
 }
+
+export interface BoardsStateType {
+    title: string;
+    boardId: number;
+    selectedTicket: SelectedTicketDataType;
+    isUpdated: boolean;
+}

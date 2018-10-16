@@ -22,15 +22,23 @@ export function addHistoryStep(boardState: BoardType) {
 }
 
 export function stepForward() {
-    if (historyData.boardId !== -1 && historyData.historyStep < historyData.history.length - 1) {
+    if (hasStepForward()) {
         ++historyData.historyStep;
         setBoardData(historyData.boardId, historyData.history[historyData.historyStep]);
     }
 }
 
 export function stepBackward() {
-    if (historyData.boardId !== -1 && historyData.historyStep > 0) {
+    if (hasStepBackward()) {
         --historyData.historyStep;
         setBoardData(historyData.boardId, historyData.history[historyData.historyStep]);
     }
+}
+
+export function hasStepForward(): boolean {
+    return historyData.boardId !== -1 && historyData.historyStep < historyData.history.length - 1;
+}
+
+export function hasStepBackward(): boolean {
+    return historyData.boardId !== -1 && historyData.historyStep > 0;
 }

@@ -51,7 +51,3 @@ export function getColorSelect(currentColor: string, ref: React.RefObject<HTMLSe
         </select>
     );
 }
-
-export function getContentElement(): HTMLElement {
-    return document.getElementById("content");
-}

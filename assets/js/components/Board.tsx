@@ -3,10 +3,11 @@ import {columnNameMaxLength} from "../helpers/DomElementsHelper";
 import {stepBackward, stepForward} from "../helpers/HistoryHelper";
 import {isStepBackToggled, isStepForwardToggled} from "../helpers/NavigationHelper";
 import {BoardType, ColumnType, SelectedTicketDataType} from "../helpers/TypesHelper";
-import {addColumnToBoard, getBoardById, isValidColumnName} from "../service/BoardDataService";
+import {addColumnToBoard, getColumnForBoard, isValidColumnName} from "../service/BoardDataService";
 import Column from "./Column";
 
 interface BoardPropsType {
+    boardData: BoardType;
     boardId: number;
     selectedTicket: SelectedTicketDataType;
 }
@@ -47,7 +48,7 @@ export default class Board extends React.PureComponent<BoardPropsType, BoardStat
     public render(): React.ReactNode {
         const boardId: number = this.props.boardId,
             selectedTicket: SelectedTicketDataType = this.props.selectedTicket,
-            boardData: BoardType = getBoardById(boardId),
+            boardData: BoardType = this.props.boardData,
             boardCols: ColumnType[]  = boardData.cols,
             updateAction: () => void = this.update;
 
@@ -62,6 +63,7 @@ export default class Board extends React.PureComponent<BoardPropsType, BoardStat
                         key={index}
                         boardId={boardId}
                         columnId={index}
+                        columnData={getColumnForBoard(boardId, index)}
                         updateAction={updateAction}
                         selectedTicket={selectedTicket}
                     />

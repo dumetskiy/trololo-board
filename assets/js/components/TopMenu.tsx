@@ -1,32 +1,23 @@
 import * as React from "react";
-import * as ReactDOM from "react-dom";
-import {getContentElement} from "../helpers/DomElementsHelper";
-import {stepBackward, stepForward} from "../helpers/HistoryHelper";
+import {connect} from "react-redux";
+import {hasStepBackward, hasStepForward} from "../helpers/HistoryHelper";
+import {BoardsStateType} from "../helpers/TypesHelper";
 import {getBackgroundImage, hasBackgroundImage, setBackgroundImage} from "../service/BackgroundImageService";
-import BoardsList from "./BoardsList";
+import HistorySwitcher from "./HistorySwitcher";
+import {actionTypeResetBoard} from "./UiContainer";
 
 interface TopMenuPropsType {
-    title: string;
+    boardsState: BoardsStateType;
     updateAction: () => void;
+    onGoHome: () => void;
 }
 
 interface TopMenuStateType {
     settingsOpened: boolean;
 }
 
-export default class TopMenu extends React.PureComponent<TopMenuPropsType, TopMenuStateType> {
+class TopMenu extends React.PureComponent<TopMenuPropsType, TopMenuStateType> {
 
-    private static doStepForward() {
-        stepForward();
-    }
-
-    private static doStepBackward() {
-        stepBackward();
-    }
-
-    private static goHome() {
-        ReactDOM.render(<BoardsList/>, getContentElement());
-    }
     private backgroundPreview: React.RefObject<HTMLImageElement>;
     private backgroundImageSelect: React.RefObject<HTMLInputElement>;
 
@@ -45,6 +36,7 @@ export default class TopMenu extends React.PureComponent<TopMenuPropsType, TopMe
         this.loadPreviewImage = this.loadPreviewImage.bind(this);
         this.getSettingsModal = this.getSettingsModal.bind(this);
         this.getTopMenuTemplate = this.getTopMenuTemplate.bind(this);
+        this.goHome = this.goHome.bind(this);
     }
 
     public render(): React.ReactNode {
@@ -87,22 +79,23 @@ export default class TopMenu extends React.PureComponent<TopMenuPropsType, TopMe
         );
     }
 
+    private goHome() {
+        this.props.onGoHome();
+    }
+
     private getTopMenuTemplate(): JSX.Element {
         return (
             <div className="main-menu">
                 <div className="menu-section side-section" id="history-block">
-                    <div className="menu-buttons-wrap">
-                        <button className="menu-button backward" onClick={TopMenu.doStepBackward}>&nbsp;</button>
-                        <button className="menu-button forward" onClick={TopMenu.doStepForward}>&nbsp;</button>
-                    </div>
+                    <HistorySwitcher hasStepBackward={hasStepBackward()} hasStepForward={hasStepForward()} />
                 </div>
                 <div className="menu-section">
-                    <h1 className="heading" id="heading">{this.props.title}</h1>
+                    <h1 className="heading" id="heading">{this.props.boardsState.title}</h1>
                 </div>
                 <div className="menu-section side-section" id="toolbar-block">
                     <div className="menu-buttons-wrap right">
                         <button className="menu-button settings" onClick={this.toggleSettings}>&nbsp;</button>
-                        <button className="menu-button home" onClick={TopMenu.goHome}>&nbsp;</button>
+                        <button className="menu-button home" onClick={this.goHome}>&nbsp;</button>
                     </div>
                 </div>
             </div>
@@ -141,3 +134,17 @@ export default class TopMenu extends React.PureComponent<TopMenuPropsType, TopMe
         }
     }
 }
+
+export default connect(
+    (state) => ({
+        boardsState: state,
+    }),
+    (dispatch) => ({
+        onGoHome: () => {
+            dispatch(
+                {
+                    type: actionTypeResetBoard,
+                });
+        },
+    }),
+)(TopMenu);

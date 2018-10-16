@@ -1,7 +1,5 @@
 import * as React from "react";
-import * as ReactDOM from "react-dom";
-import Board from "../components/Board";
-import {columnNameMaxLength, getContentElement, ticketTitleMaxLength} from "../helpers/DomElementsHelper";
+import {columnNameMaxLength, ticketTitleMaxLength} from "../helpers/DomElementsHelper";
 import {addHistoryStep} from "../helpers/HistoryHelper";
 import {get, set} from "../helpers/LocalStorageHelper";
 import {BoardsDataType, BoardType, ColumnType, SelectedTicketDataType, TicketType} from "../helpers/TypesHelper";
@@ -39,18 +37,10 @@ export function createBoard(title: string) {
 }
 
 export function setBoardData(boardId: number, boardData: BoardType) {
-    const boardsData: BoardsDataType = get(),
-        selectedTicket: SelectedTicketDataType = {
-            column: -1,
-            ticket: -1,
-        };
+    const boardsData: BoardsDataType = get();
 
     boardsData.boards[boardId] = boardData;
     set(boardsData);
-    ReactDOM.render(
-        <Board boardId={boardId} selectedTicket={selectedTicket}/>,
-        getContentElement(),
-    );
 }
 
 export function setNameForBoardById(boardId: number, name: string) {
@@ -210,7 +200,7 @@ export function updateBoardColumnTicketData(boardId: number,
     addHistoryStep(boardsData.boards[boardId]);
 }
 
-export function moveLeft(boardId: number, columnId: number, ticketId: number) {
+export function moveLeft(boardId: number, columnId: number, ticketId: number): SelectedTicketDataType {
     if (columnId > 0) {
         const boardsData: BoardsDataType = get(),
             ticketData: TicketType = boardsData.boards[boardId].cols[columnId].tickets[ticketId],
@@ -224,11 +214,14 @@ export function moveLeft(boardId: number, columnId: number, ticketId: number) {
         boardsData.boards[boardId].cols[columnId - 1].tickets.splice(newTicketId, 0, ticketData);
         set(boardsData);
         addHistoryStep(boardsData.boards[boardId]);
-        updateCurrentState(boardId, columnId - 1, newTicketId);
+
+        return getState(columnId - 1, newTicketId);
     }
+
+    return getState(boardId, columnId);
 }
 
-export function moveRight(boardId: number, columnId: number, ticketId: number) {
+export function moveRight(boardId: number, columnId: number, ticketId: number): SelectedTicketDataType {
     const boardsData: BoardsDataType = get();
 
     if (columnId + 1 < boardsData.boards[boardId].cols.length) {
@@ -243,11 +236,14 @@ export function moveRight(boardId: number, columnId: number, ticketId: number) {
         boardsData.boards[boardId].cols[columnId + 1].tickets.splice(newTicketId, 0, ticketData);
         set(boardsData);
         addHistoryStep(boardsData.boards[boardId]);
-        updateCurrentState(boardId, columnId + 1, newTicketId);
+
+        return getState(columnId + 1, newTicketId);
     }
+
+    return getState(boardId, columnId);
 }
 
-export function moveUp(boardId: number, columnId: number, ticketId: number) {
+export function moveUp(boardId: number, columnId: number, ticketId: number): SelectedTicketDataType {
     const boardsData: BoardsDataType = get();
 
     if (ticketId > 0) {
@@ -258,11 +254,14 @@ export function moveUp(boardId: number, columnId: number, ticketId: number) {
         boardsData.boards[boardId].cols[columnId].tickets[ticketId - 1] = ticketData;
         set(boardsData);
         addHistoryStep(boardsData.boards[boardId]);
-        updateCurrentState(boardId, columnId, ticketId - 1);
+
+        return getState(columnId, ticketId - 1);
     }
+
+    return getState(boardId, columnId);
 }
 
-export function moveDown(boardId: number, columnId: number, ticketId: number) {
+export function moveDown(boardId: number, columnId: number, ticketId: number): SelectedTicketDataType {
     const boardsData: BoardsDataType = get();
 
     if (ticketId + 1 < boardsData.boards[boardId].cols[columnId].tickets.length) {
@@ -273,18 +272,16 @@ export function moveDown(boardId: number, columnId: number, ticketId: number) {
         boardsData.boards[boardId].cols[columnId].tickets[ticketId + 1] = ticketData;
         set(boardsData);
         addHistoryStep(boardsData.boards[boardId]);
-        updateCurrentState(boardId, columnId, ticketId + 1);
+
+        return getState(columnId, ticketId + 1);
     }
+
+    return getState(boardId, columnId);
 }
 
-function updateCurrentState(boardId: number, columnId: number, ticketId: number) {
-    const selectedTicket = {
+function getState(columnId: number, ticketId: number) {
+    return {
         column: columnId,
         ticket: ticketId,
     };
-
-    ReactDOM.render(
-        <Board boardId={boardId} selectedTicket={selectedTicket}/>,
-        getContentElement(),
-    );
 }
